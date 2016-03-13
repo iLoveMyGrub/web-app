@@ -1,6 +1,6 @@
 /***
  *
- *  register COMPONENT
+ *  REGISTER COMPONENT
  *
  * @file
  *  Provides register section and functionality for the site, including directives
@@ -20,7 +20,7 @@ angular.module('project.register', ['ngRoute', 'formly', 'formlyBootstrap', 'ang
 
         $routeProvider.when('/register', {
 
-            title: 'register',
+            title: 'Sign up',
             templateUrl: './site/components/register/register.tpl.html',
             controller: 'registerController',
             controllerAs: 'vm',
@@ -40,6 +40,7 @@ angular.module('project.register', ['ngRoute', 'formly', 'formlyBootstrap', 'ang
 
 // Injectables
 registerDataService.$inject = ['$http', '$rootScope', 'API_URL', 'jwtHelper', '$window', 'AuthTokenService'];
+
 registerController.$inject = ['registerDataService', 'jwtHelper', '$location', '$window', 'AuthTokenService'];
 
 
@@ -68,7 +69,7 @@ function registerController(registerDataService, jwtHelper, $location, $window, 
 
 
     // Check token
-    var token = localStorage.getItem('aat-auth-token');
+    var token = sessionStorage.getItem('auth-token');
 
     if (token) {
         vm.authUser = jwtHelper.decodeToken(token);

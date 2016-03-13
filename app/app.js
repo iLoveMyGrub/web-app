@@ -26,7 +26,7 @@ angular.module('project', [
         // CUSTOM
         'project.auth',
         'project.login',
-
+        'project.register',
         'project.user',
         'project.frontpage',
         'project.events',
