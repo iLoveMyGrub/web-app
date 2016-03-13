@@ -33,7 +33,8 @@ Builds
 
 The current tooling is built around Gulp JS
 
-Then once installed you can run from the 'gulp' command from the main content root. 
+Then once installed, you can run from the 'gulp' command from the project root, this will now watch js & css 
+files and run compiles/builds when they change.   
 
 
 ```
@@ -49,15 +50,15 @@ Make sure you have installed Docker, and an environment is available / started.
 Windows / Mac - Docker-machine (or docker-toolbox) : 
 
      
-    $ docker-machine start default
+    docker-machine start default
     
    
-    $ eval $(docker-machine env default)
+    eval $(docker-machine env default)
     
 Then cd into the the project root and run the following : 
 
 
-    $ docker build -t ilmg/web-app .
+    docker build -t ilmg/web-app .
 
 
 The will now build the image "ilmg/web-app", which will be seen in your images list if you run the command "docker images"
@@ -157,4 +158,6 @@ MAPS
 Please see http://angular-ui.github.io/angular-google-maps/#!/use
 
 http://maps.googleapis.com/maps/api/geocode/json?address=sw10xy,+UK&sensor=false
+
+
 
