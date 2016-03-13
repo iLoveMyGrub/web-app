@@ -84,7 +84,6 @@ gulp.task('js', function () {
             'app/site/components/reviews/reviews.js',
             'app/site/components/recipes/recipes.js',
             'app/site/components/news/news.js',
-            'app/site/components/maintenance/maintenance.js',
             'app/site/components/about/about.js',
             'app/site/components/dashboard/dashboard.js',
             'app/site/components/contact/contact.js',

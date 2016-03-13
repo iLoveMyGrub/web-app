@@ -32,7 +32,6 @@ angular.module('project', [
         'project.recipes',
         'project.news',
         'project.about',
-        'project.maintenance',
         'project.dashboard',
         'project.contact',
         'project.login',
