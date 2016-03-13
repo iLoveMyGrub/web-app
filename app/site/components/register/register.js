@@ -1,31 +1,31 @@
 /***
  *
- *  LOGIN COMPONENT
+ *  register COMPONENT
  *
  * @file
- *  Provides login section and functionality for the site, including directives
+ *  Provides register section and functionality for the site, including directives
  *
  * @todo :
  *
- *  - form error validation to return error on non successful login with messaging
+ *  - form error validation to return error on non successful register with messaging
  *
  */
 
 'use strict';
 
-angular.module('project.login', ['ngRoute', 'formly', 'formlyBootstrap', 'angular-jwt', 'project.auth'])
+angular.module('project.register', ['ngRoute', 'formly', 'formlyBootstrap', 'angular-jwt', 'project.auth'])
 
     // Route
     .config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
 
-        $routeProvider.when('/login', {
+        $routeProvider.when('/register', {
 
-            title: 'Login',
-            templateUrl: './site/components/login/login.tpl.html',
-            controller: 'LoginController',
+            title: 'register',
+            templateUrl: './site/components/register/register.tpl.html',
+            controller: 'registerController',
             controllerAs: 'vm',
             access: {
-                requiresLogin: false,
+                requiresregister: false,
                 roles: []
             }
 
@@ -33,68 +33,24 @@ angular.module('project.login', ['ngRoute', 'formly', 'formlyBootstrap', 'angula
 
     }])
 
-    .service('LoginDataService', LoginDataService)
-
-    .directive('loginDirectiveTopLinks', loginDirectiveTopLinks)
-
-    .controller('LoginController', LoginController);
+    .service('registerDataService', registerDataService)
+    
+    .controller('registerController', registerController);
 
 
-// Inject Deps
-loginDirectiveTopLinks.$inject = ['$window', '$location'];
-
-LoginDataService.$inject = ['$http', '$rootScope', 'API_URL', 'jwtHelper', '$window', 'AuthTokenService'];
-
-LoginController.$inject = ['LoginDataService', 'jwtHelper', '$location', '$window', 'AuthTokenService'];
+// Injectables
+registerDataService.$inject = ['$http', '$rootScope', 'API_URL', 'jwtHelper', '$window', 'AuthTokenService'];
+registerController.$inject = ['registerDataService', 'jwtHelper', '$location', '$window', 'AuthTokenService'];
 
 
 /**
  *
- * Login Directive : Top Bar
- *
- * @returns {{replace: boolean, restrict: string, template: string, link: link}}
- *
- */
-function loginDirectiveTopLinks($window, $location) {
-
-    return {
-        replace: true,
-        restrict: 'AE',
-        controller: LoginController,
-        controllerAs: 'vm',
-        bindToController: true,
-        templateUrl: 'site/components/login/templates/login-top-bar.html',
-        link: function (scope, elem, attrs) {
-
-            // Logout User
-            scope.logout = function () {
-
-                console.log("LOGGED OUT");
-
-                // Delete JWT token
-                sessionStorage.removeItem('auth-token');
-
-                // Check to see if token
-                console.log(sessionStorage.getItem('auth-token'));
-
-                // Redirect
-                $location.path("/frontend");
-
-            };
-
-        }
-    }
-
-}
-
-/**
- *
- * Login Controller
+ * register Controller
  *
  * @constructor
  *
  */
-function LoginController(LoginDataService, jwtHelper, $location, $window, AuthTokenService) {
+function registerController(registerDataService, jwtHelper, $location, $window, AuthTokenService) {
 
     var vm = this;
 
@@ -112,13 +68,13 @@ function LoginController(LoginDataService, jwtHelper, $location, $window, AuthTo
 
 
     // Check token
-    var token = sessionStorage.getItem('auth-token');
+    var token = localStorage.getItem('aat-auth-token');
 
     if (token) {
         vm.authUser = jwtHelper.decodeToken(token);
 
         //// Redirect if token i.e logged in
-        $window.location = '/dashboard';
+        $window.location = '#/dashboard';
         $window.location.reload();
     }
 
@@ -126,6 +82,27 @@ function LoginController(LoginDataService, jwtHelper, $location, $window, AuthTo
     // http://docs.angular-formly.com/v6.4.0/docs/custom-templates
     vm.fields = [
 
+
+        {
+            key: 'first_name',
+            type: 'input',
+            templateOptions: {
+                type: 'text',
+                label: 'First name',
+                placeholder: '',
+                required: true
+            }
+        },
+        {
+            key: 'last_name',
+            type: 'input',
+            templateOptions: {
+                type: 'text',
+                label: 'Last name',
+                placeholder: '',
+                required: true
+            }
+        },
         {
             key: 'email',
             type: 'input',
@@ -164,7 +141,7 @@ function LoginController(LoginDataService, jwtHelper, $location, $window, AuthTo
 
     /**
      *
-     * Login form Submit handler
+     * register form Submit handler
      *
      */
     function onSubmit() {
@@ -173,10 +150,10 @@ function LoginController(LoginDataService, jwtHelper, $location, $window, AuthTo
 
         console.log("ctrl : ", AuthTokenService);
 
-        LoginDataService.login(vm.model.email, vm.model.password)
+        registerDataService.register(vm.model.email, vm.model.password)
             .then(function success(response) {
 
-                // Redirect if succesful login
+                // Redirect if succesful register
                 $window.location.href = '#/dashboard';
                 $window.location.reload();
             });
@@ -188,15 +165,15 @@ function LoginController(LoginDataService, jwtHelper, $location, $window, AuthTo
 
 /**
  *
- * Login Data Service
+ * register Data Service
  *
  * @constructor
  */
-function LoginDataService($http, $rootScope, API_URL, jwtHelper, $window, AuthTokenService) {
+function registerDataService($http, $rootScope, API_URL, jwtHelper, $window, AuthTokenService) {
 
 
     return {
-        login: login,
+        register: register,
         logout: logout,
         getUser: getUser
     };
@@ -207,7 +184,7 @@ function LoginDataService($http, $rootScope, API_URL, jwtHelper, $window, AuthTo
      * @param password
      * @returns {*}
      */
-    function login(email, password) {
+    function register(email, password) {
 
 
         console.log(AuthTokenService);

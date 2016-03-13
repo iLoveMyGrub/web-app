@@ -25,6 +25,9 @@ angular.module('project', [
 
         // CUSTOM
         'project.auth',
+        'project.login',
+
+        'project.user',
         'project.frontpage',
         'project.events',
         'project.articles',
@@ -34,9 +37,6 @@ angular.module('project', [
         'project.about',
         'project.dashboard',
         'project.contact',
-        'project.login',
-        'project.auth',
-        'project.user',
         'project.static-pages',
         'project.api',
 
@@ -65,7 +65,7 @@ angular.module('project', [
 
             // Add JWT Token to each request
             jwtInterceptorProvider.tokenGetter = function () {
-                return localStorage.getItem('aat-auth-token');
+                return sessionStorage.getItem('auth-token');
             }
             $httpProvider.interceptors.push('jwtInterceptor');
 
@@ -83,14 +83,13 @@ angular.module('project', [
     .constant('API_URL', 'http://api.ilovemygrub.com/api/')
     // s3
     .constant('MEDIA_URL', 'https://s3-eu-west-1.amazonaws.com/www.ilovemygrub.com/files/s3fs-public')
-    // Localstorage ID
-    .constant('LOCALSTORAGE_TOKEN_ID', 'cms-content')
+    // sessionStorage ID
+    .constant('TOKEN_ID', 'cms-content')
 
     .run(appRun);
 
 //
-appRun.$inject = ['$rootScope', '$location', '$http', 'store', 'jwtHelper', '$window', 'AuthTokenService'];
-
+appRun.$inject = ['$rootScope', '$location', '$http', 'store', 'jwtHelper', '$window', 'AuthTokenService', 'UserService'];
 
 /**
  *
@@ -111,7 +110,7 @@ function appRun($rootScope, $location, $http, store, jwtHelper, $window, AuthTok
     $rootScope.$on("$routeChangeStart", function (event, next, current) {
 
         // Check token
-        var token = localStorage.getItem('aat-auth-token');
+        var token = sessionStorage.getItem('auth-token');
 
         if (token) {
             console.log("@RUN -- " + jwtHelper.decodeToken(token));
@@ -136,9 +135,8 @@ function appRun($rootScope, $location, $http, store, jwtHelper, $window, AuthTok
     });
 
 
-
     $rootScope.page = {
-        setTitle: function(title) {
+        setTitle: function (title) {
             this.pageTitle = title + ' | iLoveMyGrub.com';
         }
     }

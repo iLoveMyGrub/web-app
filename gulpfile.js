@@ -89,6 +89,7 @@ gulp.task('js', function () {
             'app/site/components/contact/contact.js',
             'app/site/components/login/login.js',
             'app/site/components/user/user.js',
+            'app/site/components/register/register.js',
             'app/site/components/static-pages/static-pages.js',
             'app/site/components/meta/meta.js',
 
