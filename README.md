@@ -41,19 +41,59 @@ gulp
 ```
 
 
-Server
+Docker
 -------------
 
-This site flat html so any webserver will run the app without any config amends. 
- 
-One nodejs webserver that is very good while developing is live-server (https://www.npmjs.com/package/live-server)
+Make sure you have installed Docker, and an environment is available / started.
 
- - Install via // npm install -g live-server
- - cd ./app
+Windows / Mac - Docker-machine (or docker-toolbox) : 
 
-```
-live-server
-```
+     
+    $ docker-machine start default
+    
+   
+    $ eval $(docker-machine env default)
+    
+Then cd into the the project root and run the following : 
+
+
+    $ docker build -t ilmg/web-app .
+
+
+The will now build the image "ilmg/web-app", which will be seen in your images list if you run the command "docker images"
+
+To now start this as a container, please run the following : 
+
+
+    docker run -itd -p 8001:80 -v /YOUR_FULL_PATH/web-app/app:/var/www/nginx-default ilmg/web-app
+   
+
+So my example : 
+
+    docker run -itd -p 8001:80 -v /Users/markrushton/Sites/ilmg/web-app/app:/var/www/nginx-default ilmg/web-app
+
+
+Check your docker machine IP : (dev is the name of the docker-machine env, your may be different i.e. default) 
+
+    docker-machine ip dev 
+
+Now in a new browser tab, visit the website at the returned YOUR_DOCKER_IP:8001 
+
+So my example : 
+
+    192.168.99.100:8001
+
+
+**Success, you are now up and running.** 
+
+
+*Some other useful Docker commands to stop / remove all of Docker containers:*
+
+    docker stop $(docker ps -a -q)
+    docker rm $(docker ps -a -q)
+
+
+
 
 
 
@@ -74,8 +114,8 @@ The application architecture is based around the component model along with supp
 
 @see : 
  
-  - https://en.wikipedia.org/wiki/Component-based_software_engineering
-  - https://en.wikipedia.org/wiki/Microservices
+  - [https://en.wikipedia.org/wiki/Component-based_software_engineering](https://en.wikipedia.org/wiki/Component-based_software_engineering)
+  - [https://en.wikipedia.org/wiki/Microservices](https://en.wikipedia.org/wiki/Microservices)
   
 
 
