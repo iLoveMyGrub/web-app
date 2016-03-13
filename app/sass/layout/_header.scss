@@ -1,0 +1,54 @@
+
+
+// Alter the height of bootstrap top nav bar
+.navbar-nav>li>a { padding-top: 20px; padding-bottom: 20px; }
+
+.module {
+  padding: 50px;
+}
+
+.logo-top-bar {
+  //position: absolute;
+  //top:0;
+  //left:0;
+
+  float:left;
+  width: 250px;
+  height:60px;
+  overflow: hidden;
+  padding: 12px 0 0 10px;
+
+}
+
+.menu-top-bar {
+  margin-left: 40px;
+
+  a{
+    color: grey;
+    text-transform: uppercase;
+  }
+
+}
+
+.popover.in {
+  left: -125px !important;
+}
+
+.popover {
+  min-width: 160px;
+}
+
+.popover.bottom > .arrow {
+  margin-left: 48px;
+}
+
+// Hamburger Mobile Menu Icon (directive w/popup)
+.mobile-menu-holder {
+  width: 50px;
+  //height: 45px;
+  position: absolute;
+  padding: 5px 0 0 0;
+  top:0;
+  right:15px;
+  z-index: 1001;
+}

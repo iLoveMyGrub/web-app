@@ -1,0 +1,69 @@
+<div class="page-content">
+    <div class="container">
+
+        <div class="row">
+            <div class=" col-sm-12 text-center">
+
+                <p class="section-title">Recipes</p>
+
+            </div>
+
+        </div>
+
+
+
+        <div ng-if="vm.loading" class="loading-info">
+            <div class="loading-info-content">
+                <img src="/img/ring.gif" alt="LOADING DATA" />
+
+            </div>
+        </div>
+
+        <div class="row" ng-if="!vm.loading">
+
+            <div class="col-sm-12 col-md-5">
+
+                <img ng-src="{{ vm.details[0].recipes_image }}" class="img-responsive"/>
+            </div>
+
+
+            <div class="col-sm-12 col-md-7">
+
+                <!--<pre>{{ vm.details | json }}</pre>-->
+
+
+
+                <div>
+
+                    <!--  {{ vm.id }}  -->
+
+                    <h1 class="title" ng-bind-html="vm.details[0].node_title"></h1>
+
+                    <p class="lead" ng-bind-html="vm.details[0].strapline"></p>
+
+                    <hr>
+
+                    <div class="row">
+
+                        <div class="col-md-6">
+                            <h2>Ingredients</h2>
+                            <p ng-bind-html="vm.details[0].ingredients"></p>
+                        </div>
+
+                        <div class="col-md-6">
+                            <h2>Instructions</h2>
+                            <p ng-bind-html="vm.details[0].instructions"></p>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</div>

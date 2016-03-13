@@ -1,0 +1,83 @@
+<!-- recipes.tpl -->
+
+<div class="page-content">
+
+    <div class="container">
+
+        <div class="row">
+            <div class="lp-hero col-sm-12 text-center">
+
+                <h1>Articles</h1>
+
+                <p class="lead">We're suckers for food, and we LOVE talking about it. Find all the tasty food chat
+                    here.</p>
+
+            </div>
+
+        </div>
+
+        <div class="row">
+
+            <div class="col-sm-12">
+
+                <!--<pre>{{ vm.listings | json }}</pre>-->
+
+                <div ng-if="vm.loading" class="loading-info">
+                    <div class="loading-info-content">
+                        <img src="/img/ring.gif" alt="LOADING DATA" />
+
+                    </div>
+                </div>
+
+                <!-- grid list  -->
+                <div class="bucket">
+
+                    <div
+                            dir-paginate="item in vm.listings
+                        | filter:query
+                        | orderBy: 'item.event_start_date'
+                        | itemsPerPage: 12" class="grid-item">
+
+
+                        <div class="content">
+
+                            <div>
+                                <a href="/articles/{{ item.nid}}">
+                                    <img ng-src="{{ item.features_image }}" class="img-responsive"/>
+                                </a>
+
+                                <div class="caption">
+                                    <h4 class="title" ng-bind-html="item.node_title"></h4>
+
+                                    <!--<p class="">{{ item.event_start_date }}</p>-->
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+                <!-- / grid list  -->
+
+
+            </div>
+
+
+        </div>
+
+
+        <!-- pager -->
+        <div class="row">
+            <div class="col-sm-12 text-center">
+                <!-- ngDirective provided by the dir-pagination module @bower_components -->
+                <dir-pagination-controls></dir-pagination-controls>
+
+            </div>
+
+        </div>
+
+
+    </div>
+</div>

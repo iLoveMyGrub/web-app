@@ -1,0 +1,38 @@
+// Primary colours
+$primary-color: #cc0b1b !default;
+//$secondary-color: #f3f3ee !default;
+$secondary-color: #FAFAFA !default;
+
+$grey: rgb(124,124,123);
+
+// Greyscale
+$grey-darker:            darken($grey, 30%);
+$grey-dark:              darken($grey, 20%);
+$grey:                   $grey;
+$grey-light:             lighten($grey, 20%);
+$grey-lighter:           lighten($grey, 30%);
+$grey-lightest:          lighten($grey, 45%);
+
+
+// AAT Text colour
+$aat-text: #64696E;
+
+// Link colours
+$link-color: $primary-color;
+$link-hover-color: darken($link-color, 15%);
+
+
+
+// TESTING CLASSES
+
+.primary-color { background-color: $primary-color; }
+.grey { background-color: $grey; }
+
+
+
+.grey-darker { background-color: $grey-darker; }
+.grey-dark { background-color: $grey-dark; }
+.grey { background-color: $grey; }
+.grey-light { background-color: $grey-light; }
+.grey-lighter { background-color: $grey-lighter; }
+.grey-lightest {background-color: $grey-lightest}

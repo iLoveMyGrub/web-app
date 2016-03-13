@@ -1,0 +1,29 @@
+.login-top-bar .logout {
+
+  cursor: pointer;
+
+}
+
+.login-top-bar .logout:hover {
+  text-decoration: underline;
+}
+
+.login-top-bar {
+  position: relative;
+  //top:0px;
+  //right: 50px;
+  font-weight: bold;
+  margin:0px;
+  padding: 15px;
+  //border: 1px solid red;
+
+  height:45px;
+  width:100px;
+  float: right;
+
+}
+
+.user-menu-items {
+
+
+}

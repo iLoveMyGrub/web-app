@@ -1,0 +1,65 @@
+// Typography
+
+p {
+  font-size: 15px;
+  line-height: 1.5;
+  color: rgba(28, 54, 83, 0.6);
+  padding-bottom: 20px;
+  font-family: "Trade Gothic W01 Light", Arial, Helvetica, sans-serif;
+}
+
+h1 {
+  font-size: 60px;
+  font-weight: lighter;
+  //font-style: italic;
+  font-family: "Trade Gothic W01 Light", Arial, Helvetica, sans-serif;
+}
+
+h2 {
+  font-size: 30px;
+  font-weight: lighter;
+  //font-style: italic;
+  color: #3D4351;
+  font-family: "Trade Gothic W01 Light", Arial, Helvetica, sans-serif;
+}
+
+h3 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #3D4351;
+  font-family: "Trade Gothic W01 Light", Arial, Helvetica, sans-serif;
+}
+
+h4 {
+  font-size: 18px;
+  font-family: "Trade Gothic W01 Light", Arial, Helvetica, sans-serif;
+}
+
+h5 {
+  font-size: 15px;
+  color: #3D4351;
+  text-transform: uppercase;
+  font-weight: 500;
+  font-family: "Trade Gothic W01 Light", Arial, Helvetica, sans-serif;
+}
+
+.section-title {
+  padding: 40px 0 20px 0;
+  font-size: 30px;
+  color: #333333;
+}
+
+.lp-hero {
+
+  padding: 50px 0;
+
+  h1 {
+
+    font-size: 55px;
+  }
+
+  p {
+
+  }
+
+}

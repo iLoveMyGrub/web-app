@@ -1,0 +1,55 @@
+<div class="page-content">
+
+    <div class="container">
+
+        <div class="row">
+            <div class=" col-sm-12 text-center">
+
+                <p class="section-title">Articles</p>
+
+            </div>
+
+        </div>
+
+
+        <!-- Loading Icons -->
+        <div ng-if="vm.loading" class="loading-info">
+            <div class="loading-info-content">
+                <img src="/img/ring.gif" alt="LOADING DATA" />
+            </div>
+        </div>
+
+        <!-- Content -->
+        <div ng-if="!vm.loading" class="row">
+
+            <div class="col-sm-12 col-md-6">
+
+                <img ng-src="{{ vm.details[0].features_image }}" class="img-responsive"/>
+
+                <!--  @todo : Related content + links  -->
+
+            </div>
+
+            <div class="col-sm-12 col-md-6 bg-white">
+
+                <!--<pre>{{ vm.details | json }}</pre>-->
+
+                <div>
+
+                    <!--  {{ vm.id }}  -->
+
+                    <h1 class="title" ng-bind-html="vm.details[0].node_title"></h1>
+
+                    <p class="lead" ng-bind-html="vm.details[0].strapline"></p>
+
+                    <p ng-bind-html="vm.details[0].body"></p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

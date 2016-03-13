@@ -1,0 +1,139 @@
+
+.bucket {
+  width: 100%;
+  //border: 1px dashed orange;
+}
+
+/* Extra Small Devices, Phones */
+@media only screen and (min-width: 300px) {
+
+
+  .grid-img {
+    height:94px;
+    overflow: hidden;
+  }
+
+
+  .grid-item {
+    overflow: hidden;
+    vertical-align: top;
+    //border:1px dashed blue;
+    display: inline-block;
+    width: 50%;
+    height: 260px;
+    padding: 5px;
+
+    .content {
+
+      background: white;
+      height: 100%;
+      //border: 3px solid #73AD21;
+
+      .caption {
+        padding: 5px;
+        //font-size: 15px;
+        //line-height: 30px;
+        //height: 200px;
+      }
+
+    }
+
+  }
+
+}
+
+
+
+/* iPads + Tablets - portraits */
+@media only screen and (min-width: 600px) {
+
+  .grid-img {
+    height:155px;
+    overflow: hidden;
+  }
+
+
+  .grid-item {
+    overflow: hidden;
+    vertical-align: top;
+    //border:1px dashed blue;
+    display: inline-block;
+    width: 50%;
+    height: 290px;
+    padding: 5px;
+
+    .content {
+
+      background: white;
+      height: 100%;
+      //border: 3px solid #73AD21;
+
+      .caption {
+        padding: 5px;
+        //font-size: 15px;
+        //line-height: 30px;
+        //height: 200px;
+      }
+
+    }
+
+  }
+
+}
+
+/* iPads + Tablets */
+@media only screen and (min-width: 900px) {
+
+  .grid-img {
+    height:130px;
+    overflow: hidden;
+  }
+
+  .grid-item {
+
+    width: 33.33%;
+
+    .content {
+
+    }
+
+  }
+
+}
+
+
+/* iPads + Tablets */
+@media only screen and (min-width: 1000px) {
+
+  .grid-img {
+    height:155px;
+    overflow: hidden;
+  }
+
+  .grid-item {
+
+    width: 33.33%;
+
+    .content {
+
+    }
+
+  }
+
+}
+
+
+/* Desktops + TVs */
+@media only screen and (min-width: 1200px) {
+
+  .grid-item {
+
+    width: 25%;
+
+    .content {
+
+    }
+
+  }
+
+}

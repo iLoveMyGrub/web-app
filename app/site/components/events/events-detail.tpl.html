@@ -1,0 +1,120 @@
+<div class="page-content">
+    <div class="container">
+
+        <div class="row">
+            <div class=" col-sm-12 text-center">
+
+                <p class="section-title">Food Events</p>
+
+            </div>
+
+        </div>
+
+
+        <!-- Loading Icon -->
+        <div ng-if="vm.loading" class="loading-info">
+            <div class="loading-info-content">
+                <img src="/img/ring.gif" alt="LOADING DATA"/>
+            </div>
+        </div>
+
+
+        <!-- Content -->
+        <div ng-if="!vm.loading" class="row">
+
+            <div class="col-md-6">
+
+
+                <div class="details-img">
+
+
+                    <img ng-if="vm.details[0].event_img_url" ng-src="{{ vm.details[0].event_img_url }}" class="img-responsive"/>
+
+                    <img ng-if="!vm.details[0].event_img_url" ng-src="{{ vm.details[0].event_image }}" class="img-responsive"/>
+
+
+                </div>
+
+
+
+
+                <!-- Google Maps Directives -->
+                <ui-gmap-google-map
+                        center='vm.map.center'
+                        zoom='vm.map.zoom'
+                        options='vm.map.options'
+                >
+
+                    <ui-gmap-marker coords='vm.map.marker.coords' options="vm.map.marker.options"
+                                    events="vm.map.marker.events" idkey="vm.map.marker.id">
+                    </ui-gmap-marker>
+                </ui-gmap-google-map>
+
+            </div>
+
+            <div class="col-sm-12 col-md-6">
+
+                <!--<pre>{{ vm.details | json }}</pre>-->
+
+                <!-- Data Listings -->
+
+                <div>
+
+
+                    <h1 class="title" ng-bind-html="vm.details[0].node_title"></h1>
+
+                    <hr>
+
+                    <h3>Dates &amp; Times</h3>
+
+                    <p class="">
+                        Start Date : {{ vm.details[0].event_start_date }}<br>
+                        End Date : {{ vm.details[0].event_end_date }}
+                    </p>
+
+                    <hr>
+
+
+                    <h3>Venue Details</h3>
+
+                    <p ng-if="vm.details[0].venue">
+
+                        <strong>{{ vm.details[0].venue }}</strong>,
+
+                        {{ vm.details[0].address_1 }}
+                        {{ vm.details[0].address_1 }}, {{ vm.details[0].address_2 }}, {{ vm.details[0].city }} {{
+                        vm.details[0].postcode }}
+
+                    </p>
+
+                    <hr>
+
+                    <h3>Info</h3>
+
+                    <!--<p><strong>Event Type: </strong> {{ vm.details[0].event_type }}</p>-->
+
+                    <p ng-bind-html="vm.details[0].body"></p>
+
+                    <p><em>Event ID: {{ vm.id }}</em></p>
+
+                    <p ng-bind-html="vm.details[0].more_details"></p>
+
+                </div>
+
+            </div>
+
+            <!--<div ng-repeat="item in vm.listings" ng-if="$index % 3 == 0" class="row">-->
+            <!--<div class="col-xs-4">{{item[$index]}}</div>-->
+            <!--<div class="col-xs-4">{{item[$index + 1]}}</div>-->
+            <!--<div class="col-xs-4">{{item[$index + 2]}}</div>-->
+            <!--</div>-->
+
+
+        </div>
+
+
+    </div>
+
+
+</div>
+</div>

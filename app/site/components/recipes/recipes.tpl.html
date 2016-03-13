@@ -1,0 +1,76 @@
+<!-- recipes.tpl -->
+
+<div class="page-content">
+
+    <div class="container">
+
+        <div class="row">
+
+        <div class="lp-hero col-sm-12 text-center">
+
+        <h1>Recipes</h1>
+
+        <p class="lead">Soups, desserts, vegetarian recipes and of course CAKE. Drool away people.</p>
+
+        </div>
+
+        </div>
+
+        <div class="row">
+
+            <div class="col-sm-12">
+
+                <!--<pre>{{ vm.listings | json }}</pre>-->
+
+                <div ng-if="vm.loading" class="loading-info">
+                    <div class="loading-info-content">
+                        <img src="/img/ring.gif" alt="LOADING DATA" />
+
+                    </div>
+                </div>
+
+                <!-- grid list  -->
+                <div class="bucket">
+
+                    <div
+                            dir-paginate="item in vm.listings
+                        | filter:query
+                        | orderBy: 'item.event_start_date'
+                        | itemsPerPage: 12" class="grid-item">
+
+
+                        <div class="content">
+
+                            <div>
+                                <a href="/recipes/{{ item.nid }}">
+                                    <img ng-src="{{ item.recipe_image }}" class="img-responsive"/>
+                                </a>
+
+                                <div class="caption">
+                                    <h4 class="title" ng-bind-html="item.node_title"></h4>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+                <!-- / grid list  -->
+
+
+            </div>
+        </div>
+
+        <!--pager-->
+        <div class="row">
+            <div class="col-sm-12 text-center">
+                <!-- ngDirective provided by the dir-pagination module @bower_components -->
+                <dir-pagination-controls></dir-pagination-controls>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>

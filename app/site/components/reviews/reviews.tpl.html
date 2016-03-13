@@ -1,0 +1,45 @@
+<!-- recipes.tpl -->
+
+<div class="page-content">
+
+    <div class="container">
+
+        <div class="row">
+            <div class="col-sm-12 text-center">
+                <h1>Reviews</h1>
+
+                <p>Watch us devour the latest food products, recipe books and restaurants. And then see what we think.</p>
+
+            </div>
+
+        </div>
+
+        <div class="row">
+
+            <div class="col-sm-12">
+
+                <pre>{{ vm.listings | json }}</pre>
+
+                <ul class="media-list">
+                    <li class="media" ng-repeat="item in vm.listings track by $index">
+                        <div class="media-left">
+                            <a href="#">
+                                <img ng-src="{{item.field_image[0].url}}" width="250px" class="media-object"/>
+                            </a>
+                        </div>
+                        <div class="media-body">
+                            <h4 class="media-heading">{{item.title[0].value}}</h4>
+
+                            <p ng-bind-html="item.body[0].value"></p>
+
+                        </div>
+                    </li>
+                </ul>
+
+            </div>
+
+
+        </div>
+
+    </div>
+</div>
