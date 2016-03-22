@@ -4,76 +4,80 @@
  *
  * @file API wrapper for the application
  *
+ * @todo
+ * This could be introduced at a latter stage, going with
+ * the model that each component is responsible for itself.
+ *
  */
 
-angular.module('project.api', [])
+(function() {
 
-    .service('API', ["$http",  function ($http) {
+  angular.module('project.api', [])
 
-        this.userEndpoint = '/api/user';
+    .service('API', ["$http", function($http) {
 
-        /**
-         *
-         * Perform Search
-         *
-         * @param term
-         * @returns {*}
-         */
+      this.userEndpoint = '/api/user';
 
-        this.doSearch = function (term) {
+      /**
+       *
+       * Perform Search
+       *
+       * @param term
+       * @returns {*}
+       */
 
-            var route = 'search';
-            var args = {
-                term: term,
+      this.doSearch = function(term) {
 
-            };
+        var route = 'search';
+        var args = {
+          term: term,
 
-            return $http.get(searchEndpoint).then(function (response) {
-                return response.data;
-            });
         };
 
+        return $http.get(searchEndpoint).then(function(response) {
+          return response.data;
+        });
+      };
 
 
-        /**
-         *
-         * Get User Detail
-         *
-         * @param id
-         * @returns {HttpPromise}
-         */
+      /**
+       *
+       * Get User Detail
+       *
+       * @param id
+       * @returns {HttpPromise}
+       */
 
-        this.getUser = function (id) {
-            return $http.get(userEndpoint + '/' + id);
-        };
-
-
-        /**
-         *
-         * Get Movie Detail
-         *
-         * @param term
-         * @returns {{}}
-         */
-        this.fetchMovie = function (term) {
-
-            var data = {};
-
-            $http.get("http://www.omdbapi.com/?t=" + term + "&tomatoes=true&plot=full")
-                .success(function(response) {
-                    data.details = response;
-                });
-
-            $http.get("http://www.omdbapi.com/?s=" + term)
-                .success(function(response) {
-                    data.related = response;
-                });
+      this.getUser = function(id) {
+        return $http.get(userEndpoint + '/' + id);
+      };
 
 
-            return data;
+      /**
+       *
+       * Get Movie Detail
+       *
+       * @param term
+       * @returns {{}}
+       */
+      this.fetchMovie = function(term) {
 
-        }
+        var data = {};
 
+        $http.get("http://www.omdbapi.com/?t=" + term + "&tomatoes=true&plot=full")
+          .success(function(response) {
+            data.details = response;
+          });
 
+        $http.get("http://www.omdbapi.com/?s=" + term)
+          .success(function(response) {
+            data.related = response;
+          });
+
+        return data;
+
+      }
 
     }]);
+
+}());

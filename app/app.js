@@ -35,11 +35,9 @@
       'project.reviews',
       'project.recipes',
       'project.news',
-      'project.about',
       'project.dashboard',
       'project.contact',
       'project.static-pages',
-      'project.api',
 
       // SHARED
       'mobile-menu'
@@ -98,10 +96,10 @@
    *
    * App RUN scope
    *
-   * @param $rootScope
-   * @param $location
-   * @param $cookieStore
-   * @param $http
+   * @param {object} $rootScope
+   * @param {object} $location
+   * @param {object} $cookieStore
+   * @param {object} $http
    */
 
   function appRun($rootScope, $location, $http, store, jwtHelper, $window, AuthTokenService, UserService) {

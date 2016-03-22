@@ -1,14 +1,8 @@
 
+API SERVICES ENDPOINTS
+======================
 
-DRUPAL 7 SERVICES ENDPOINTS
-==============================
-
-http://ilmg-web-prod-env.elasticbeanstalk.com
-
-
-## EVENTS
-
-### SERVICES 
+### SERVICES EVENTS
 
 Default Services 3.x Drupal 7 module : 
 
@@ -23,14 +17,14 @@ Default Services 3.x Drupal 7 module :
 
 Drupal 7 module - Services Views : 
     
-    http://ilmg-web-prod-env.elasticbeanstalk.com/api/views/section_events
+    /api/views/section_events
     
-    http://ilmg-web-prod-env.elasticbeanstalk.com/api/views/section_events?limit=10&page=0
+    /api/views/section_events?limit=10&page=0
     
-    http://ilmg-web-prod-env.elasticbeanstalk.com/api/views/section_events?limit=250&page=0
+    /api/views/section_events?limit=250&page=0
 
 
 
-## NEWS 
+### NEWS 
 
-/api/node?parameters[type]=news
+    /api/node?parameters[type]=news
