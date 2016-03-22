@@ -17,8 +17,10 @@ var gulp = require('gulp'),
     rename = require('gulp-rename'),
     gzip = require('gulp-gzip'),
     minifyHTML = require('gulp-minify-html'),
-    sourcemaps = require('gulp-sourcemaps');
-
+    sourcemaps = require('gulp-sourcemaps'),
+    gulpDocs = require('gulp-ngdocs'),
+    connect = require('connect'),
+    serveStatic = require('serve-static');
 
 // WATCH
 gulp.task('watch', function () {
@@ -60,10 +62,8 @@ gulp.task('js', function () {
             'app/bower_components/angular/angular.js',
             'app/bower_components/angular-route/angular-route.js',
             'app/bower_components/angular-jwt/dist/angular-jwt.js',
-
             'app/bower_components/angular-simple-logger/dist/angular-simple-logger.js',
             'app/bower_components/angular-google-maps/dist/angular-google-maps.js',
-
 
 
             // NON-CORE
@@ -119,6 +119,32 @@ gulp.task('html', function () {
         .pipe(gulp.dest('./app/'));
 });
 
+// DOCS
+gulp.task('ngdocs', [], function () {
+
+    var options = {
+        /* pass both .min.js and .min.js.map files for angular and angular-animate */
+        scripts: [
+            './app/bower_components/angular/angular.min.js',
+            './app/bower_components/angular/angular.min.js.map',
+            './app/bower_components/angular-animate/angular-animate.min.js',
+            './app/bower_components/angular-animate/angular-animate.min.js.map'
+        ]
+    }
+
+    return gulp.src('./app/site/components/*/*.js')
+        .pipe(gulpDocs.process())
+        .pipe(gulp.dest('./docs'));
+});
+
 
 // Default
 gulp.task('default', ['sass', 'js', 'html', 'watch']);
+
+//
+//gulp.task('default', ['sass', 'js', 'html', 'watch', 'ngdocs'], function (cb) {
+//    var app = connect().use(serveStatic('./docs'));
+//    app.listen(8081);
+//    cb();
+//    console.log('Server started on http://localhost:8081');
+//});

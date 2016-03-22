@@ -33,6 +33,9 @@
     "request": "^2.64.0"
   },
   "devDependencies": {
+    "connect": "~3.3.2",
+    "generator-ngdoc": "^0.1.6",
+    "gulp-ngdocs": "^0.2.13",
     "jasmine-core": "^2.2.0",
     "karma": "^0.12.31",
     "karma-coverage": "^0.2.7",
@@ -42,7 +45,8 @@
     "karma-phantomjs-launcher": "^0.1.4",
     "load-grunt-tasks": "^3.3.0",
     "matchdep": "*",
-    "phantomjs": "^1.9.16"
+    "phantomjs": "^1.9.16",
+    "serve-static": "~1.7.1"
   },
   "engines": {
     "node": ">=0.12.0"
