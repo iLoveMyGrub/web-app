@@ -7,7 +7,9 @@
  *
  * @todo :
  *
- *  - form error validation to return error on non successful login with messaging
+ *  - Style the login header and replace hardcoded profile image size with CSS sizes
+ *  - Get real Auth0 creds, replace my test ones
+ *  - Remove any unused login stuff from here
  *
  */
 
@@ -20,7 +22,6 @@ angular.module('project.login', ['ngRoute', 'formly', 'formlyBootstrap'])
     .service('LoginService', LoginService)
 
     .directive('loginDirectiveTopLinks', loginDirectiveTopLinks)
-
 
 
 // Inject Deps
