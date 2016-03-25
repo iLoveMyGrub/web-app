@@ -1,7 +1,7 @@
 <!-- login.tpl -->
 
 <div class="page-content">
-    
+
     <div class="container">
 
         <div class="row">
@@ -17,6 +17,7 @@
                 <div>
                     <input type="submit" value="Login" ng-click="vm.login()" />
                     <input type="submit" value="Logout" ng-click="vm.logout()" />
+                    <span>Logged in as {{vm.auth.profile.nickname}}</span>
                 </div>
 
             </div>

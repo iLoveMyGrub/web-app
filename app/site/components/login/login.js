@@ -103,7 +103,7 @@ function LoginController($http, auth, store, $location) {
         // Success callback
         store.set('profile', profile);
         store.set('token', token);
-        $location.path('/');
+        $location.path('/login');
       }, function () {
         // Error callback
         console.log("There was an error logging in", error);
@@ -115,6 +115,8 @@ function LoginController($http, auth, store, $location) {
       store.remove('profile');
       store.remove('token');
     }
+
+    vm.auth = auth;
 
 }
 
