@@ -80,7 +80,7 @@ angular.module('project', [
     .run(appRun);
 
 //
-appRun.$inject = ['$rootScope', 'auth', 'store', 'jwtHelper', '$location'];
+appRun.$inject = ['$rootScope', 'auth', 'store', 'jwtHelper', '$location', 'LoginService'];
 
 /**
  *
@@ -91,9 +91,10 @@ appRun.$inject = ['$rootScope', 'auth', 'store', 'jwtHelper', '$location'];
  * @param store
  * @param jwtHelper
  * @param $location
+ * @param LoginService
  */
 
-function appRun($rootScope, auth, store, jwtHelper, $location) {
+function appRun($rootScope, auth, store, jwtHelper, $location, LoginService) {
 
     // This hooks all auth events to check everything as soon as the app starts
     auth.hookEvents();
@@ -119,6 +120,11 @@ function appRun($rootScope, auth, store, jwtHelper, $location) {
             this.pageTitle = title + ' | iLoveMyGrub.com';
         }
     }
+
+    // Make the Login functions global by adding them to the rootScope
+    $rootScope.login = LoginService.login;
+    $rootScope.logout = LoginService.logout;
+    $rootScope.auth = auth;
 
 
     // Page Title

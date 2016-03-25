@@ -25,7 +25,16 @@
                 <li><a href="/recipes">Recipes</a></li>
                 <li><a href="/articles">Articles</a></li>
 
+
+
+
             </ul>
+
+            <div>
+                <input type="submit" value="Login" ng-click="login()" />
+                <input type="submit" value="Logout" ng-click="logout()" />
+                <span>Logged in as {{auth.profile.nickname}}</span>
+            </div>
 
             <!-- Search -->
             <!--<form class="navbar-form navbar-left" role="search">-->

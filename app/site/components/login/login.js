@@ -15,37 +15,19 @@
 
 angular.module('project.login', ['ngRoute', 'formly', 'formlyBootstrap'])
 
-    // Route
-    .config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
-
-        $routeProvider.when('/login', {
-
-            title: 'Login',
-            templateUrl: './site/components/login/login.tpl.html',
-            controller: 'LoginController',
-            controllerAs: 'vm',
-            access: {
-                requiresLogin: false,
-                roles: []
-            }
-
-        });
-
-    }])
-
     .service('LoginDataService', LoginDataService)
+
+    .service('LoginService', LoginService)
 
     .directive('loginDirectiveTopLinks', loginDirectiveTopLinks)
 
-    .controller('LoginController', LoginController);
 
 
 // Inject Deps
-loginDirectiveTopLinks.$inject = ['$window', '$location'];
 
 LoginDataService.$inject = ['$http', '$rootScope', 'API_URL', 'jwtHelper', '$window', 'AuthTokenService'];
 
-LoginController.$inject = ['$http', 'auth', 'store', '$location'];
+LoginService.$inject = ['$http', 'auth', 'store', '$location'];
 
 
 /**
@@ -87,36 +69,30 @@ function loginDirectiveTopLinks($window, $location) {
 
 }
 
-/**
- *
- * Login Controller
- *
- * @constructor
- *
- */
-function LoginController($http, auth, store, $location) {
+function LoginService($http, auth, store, $location){
 
-    var vm = this;
+  return {
+    login: login,
+    logout: logout
+  };
 
-    vm.login = function () {
-      auth.signin({}, function (profile, token) {
-        // Success callback
-        store.set('profile', profile);
-        store.set('token', token);
-        $location.path('/login');
-      }, function () {
-        // Error callback
-        console.log("There was an error logging in", error);
-      });
-    }
+  function login(){
+    auth.signin({}, function (profile, token) {
+      // Success callback
+      store.set('profile', profile);
+      store.set('token', token);
+      $location.path('/login');
+    }, function () {
+      // Error callback
+      console.log("There was an error logging in", error);
+    });
+  }
 
-    vm.logout = function() {
-      auth.signout();
-      store.remove('profile');
-      store.remove('token');
-    }
-
-    vm.auth = auth;
+  function logout(){
+    auth.signout();
+    store.remove('profile');
+    store.remove('token');
+  }
 
 }
 
