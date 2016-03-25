@@ -56,18 +56,9 @@ angular.module('project', [
             if (window.history && window.history.pushState) {
                 $locationProvider.html5Mode(true);
             }
-
-            //$httpProvider.interceptors.push('AuthInterceptor');
+          
             $routeProvider.otherwise({redirectTo: '/frontpage'});
 
-
-
-            // Google Maps
-            //uiGmapGoogleMapApi.configure({
-            //    //    key: 'your api key',
-            //    v: '3.20', //defaults to latest 3.X anyhow
-            //    libraries: 'weather,geometry,visualization'
-            //});
 
         }])
 
@@ -89,9 +80,6 @@ appRun.$inject = ['$rootScope'];
  * App RUN scope
  *
  * @param $rootScope
- * @param $location
- * @param $cookieStore
- * @param $http
  */
 
 function appRun($rootScope) {
