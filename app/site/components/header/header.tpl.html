@@ -31,10 +31,17 @@
             </ul>
 
             <div>
-                <input type="submit" value="Login" ng-click="login()" />
-                <input type="submit" value="Logout" ng-click="logout()" />
-                <span>Logged in as: {{auth.profile.nickname}}</span>
-                <img height="32" width="32" src="{{auth.profile.picture}}" />
+
+                <div ng-if="!auth.isAuthenticated">
+                    <input type="submit" value="Login" ng-click="login()" />
+                </div>
+
+                <div ng-if="auth.isAuthenticated">
+                    <input type="submit" value="Logout" ng-click="logout()" />
+                    <span>Logged in as: {{auth.profile.nickname}}</span>
+                    <img height="32" width="32" src="{{auth.profile.picture}}" />
+                </div>
+
             </div>
 
             <!-- Search -->

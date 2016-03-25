@@ -125,8 +125,7 @@ function appRun($rootScope, auth, store, jwtHelper, $location, LoginService) {
     $rootScope.login = LoginService.login;
     $rootScope.logout = LoginService.logout;
     $rootScope.auth = auth;
-
-
+  
     // Page Title
     $rootScope.$on('$routeChangeSuccess', function (event, current, previous) {
 
