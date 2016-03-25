@@ -17,6 +17,7 @@ angular.module('project', [
         // VENDOR
         'ngRoute',
         'ngSanitize',
+        'auth0',
         'angular-jwt',
         'angular-storage',
         'formly',
@@ -49,15 +50,21 @@ angular.module('project', [
 
         '$routeProvider',
         '$locationProvider',
+        'authProvider',
 
-        function ($routeProvider, $locationProvider) {
+        function ($routeProvider, $locationProvider, authProvider) {
 
             // use the HTML5 History API (only set in the main app.js not individual routes...)
             if (window.history && window.history.pushState) {
                 $locationProvider.html5Mode(true);
             }
-          
+
             $routeProvider.otherwise({redirectTo: '/frontpage'});
+
+            authProvider.init({
+              domain: 'clarelindley.eu.auth0.com',
+              clientID: 'XPUc5aeq04kBbgdU1EMVnjojTn9agJBs'
+            });
 
 
         }])
@@ -73,16 +80,20 @@ angular.module('project', [
     .run(appRun);
 
 //
-appRun.$inject = ['$rootScope'];
+appRun.$inject = ['$rootScope', 'auth'];
 
 /**
  *
  * App RUN scope
  *
  * @param $rootScope
+ * @param auth The Auth0 Object
  */
 
-function appRun($rootScope) {
+function appRun($rootScope, auth) {
+
+    // This hooks all auth events to check everything as soon as the app starts
+    auth.hookEvents();
 
     $rootScope.page = {
         setTitle: function (title) {

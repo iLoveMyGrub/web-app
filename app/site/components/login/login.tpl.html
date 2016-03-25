@@ -1,7 +1,7 @@
 <!-- login.tpl -->
 
 <div class="page-content">
-
+    
     <div class="container">
 
         <div class="row">
@@ -14,27 +14,11 @@
 
             <div class="col-sm-12">
 
-                <div ng-if="vm.authUser">
-                    <pre>{{ vm.authUser }}</pre>
-                </div>
-
                 <div>
-                    <form ng-submit="vm.onSubmit()" name="vm.form" novalidate>
-                        <formly-form model="vm.model" fields="vm.fields" options="vm.options">
-
-                            <button type="submit" class="btn btn-primary submit-button" ng-disabled="vm.form.$invalid">
-                                Submit
-                            </button>
-
-                        </formly-form>
-                    </form>
+                    <input type="submit" value="Login" ng-click="vm.login()" />
+                    <input type="submit" value="Logout" ng-click="vm.logout()" />
                 </div>
-                <div>
 
-                    <p class="text-center">
-                        <a href="/register">Not a member ? Sign up</a> | <a href="/forgotten">Forgotten Password ?</a>
-                    </p>
-                </div>
             </div>
 
         </div>

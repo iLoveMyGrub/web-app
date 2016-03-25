@@ -13,7 +13,7 @@
 
 'use strict';
 
-angular.module('project.login', ['ngRoute', 'formly', 'formlyBootstrap', 'angular-jwt', 'project.auth'])
+angular.module('project.login', ['ngRoute', 'formly', 'formlyBootstrap'])
 
     // Route
     .config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
@@ -45,7 +45,7 @@ loginDirectiveTopLinks.$inject = ['$window', '$location'];
 
 LoginDataService.$inject = ['$http', '$rootScope', 'API_URL', 'jwtHelper', '$window', 'AuthTokenService'];
 
-LoginController.$inject = ['LoginDataService', 'jwtHelper', '$location', '$window', 'AuthTokenService'];
+LoginController.$inject = ['$http', 'auth', 'store', '$location'];
 
 
 /**
@@ -94,95 +94,27 @@ function loginDirectiveTopLinks($window, $location) {
  * @constructor
  *
  */
-function LoginController(LoginDataService, jwtHelper, $location, $window, AuthTokenService) {
+function LoginController($http, auth, store, $location) {
 
     var vm = this;
 
-    vm.user = {};
-
-    vm.onSubmit = onSubmit;
-
-    vm.env = {
-        angularVersion: angular.version.full
-        //formlyVersion: formlyVersion
-    };
-
-    vm.model = {};
-    vm.options = {};
-
-
-    // Check token
-    var token = sessionStorage.getItem('auth-token');
-
-    if (token) {
-        vm.authUser = jwtHelper.decodeToken(token);
-
-        //// Redirect if token i.e logged in
-        $window.location = '/dashboard';
-        $window.location.reload();
+    vm.login = function () {
+      auth.signin({}, function (profile, token) {
+        // Success callback
+        store.set('profile', profile);
+        store.set('token', token);
+        $location.path('/');
+      }, function () {
+        // Error callback
+        console.log("There was an error logging in", error);
+      });
     }
 
-
-    // http://docs.angular-formly.com/v6.4.0/docs/custom-templates
-    vm.fields = [
-
-        {
-            key: 'email',
-            type: 'input',
-            templateOptions: {
-                type: 'email',
-                label: 'Email',
-                placeholder: 'Please enter your username',
-                required: true
-            }
-        },
-        {
-            key: 'password',
-            type: 'input',
-            templateOptions: {
-                type: 'text',
-                label: 'Password',
-                placeholder: 'Please enter your password',
-                required: true
-            }
-        }
-
-    ];
-
-
-    /**
-     *
-     *
-     *
-     */
-    function logout() {
-
-        alert("logged out from controller...!");
-
+    vm.logout = function() {
+      auth.signout();
+      store.remove('profile');
+      store.remove('token');
     }
-
-
-    /**
-     *
-     * Login form Submit handler
-     *
-     */
-    function onSubmit() {
-
-        var formSubmitted = true;
-
-        console.log("ctrl : ", AuthTokenService);
-
-        LoginDataService.login(vm.model.email, vm.model.password)
-            .then(function success(response) {
-
-                // Redirect if succesful login
-                $window.location.href = '#/dashboard';
-                $window.location.reload();
-            });
-
-    }
-
 
 }
 
