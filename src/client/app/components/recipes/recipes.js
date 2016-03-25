@@ -24,22 +24,24 @@
       $routeProvider.when('/recipes', {
         pageTitle: 'Recipes',
         metaDescription: 'Latest food recipes',
-        templateUrl: './site/components/recipes/recipes.tpl.html',
+        templateUrl: 'components/recipes/recipes.tpl.html',
         controller: 'RecipesController',
         controllerAs: 'vm',
-        config: {
-          roles: ['news', 'auth']
+        access: {
+          requiresLogin: false,
+          roles: []
         }
       });
 
       //
       $routeProvider.when('/recipes/:id', {
         pageTitle: 'Recipe Detail',
-        templateUrl: './site/components/recipes/recipes-detail.tpl.html',
+        templateUrl: 'components/recipes/recipes-detail.tpl.html',
         controller: 'RecipesDetailController',
         controllerAs: 'vm',
-        config: {
-          roles: ['news', 'auth']
+        access: {
+          requiresLogin: false,
+          roles: []
         }
       });
 

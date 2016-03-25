@@ -23,21 +23,23 @@
       $routeProvider.when('/articles', {
         pageTitle: 'Articles',
         metaDescription: 'Latest food articles and news',
-        templateUrl: './site/components/articles/articles.tpl.html',
+        templateUrl: 'components/articles/articles.tpl.html',
         controller: 'ArticlesController',
         controllerAs: 'vm',
-        config: {
-          roles: ['news', 'auth']
+        access: {
+          requiresLogin: false,
+          roles: []
         }
       });
 
       $routeProvider.when('/articles/:id', {
         pageTitle: 'Article Detail',
-        templateUrl: './site/components/articles/articles-detail.tpl.html',
+        templateUrl: 'components/articles/articles-detail.tpl.html',
         controller: 'ArticlesDetailController',
         controllerAs: 'vm',
-        config: {
-          roles: ['news', 'auth']
+        access: {
+          requiresLogin: false,
+          roles: []
         }
       });
 

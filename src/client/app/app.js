@@ -35,8 +35,6 @@
       'project.events',
       'project.articles',
       'project.recipes',
-      //'project.reviews',
-      //'project.news',
       'project.dashboard',
       'project.contact',
       'project.static-pages',
@@ -80,7 +78,6 @@
       }])
 
     // App constants (ref env vars)
-    //.constant('API_URL', 'http://ilmg-web-prod-env.elasticbeanstalk.com/api/')
     .constant('API_URL', 'http://api.ilovemygrub.com/api/')
     // s3
     .constant('MEDIA_URL', 'https://s3-eu-west-1.amazonaws.com/www.ilovemygrub.com/files/s3fs-public')
@@ -115,12 +112,8 @@
       // Check token
       var token = sessionStorage.getItem('auth-token');
 
-      console.log(next);
-
       // next.access.requiresLogin == true && $rootSscope.authUser == null
       if (next.access.requiresLogin === true) {
-
-        console.log('@RUN - ' - token);
 
         if (!token) {
           console.log('REQUIRES AUTH...');

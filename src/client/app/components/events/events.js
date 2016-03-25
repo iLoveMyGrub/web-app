@@ -27,21 +27,23 @@
       $routeProvider.when('/food-events', {
         pageTitle: 'Food Events',
         metaDescription: 'Latest food events in London and the UK',
-        templateUrl: './site/components/events/events.tpl.html',
+        templateUrl: 'components/events/events.tpl.html',
         controller: 'EventsController',
         controllerAs: 'vm',
-        config: {
-          roles: ['news', 'auth']
+        access: {
+          requiresLogin: false,
+          roles: []
         }
       });
 
       $routeProvider.when('/food-events/:id', {
         pageTitle: 'Event Details ',
-        templateUrl: './site/components/events/events-detail.tpl.html',
+        templateUrl: 'components/events/events-detail.tpl.html',
         controller: 'EventsDetailController',
         controllerAs: 'vm',
-        config: {
-          roles: ['news', 'auth']
+        access: {
+          requiresLogin: false,
+          roles: []
         }
       });
 
@@ -110,8 +112,7 @@
      */
     function getGeocodePostcode(postcode) {
 
-      //var geocoderEndpoint = "http://maps.googleapis.com/maps/api/geocode/json?sensor=false&address=ln24rd,+UK&";
-      var geocoderEndpoint = 'http://maps.googleapis.com/maps/api/geocode/json?sensor=false&address=';
+      var geocoderEndpoint = 'http://maps.googleapis.com/maps/api/geocode/json?address=';
 
       var postcodeParsed = postcode + ',+UK';
 
@@ -128,24 +129,6 @@
         console.log('XHR Failed for getListingsData.' + error.data);
       }
     }
-
-    //function getNewsRelatedData() {
-    //
-    //    console.log("EventsDataService.getEventsData");
-    //
-    //    return $http.get("http://www.omdbapi.com/?t=" + term + "&tomatoes=true&plot=full")
-    //        .then(dataComplete)
-    //        .catch(dataFailed);
-    //
-    //    function dataComplete(response) {
-    //        console.log("complete called");
-    //        return response.data;
-    //    }
-    //
-    //    function dataFailed(error) {
-    //        console.log('XHR Failed for getNewsRelatedData.' + error.data);
-    //    }
-    //}
 
     /**
      *
@@ -197,7 +180,7 @@
     function activate() {
 
       return getEventsData().then(function() {
-        console.log('Activated Event View');
+        //console.log('Activated Event View');
       });
 
     }
@@ -276,7 +259,7 @@
     function activate() {
 
       return getEventsData(vm.id).then(function() {
-        console.log('Activated Event View ' + vm.id);
+        //console.log('Activated Event View ' + vm.id);
       }).catch(console.log.bind(console));
 
     }
@@ -322,8 +305,7 @@
 
           vm.details = data;
 
-          //
-          console.log('postcode ' + vm.details[0].postcode);
+          //console.log('postcode ' + vm.details[0].postcode);
 
           return vm.details;
         })
@@ -341,11 +323,10 @@
 
               vm.map.center.latitude = geodata.results[0].geometry.location.lat;
               vm.map.center.longitude = geodata.results[0].geometry.location.lng;
-
               vm.map.marker.coords.latitude = geodata.results[0].geometry.location.lat;
               vm.map.marker.coords.longitude = geodata.results[0].geometry.location.lng;
 
-              console.log('LATLONG ->', vm.map.center);
+              //console.log('LATLONG ->', vm.map.center);
 
               return geodata;
 

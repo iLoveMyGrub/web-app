@@ -40,18 +40,22 @@ var vendorJsFiles = [
   'src/client/app/bower_components/angular-sanitize/angular-sanitize.js',
   'src/client/app/bower_components/angular-jwt/dist/angular-jwt.js',
   'src/client/app/bower_components/a0-angular-storage/dist/angular-storage.js',
-  //'app/bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
+  'src/client/app/bower_components/angularUtils-pagination/dirPagination.js',
+  'src/client/app/bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
 
+  // Angular Formly
   'src/client/app/bower_components/api-check/dist/api-check.js',
   'src/client/app/bower_components/angular-formly/dist/formly.js',
   'src/client/app/bower_components/angular-formly-templates-bootstrap/dist/angular-formly-templates-bootstrap.js',
+
+  // Google Maps (@see - angular-google-maps)1
+  'src/client/app/bower_components/lodash/lodash.js',
   'src/client/app/bower_components/angular-simple-logger/dist/angular-simple-logger.js',
   'src/client/app/bower_components/angular-google-maps/dist/angular-google-maps.js',
+
   //'app/bower_components/slick-carousel/slick/slick.js',
   //'app/bower_components/angular-slick/dist/slick.js',
-  'src/client/app/bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
-  'src/client/app/bower_components/angularUtils-pagination/dirPagination.js',
-
+  //'app/bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
   //'app/bower_components/slick-carousel/slick/slick.js',
   //'app/bower_components/angular-slick/dist/slick.js',
 

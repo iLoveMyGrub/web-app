@@ -1,7 +1,8 @@
-
-
 // Alter the height of bootstrap top nav bar
-.navbar-nav>li>a { padding-top: 20px; padding-bottom: 20px; }
+.navbar-nav > li > a {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
 
 .module {
   padding: 50px;
@@ -12,9 +13,9 @@
   //top:0;
   //left:0;
 
-  float:left;
+  float: left;
   width: 250px;
-  height:60px;
+  height: 60px;
   overflow: hidden;
   padding: 12px 0 0 10px;
 
@@ -23,7 +24,7 @@
 .menu-top-bar {
   margin-left: 40px;
 
-  a{
+  a {
     color: grey;
     text-transform: uppercase;
   }
@@ -48,7 +49,7 @@
   //height: 45px;
   position: absolute;
   padding: 5px 0 0 0;
-  top:0;
-  right:15px;
+  top: 0;
+  right: 15px;
   z-index: 1001;
 }
