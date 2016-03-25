@@ -17,6 +17,7 @@ angular.module('project', [
         // VENDOR
         'ngRoute',
         'ngSanitize',
+        'auth0',
         'angular-jwt',
         'angular-storage',
         'formly',
@@ -24,7 +25,6 @@ angular.module('project', [
         'uiGmapgoogle-maps',
 
         // CUSTOM
-        'project.auth',
         'project.login',
         'project.register',
         'project.user',
@@ -50,31 +50,22 @@ angular.module('project', [
 
         '$routeProvider',
         '$locationProvider',
-        '$httpProvider',
-        'jwtInterceptorProvider',
+        'authProvider',
 
-        function ($routeProvider, $locationProvider, $httpProvider, jwtInterceptorProvider) {
+        function ($routeProvider, $locationProvider, authProvider) {
 
             // use the HTML5 History API (only set in the main app.js not individual routes...)
             if (window.history && window.history.pushState) {
                 $locationProvider.html5Mode(true);
             }
 
-            //$httpProvider.interceptors.push('AuthInterceptor');
             $routeProvider.otherwise({redirectTo: '/frontpage'});
 
-            // Add JWT Token to each request
-            jwtInterceptorProvider.tokenGetter = function () {
-                return sessionStorage.getItem('auth-token');
-            }
-            $httpProvider.interceptors.push('jwtInterceptor');
+            authProvider.init({
+              domain: 'clarelindley.eu.auth0.com',
+              clientID: 'XPUc5aeq04kBbgdU1EMVnjojTn9agJBs'
+            });
 
-            // Google Maps
-            //uiGmapGoogleMapApi.configure({
-            //    //    key: 'your api key',
-            //    v: '3.20', //defaults to latest 3.X anyhow
-            //    libraries: 'weather,geometry,visualization'
-            //});
 
         }])
 
@@ -89,51 +80,40 @@ angular.module('project', [
     .run(appRun);
 
 //
-appRun.$inject = ['$rootScope', '$location', '$http', 'store', 'jwtHelper', '$window', 'AuthTokenService', 'UserService'];
+appRun.$inject = ['$rootScope', 'auth', 'store', 'jwtHelper', '$location', 'LoginService'];
 
 /**
  *
  * App RUN scope
  *
  * @param $rootScope
+ * @param auth The Auth0 Object
+ * @param store
+ * @param jwtHelper
  * @param $location
- * @param $cookieStore
- * @param $http
+ * @param LoginService
  */
 
-function appRun($rootScope, $location, $http, store, jwtHelper, $window, AuthTokenService, UserService) {
+function appRun($rootScope, auth, store, jwtHelper, $location, LoginService) {
 
-    //console.log("UserService - RUN_> ", UserService);
-    //console.log("AuthTokenService - RUN_> ", AuthTokenService);
+    // This hooks all auth events to check everything as soon as the app starts
+    auth.hookEvents();
 
-    // register listener to watch route changes
-    $rootScope.$on("$routeChangeStart", function (event, next, current) {
-
-        // Check token
-        var token = sessionStorage.getItem('auth-token');
-
-        if (token) {
-            console.log("@RUN -- " + jwtHelper.decodeToken(token));
+    // To keep the user logged in, retrieve the token from localStorage on each page refresh and let
+    // auth0-angular know the user is already authenticated:
+    $rootScope.$on('$locationChangeStart', function() {
+      var token = store.get('token');
+      if (token) { // if there's a token
+        if (!jwtHelper.isTokenExpired(token)) { // and it's not expired
+          if (!auth.isAuthenticated) {
+            auth.authenticate(store.get('profile'), token);
+          }
+        } else {
+          // Either show the login page or use the refresh token to get a new idToken
+          $location.path('/login');
         }
-
-        console.log(next);
-
-        // next.access.requiresLogin == true && $rootSscope.authUser == null
-
-        if (next.access.requiresLogin == true) {
-
-            console.log("@RUN - " - token);
-
-            if (!token) {
-                console.log("REQUIRES Login + user has no JWT token...");
-                event.preventDefault();
-                $location.path("/login");
-            }
-
-        }
-
+      }
     });
-
 
     $rootScope.page = {
         setTitle: function (title) {
@@ -141,7 +121,11 @@ function appRun($rootScope, $location, $http, store, jwtHelper, $window, AuthTok
         }
     }
 
-
+    // Make the Login functions global by adding them to the rootScope
+    $rootScope.login = LoginService.login;
+    $rootScope.logout = LoginService.logout;
+    $rootScope.auth = auth;
+  
     // Page Title
     $rootScope.$on('$routeChangeSuccess', function (event, current, previous) {
 

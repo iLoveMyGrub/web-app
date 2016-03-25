@@ -25,7 +25,24 @@
                 <li><a href="/recipes">Recipes</a></li>
                 <li><a href="/articles">Articles</a></li>
 
+
+
+
             </ul>
+
+            <div>
+
+                <div ng-if="!auth.isAuthenticated">
+                    <input type="submit" value="Login" ng-click="login()" />
+                </div>
+
+                <div ng-if="auth.isAuthenticated">
+                    <input type="submit" value="Logout" ng-click="logout()" />
+                    <span>Logged in as: {{auth.profile.nickname}}</span>
+                    <img height="32" width="32" src="{{auth.profile.picture}}" />
+                </div>
+
+            </div>
 
             <!-- Search -->
             <!--<form class="navbar-form navbar-left" role="search">-->
