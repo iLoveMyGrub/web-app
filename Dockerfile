@@ -15,7 +15,7 @@ RUN apt-get -q autoclean
 COPY docker/nginx/default /etc/nginx/sites-available/default
 
 # Copy APP folder for site
-COPY app /var/www/nginx-default/
+COPY build /var/www/nginx-default/
 
 # Run sshd
 # Define default command.
