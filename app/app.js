@@ -24,7 +24,6 @@ angular.module('project', [
         'uiGmapgoogle-maps',
 
         // CUSTOM
-        'project.auth',
         'project.login',
         'project.register',
         'project.user',
@@ -50,10 +49,8 @@ angular.module('project', [
 
         '$routeProvider',
         '$locationProvider',
-        '$httpProvider',
-        'jwtInterceptorProvider',
 
-        function ($routeProvider, $locationProvider, $httpProvider, jwtInterceptorProvider) {
+        function ($routeProvider, $locationProvider) {
 
             // use the HTML5 History API (only set in the main app.js not individual routes...)
             if (window.history && window.history.pushState) {
@@ -63,11 +60,7 @@ angular.module('project', [
             //$httpProvider.interceptors.push('AuthInterceptor');
             $routeProvider.otherwise({redirectTo: '/frontpage'});
 
-            // Add JWT Token to each request
-            jwtInterceptorProvider.tokenGetter = function () {
-                return sessionStorage.getItem('auth-token');
-            }
-            $httpProvider.interceptors.push('jwtInterceptor');
+
 
             // Google Maps
             //uiGmapGoogleMapApi.configure({
@@ -89,7 +82,7 @@ angular.module('project', [
     .run(appRun);
 
 //
-appRun.$inject = ['$rootScope', '$location', '$http', 'store', 'jwtHelper', '$window', 'AuthTokenService', 'UserService'];
+appRun.$inject = ['$rootScope'];
 
 /**
  *
@@ -101,39 +94,7 @@ appRun.$inject = ['$rootScope', '$location', '$http', 'store', 'jwtHelper', '$wi
  * @param $http
  */
 
-function appRun($rootScope, $location, $http, store, jwtHelper, $window, AuthTokenService, UserService) {
-
-    //console.log("UserService - RUN_> ", UserService);
-    //console.log("AuthTokenService - RUN_> ", AuthTokenService);
-
-    // register listener to watch route changes
-    $rootScope.$on("$routeChangeStart", function (event, next, current) {
-
-        // Check token
-        var token = sessionStorage.getItem('auth-token');
-
-        if (token) {
-            console.log("@RUN -- " + jwtHelper.decodeToken(token));
-        }
-
-        console.log(next);
-
-        // next.access.requiresLogin == true && $rootSscope.authUser == null
-
-        if (next.access.requiresLogin == true) {
-
-            console.log("@RUN - " - token);
-
-            if (!token) {
-                console.log("REQUIRES Login + user has no JWT token...");
-                event.preventDefault();
-                $location.path("/login");
-            }
-
-        }
-
-    });
-
+function appRun($rootScope) {
 
     $rootScope.page = {
         setTitle: function (title) {
