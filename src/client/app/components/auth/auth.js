@@ -8,60 +8,60 @@
  *
  */
 
-'use strict';
+(function() {
 
-angular.module('project.auth', ['angular-jwt'])
-  .service('AuthTokenService', AuthTokenService);
+  'use strict';
 
-// Inject Deps
-AuthTokenService.$inject = ['$window'];
+  angular.module('project.auth', ['angular-jwt'])
+    .service('AuthTokenService', AuthTokenService);
 
-/**
- *
- * Auth Token Service
- *
- * @param $window
- * @returns {{getToken: getToken, setToken: setToken}}
- * @constructor
- *
- *
- */
-function AuthTokenService($window) {
-
-  console.log("AuthTokenService");
-
-  var store = $window.localStorage;
-  var key = 'aat-auth-token';
-
-  return {
-    getToken: getToken,
-    setToken: setToken
-
-  };
+  // Inject Deps
+  AuthTokenService.$inject = ['$window'];
 
   /**
    *
-   * Get the stored local token
+   * Auth Token Service
+   *
+   * @param $window
+   * @returns {{getToken: getToken, setToken: setToken}}
+   * @constructor
+   *
    *
    */
-  function getToken() {
-    return store.getItem(key);
-  }
+  function AuthTokenService($window) {
 
+    var store = $window.localStorage;
+    var key = 'aat-auth-token';
 
-  /**
-   *
-   * Set the stored local token
-   *
-   * @param token
-   */
-  function setToken(token) {
-    if (token) {
-      store.setItem(key, token);
-    } else {
-      store.removeItem(key);
+    return {
+      getToken: getToken,
+      setToken: setToken
+
+    };
+
+    /**
+     *
+     * Get the stored local token
+     *
+     */
+    function getToken() {
+      return store.getItem(key);
     }
+
+    /**
+     *
+     * Set the stored local token
+     *
+     * @param token
+     */
+    function setToken(token) {
+      if (token) {
+        store.setItem(key, token);
+      } else {
+        store.removeItem(key);
+      }
+    }
+
   }
 
-
-}
+}());

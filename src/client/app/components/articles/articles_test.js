@@ -4,7 +4,7 @@ describe('project.about module', function() {
 
   beforeEach(module('project.about'));
 
-  describe('About us controller', function(){
+  describe('About us controller', function() {
 
     it('should ....', inject(function($controller) {
 

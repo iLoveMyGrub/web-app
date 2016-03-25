@@ -2,41 +2,46 @@
  *
  * RECIPES COMPONENT
  *
- * @file
- * Provides functionality for the section component 
+ * @description
+ * Provides functionality for the section component
+ *
+ * @class app.Recipes
+ *
+ * @memberof app
  *
  */
 
-'use strict';
+(function() {
 
-angular.module('project.recipes', ['ngRoute','angularUtils.directives.dirPagination'])
+  'use strict';
+
+  angular.module('project.recipes', ['ngRoute', 'angularUtils.directives.dirPagination'])
 
     // Component config
-    .config(['$routeProvider', function ($routeProvider) {
+    .config(['$routeProvider', function($routeProvider) {
 
-        //
-        $routeProvider.when('/recipes', {
-            pageTitle: 'Recipes',
-            metaDescription: 'Latest food recipes',
-            templateUrl: './site/components/recipes/recipes.tpl.html',
-            controller: 'RecipesController',
-            controllerAs: 'vm',
-            config: {
-                roles: ['news', 'auth']
-            }
-        });
+      //
+      $routeProvider.when('/recipes', {
+        pageTitle: 'Recipes',
+        metaDescription: 'Latest food recipes',
+        templateUrl: './site/components/recipes/recipes.tpl.html',
+        controller: 'RecipesController',
+        controllerAs: 'vm',
+        config: {
+          roles: ['news', 'auth']
+        }
+      });
 
-        //
-        $routeProvider.when('/recipes/:id', {
-            pageTitle: 'Recipe Detail',
-            templateUrl: './site/components/recipes/recipes-detail.tpl.html',
-            controller: 'RecipesDetailController',
-            controllerAs: 'vm',
-            config: {
-                roles: ['news', 'auth']
-            }
-        });
-
+      //
+      $routeProvider.when('/recipes/:id', {
+        pageTitle: 'Recipe Detail',
+        templateUrl: './site/components/recipes/recipes-detail.tpl.html',
+        controller: 'RecipesDetailController',
+        controllerAs: 'vm',
+        config: {
+          roles: ['news', 'auth']
+        }
+      });
 
     }])
 
@@ -49,34 +54,30 @@ angular.module('project.recipes', ['ngRoute','angularUtils.directives.dirPaginat
     // Declare Component Detail Controller
     .controller('RecipesDetailController', RecipesDetailController);
 
+  // Define dependancies
+  RecipesDataService.$inject = ['$http', 'API_URL'];
+  RecipesController.$inject = ['RecipesDataService'];
+  RecipesDetailController.$inject = ['RecipesDataService', '$routeParams'];
 
-
-
-// Define dependancies
-RecipesDataService.$inject = ['$http', 'API_URL'];
-RecipesController.$inject = ['RecipesDataService'];
-RecipesDetailController.$inject = ['RecipesDataService', '$routeParams'];
-
-/**
- *
- * Recipes Data Service
- *
- * @param $http
- * @constructor
- *
- *
- */
-function RecipesDataService($http, API_URL) {
+  /**
+   *
+   * Recipes Data Service
+   *
+   * @param $http
+   * @constructor
+   *
+   *
+   */
+  function RecipesDataService($http, API_URL) {
 
     // Data Endpoints
-    var listingsAPI = API_URL + "views/feed_recipes?limit=250&page=0";
-    var detailsAPI = API_URL + "views/feed_recipes_details?filters[nid]=";
+    var listingsAPI = API_URL + 'views/feed_recipes?limit=250&page=0';
+    var detailsAPI = API_URL + 'views/feed_recipes_details?filters[nid]=';
 
     return {
-        getDetailsData: getDetailsData,
-        getListingsData: getListingsData
+      getDetailsData: getDetailsData,
+      getListingsData: getListingsData
     };
-
 
     /**
      *
@@ -86,20 +87,18 @@ function RecipesDataService($http, API_URL) {
      */
     function getDetailsData(id) {
 
+      return $http.get(detailsAPI + id,
+        {cache: true})
+        .then(dataComplete)
+        .catch(dataFailed);
 
-        return $http.get(detailsAPI + id,
-            {cache: true})
-            .then(dataComplete)
-            .catch(dataFailed);
+      function dataComplete(response) {
+        return response.data;
+      }
 
-        function dataComplete(response) {
-            console.log("complete called");
-            return response.data;
-        }
-
-        function dataFailed(error) {
-            console.log('XHR Failed for getListingsData.' + error.data);
-        }
+      function dataFailed(error) {
+        console.log('XHR Failed for getListingsData.' + error.data);
+      }
     }
 
     //function getNewsRelatedData() {
@@ -128,42 +127,35 @@ function RecipesDataService($http, API_URL) {
      */
     function getListingsData() {
 
-        console.log("EventsDataService.getListingsData");
+      return $http.get(listingsAPI, {cache: true})
+        .then(dataComplete)
+        .catch(dataFailed);
 
-        return $http.get(listingsAPI, {cache: true})
-            .then(dataComplete)
-            .catch(dataFailed);
+      function dataComplete(response) {
+        return response.data;
+      }
 
-        function dataComplete(response) {
-            console.log("complete called");
-            return response.data;
-        }
-
-        function dataFailed(error) {
-            console.log('XHR Failed for getListingsData.' + error.data);
-        }
+      function dataFailed(error) {
+        console.log('XHR Failed for getListingsData.' + error.data);
+      }
     }
 
+  }
 
-};
-
-
-/**
- *
- * Recipes Controller
- *
- * @param $http
- * @constructor
- *
- */
-function RecipesController(RecipesDataService) {
+  /**
+   *
+   * Recipes Controller
+   *
+   * @param $http
+   * @constructor
+   *
+   */
+  function RecipesController(RecipesDataService) {
 
     var vm = this;
 
     vm.loading = true;
     vm.listings = [];
-
-    console.log("Recipes controller");
 
     // Call main controller function
     activate();
@@ -176,12 +168,11 @@ function RecipesController(RecipesDataService) {
      */
     function activate() {
 
-        return getListingsData().then(function () {
-            console.log(' -- Activated Data View');
-        });
+      return getListingsData().then(function() {
+        console.log(' -- Activated Data View');
+      });
 
     }
-
 
     /**
      *
@@ -191,41 +182,32 @@ function RecipesController(RecipesDataService) {
      */
     function getListingsData() {
 
-        console.log("controller closure");
+      var content = [];
 
-        var content = [];
+      content = RecipesDataService.getListingsData()
 
-        content = RecipesDataService.getListingsData()
+        .then(function(data) {
 
-            .then(function (data) {
+          vm.listings = data;
+          vm.loading = false;
 
-                vm.listings = data;
+          return vm.listings;
+        });
 
-                console.log("controller listings data caller");
-
-                vm.loading = false;
-
-                return vm.listings;
-            });
-
-
-        return content;
+      return content;
     }
 
+  }
 
-}
-
-
-
-/**
- *
- * Events Detail Controller
- *
- * @param $http
- * @constructor
- *
- */
-function RecipesDetailController(RecipesDataService, $routeParams, API_URL, MEDIA_URL) {
+  /**
+   *
+   * Events Detail Controller
+   *
+   * @param $http
+   * @constructor
+   *
+   */
+  function RecipesDetailController(RecipesDataService, $routeParams, API_URL, MEDIA_URL) {
 
     var vm = this;
 
@@ -233,10 +215,6 @@ function RecipesDetailController(RecipesDataService, $routeParams, API_URL, MEDI
     vm.details = [];
 
     vm.id = $routeParams.id;
-
-    console.log(vm.id);
-
-    console.log("Recipes Details controller " + $routeParams);
 
     // Call main controller function
     activate();
@@ -248,9 +226,9 @@ function RecipesDetailController(RecipesDataService, $routeParams, API_URL, MEDI
      */
     function activate() {
 
-        return getRecipesData(vm.id).then(function () {
-            console.log('Activated Event View ' + vm.id);
-        });
+      return getRecipesData(vm.id).then(function() {
+        console.log('Activated Event View ' + vm.id);
+      });
 
     }
 
@@ -262,28 +240,21 @@ function RecipesDetailController(RecipesDataService, $routeParams, API_URL, MEDI
      */
     function getRecipesData(id) {
 
-        console.log("controller closure");
+      var content = [];
 
-        var content = [];
+      content = RecipesDataService.getDetailsData(id)
 
-        content = RecipesDataService.getDetailsData(id)
+        .then(function(data) {
 
-            .then(function (data) {
+          vm.details = data;
+          vm.loading = false;
 
-                vm.details = data;
+          return vm.details;
+        });
 
-                console.log("controller listings data caller");
-
-                vm.loading = false;
-
-                return vm.details;
-            });
-
-
-        return content;
+      return content;
     }
 
+  }
 
-}
-
-
+}());

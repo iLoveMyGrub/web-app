@@ -1,83 +1,63 @@
-/***
+/**
  *
  * MOBILE MENU COMPONENT
  *
- * @file
- *  Provides the mobile menu functionality for the site, including directives
+ * @description
+ * Provides the mobile menu functionality for the site, including directives
  *
  */
 
-'use strict';
+(function() {
 
-angular.module('mobile-menu', [])
+  'use strict';
+
+  angular.module('mobile-menu', [])
 
     // Directives
     .directive('mobileMenu', mobileMenu);
 
-// Inject Deps
-mobileMenu.$inject = [];
+  // Inject Deps
+  mobileMenu.$inject = [];
 
-
-/**
- *
- * Mobile Meny Directive : Provides the hamburger icon and menu overlay functionality.
- *
- * @returns {{replace: boolean, restrict: string, template: string, link: link}}
- *
- */
-function mobileMenu() {
+  /**
+   *
+   * Mobile Meny Directive : Provides the hamburger icon and menu overlay functionality.
+   *
+   * @returns {{replace: boolean, restrict: string, template: string, link: link}}
+   *
+   */
+  function mobileMenu() {
 
     return {
-        replace: true,
-        restrict: 'AE',
+      replace: true,
+      restrict: 'AE',
 
-        scope: {
-            toggle: '='
-        },
+      scope: {
+        toggle: '='
+      },
 
-        templateUrl: 'site/shared/directives/mobile-menu/mobile-menu.tpl.html',
+      templateUrl: 'shared/directives/mobile-menu/mobile-menu.tpl.html',
 
-        link: function (scope, elem, attrs) {
+      link: function(scope, elem, attrs) {
 
-            // Toggle Menu
-            scope.toggle = false;
+        // Toggle Menu
+        scope.toggle = false;
 
-            scope.toggleOverlay = function () {
-                scope.toggle = scope.toggle === false ? true : false;
-            };
+        scope.toggleOverlay = function() {
+          scope.toggle = scope.toggle === false ? true : false;
+        };
+      }
+    };
+  }
 
-
-            ///**
-            // *
-            // *
-            // */
-            //MenuDataService.getMobileMenu()
-            //
-            //    .then(function (response) {
-            //        scope.menu = response
-            //    })
-            //    .catch(function (error) {
-            //
-            //        console.log("Mobile Menu get error");
-            //
-            //    });
-            //
-
-
-        }
-    }
-
-
-}
-
-/**
- *
- * Mobile Menu Controller
- *
- * @constructor
- *
- */
-function MobileMenuController(MobileMenuDataService, jwtHelper, $location, $window, AuthTokenService) {
+  /**
+   *
+   * Mobile Menu Controller
+   *
+   * @constructor
+   *
+   */
+  function MobileMenuController(MobileMenuDataService, jwtHelper, $location, $window, AuthTokenService) {
 
     //var vm = this;
     //
@@ -107,24 +87,21 @@ function MobileMenuController(MobileMenuDataService, jwtHelper, $location, $wind
     //        });
     //
     //}
+  }
 
+  /**
+   *
+   * Mobile Menu Data Service
+   *
+   * @constructor
+   */
+  function MobileMenuDataService($http, $rootScope, API_URL, jwtHelper, $window, AuthTokenService) {
 
-}
-
-/**
- *
- * Mobile Menu Data Service
- *
- * @constructor
- */
-function MobileMenuDataService($http, $rootScope, API_URL, jwtHelper, $window, AuthTokenService) {
-
-    var endpointAPI = API_URL + "/mobile-menu";
+    var endpointAPI = API_URL + '/mobile-menu';
 
     return {
-        getMobileMenu: getMobileMenu
+      getMobileMenu: getMobileMenu
     };
-
 
     /**
      *
@@ -135,21 +112,28 @@ function MobileMenuDataService($http, $rootScope, API_URL, jwtHelper, $window, A
      */
     function getMobileMenu(uuid) {
 
-        return $http.get(endpointAPI + "/" + uuid)
-            .then(dataComplete)
-            .catch(dataFailed);
+      return $http.get(endpointAPI + '/' + uuid)
+        .then(dataComplete)
+        .catch(dataFailed);
 
-        function dataComplete(response) {
+      /**
+       *
+       * @param response
+       * @returns {*}
+       */
+      function dataComplete(response) {
+        console.log(response.data);
+        return response.data;
+      }
 
-            console.log(response.data);
-            return response.data;
-
-        }
-
-        function dataFailed(error) {
-            console.log('XHR Failed for get data .' + error);
-        }
+      /**
+       *
+       * @param error
+       */
+      function dataFailed(error) {
+        console.log('XHR Failed for get data .' + error);
+      }
     }
+  }
 
-
-}
+}());

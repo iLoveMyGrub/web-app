@@ -51836,63 +51836,63 @@ angular.module('uiGmapgoogle-maps.extensions')
  *
  */
 
-'use strict';
+(function() {
 
-angular.module('project.auth', ['angular-jwt'])
-  .service('AuthTokenService', AuthTokenService);
+  'use strict';
 
-// Inject Deps
-AuthTokenService.$inject = ['$window'];
+  angular.module('project.auth', ['angular-jwt'])
+    .service('AuthTokenService', AuthTokenService);
 
-/**
- *
- * Auth Token Service
- *
- * @param $window
- * @returns {{getToken: getToken, setToken: setToken}}
- * @constructor
- *
- *
- */
-function AuthTokenService($window) {
-
-  console.log("AuthTokenService");
-
-  var store = $window.localStorage;
-  var key = 'aat-auth-token';
-
-  return {
-    getToken: getToken,
-    setToken: setToken
-
-  };
+  // Inject Deps
+  AuthTokenService.$inject = ['$window'];
 
   /**
    *
-   * Get the stored local token
+   * Auth Token Service
+   *
+   * @param $window
+   * @returns {{getToken: getToken, setToken: setToken}}
+   * @constructor
+   *
    *
    */
-  function getToken() {
-    return store.getItem(key);
-  }
+  function AuthTokenService($window) {
 
+    var store = $window.localStorage;
+    var key = 'aat-auth-token';
 
-  /**
-   *
-   * Set the stored local token
-   *
-   * @param token
-   */
-  function setToken(token) {
-    if (token) {
-      store.setItem(key, token);
-    } else {
-      store.removeItem(key);
+    return {
+      getToken: getToken,
+      setToken: setToken
+
+    };
+
+    /**
+     *
+     * Get the stored local token
+     *
+     */
+    function getToken() {
+      return store.getItem(key);
     }
+
+    /**
+     *
+     * Set the stored local token
+     *
+     * @param token
+     */
+    function setToken(token) {
+      if (token) {
+        store.setItem(key, token);
+      } else {
+        store.removeItem(key);
+      }
+    }
+
   }
 
-
-}
+}());
 
 /**
  *
@@ -51903,80 +51903,88 @@ function AuthTokenService($window) {
  *
  */
 
+(function() {
 
-'use strict';
+  'use strict';
 
-angular.module('project.frontpage', ['ngRoute'])
+  angular.module('project.frontpage', ['ngRoute'])
 
-    .config(['$routeProvider', function ($routeProvider) {
-        $routeProvider.when('/frontpage', {
-            pageTitle: 'Welcome',
-            metaDescription: 'Latest food events, features, reviews and recipes',
-            templateUrl: './site/components/frontpage/frontpage.tpl.html',
-            controller: 'FrontpageController',
-            controllerAs: 'vm',
-            access: {
-                requiresLogin: false,
-                roles: []
-            }
-        });
+    .config(['$routeProvider', function($routeProvider) {
+      $routeProvider.when('/frontpage', {
+        pageTitle: 'Welcome',
+        metaDescription: 'Latest food events, features, reviews and recipes',
+        templateUrl: 'components/frontpage/frontpage.tpl.html',
+        controller: 'FrontpageController',
+        controllerAs: 'vm',
+        access: {
+          requiresLogin: false,
+          roles: []
+        }
+      });
     }])
-
 
     // Define controller
     .controller('FrontpageController', FrontpageController);
 
-
-/**
- *
- * Frontpage Controller
- *
- * @constructor
- */
-function FrontpageController() {
+  /**
+   *
+   * Frontpage Controller
+   *
+   * @constructor
+   */
+  function FrontpageController() {
     var vm = this;
-}
+  }
+
+}());
+
+
 /**
  *
  * EVENTS COMPONENT
  *
- * @file
+ * @description
  * This module handles all the functionality for the section.
+ *
+ * @class app.Events
+ *
+ * @memberof app
  *
  */
 
-'use strict';
+(function() {
 
+  'use strict';
 
-angular.module('project.events', [
-    'ngRoute',
-    'angularUtils.directives.dirPagination',
-    'meta'
+  angular.module('project.events', [
+      'ngRoute',
+      'angularUtils.directives.dirPagination',
+      'meta'
 
     ])
 
     // Provide router info for component
-    .config(['$routeProvider', function ($routeProvider) {
-        $routeProvider.when('/food-events', {
-            pageTitle: 'Food Events',
-            metaDescription: 'Latest food events in London and the UK',
-            templateUrl: './site/components/events/events.tpl.html',
-            controller: 'EventsController',
-            controllerAs: 'vm',
-            config: {
-                roles: ['news', 'auth']
-            }
-        });
+    .config(['$routeProvider', function($routeProvider) {
+      $routeProvider.when('/food-events', {
+        pageTitle: 'Food Events',
+        metaDescription: 'Latest food events in London and the UK',
+        templateUrl: './site/components/events/events.tpl.html',
+        controller: 'EventsController',
+        controllerAs: 'vm',
+        config: {
+          roles: ['news', 'auth']
+        }
+      });
 
-        $routeProvider.when('/food-events/:id', {
-            pageTitle: 'Event Details ',
-            templateUrl: './site/components/events/events-detail.tpl.html',
-            controller: 'EventsDetailController',
-            controllerAs: 'vm',
-            config: {
-                roles: ['news', 'auth']
-            }
-        });
+      $routeProvider.when('/food-events/:id', {
+        pageTitle: 'Event Details ',
+        templateUrl: './site/components/events/events-detail.tpl.html',
+        controller: 'EventsDetailController',
+        controllerAs: 'vm',
+        config: {
+          roles: ['news', 'auth']
+        }
+      });
 
     }])
 
@@ -51988,37 +51996,30 @@ angular.module('project.events', [
 
     .controller('EventsDetailController', EventsDetailController);
 
+  // Setup injectables
+  EventsDataService.$inject = ['$http', 'API_URL'];
 
-// Setup injectables
-EventsDataService.$inject = ['$http', 'API_URL'];
+  EventsController.$inject = ['EventsDataService', 'API_URL', 'MEDIA_URL'];
 
-EventsController.$inject = ['EventsDataService', 'API_URL', 'MEDIA_URL'];
+  EventsDetailController.$inject = ['EventsDataService', '$routeParams', 'API_URL', 'MEDIA_URL'];
 
-EventsDetailController.$inject = ['EventsDataService', '$routeParams', 'API_URL', 'MEDIA_URL'];
+  /**
+   *
+   * Events Data Service
+   *
+   * @param $http
+   * @constructor
+   */
+  function EventsDataService($http, API_URL) {
 
-
-/**
- *
- * Events Data Service
- *
- * @param $http
- * @constructor
- */
-function EventsDataService($http, API_URL) {
-
-
-    var listingsAPI = API_URL + "views/feed_events?limit=250&page=0";
-    var detailsAPI = API_URL + "views/feed_events_details?filters[nid]=";
-
-    //feed_events_details
-
+    var listingsAPI = API_URL + 'views/feed_events?limit=250&page=0';
+    var detailsAPI = API_URL + 'views/feed_events_details?filters[nid]=';
 
     return {
-        getDetailsData: getDetailsData,
-        getListingsData: getListingsData,
-        getGeocodePostcode: getGeocodePostcode
+      getDetailsData: getDetailsData,
+      getListingsData: getListingsData,
+      getGeocodePostcode: getGeocodePostcode
     };
-
 
     /**
      *
@@ -52028,21 +52029,19 @@ function EventsDataService($http, API_URL) {
      */
     function getDetailsData(id) {
 
-        return $http.get(detailsAPI + id,
-            {cache: true})
-            .then(dataComplete)
-            .catch(dataFailed);
+      return $http.get(detailsAPI + id,
+        {cache: true})
+        .then(dataComplete)
+        .catch(dataFailed);
 
-        function dataComplete(response) {
-            console.log("complete called");
-            return response.data;
-        }
+      function dataComplete(response) {
+        return response.data;
+      }
 
-        function dataFailed(error) {
-            console.log('XHR Failed for getListingsData.' + error.data);
-        }
+      function dataFailed(error) {
+        console.log('XHR Failed for getListingsData.' + error.data);
+      }
     }
-
 
     /**
      *
@@ -52052,26 +52051,24 @@ function EventsDataService($http, API_URL) {
      */
     function getGeocodePostcode(postcode) {
 
-        //var geocoderEndpoint = "http://maps.googleapis.com/maps/api/geocode/json?sensor=false&address=ln24rd,+UK&";
-        var geocoderEndpoint = "http://maps.googleapis.com/maps/api/geocode/json?sensor=false&address=";
+      //var geocoderEndpoint = "http://maps.googleapis.com/maps/api/geocode/json?sensor=false&address=ln24rd,+UK&";
+      var geocoderEndpoint = 'http://maps.googleapis.com/maps/api/geocode/json?sensor=false&address=';
 
-        var postcodeParsed = postcode + ",+UK";
+      var postcodeParsed = postcode + ',+UK';
 
-        return $http.get(geocoderEndpoint + postcodeParsed,
-            {cache: true})
-            .then(dataComplete)
-            .catch(dataFailed);
+      return $http.get(geocoderEndpoint + postcodeParsed,
+        {cache: true})
+        .then(dataComplete)
+        .catch(dataFailed);
 
-        function dataComplete(response) {
-            console.log("complete called..." + response);
-            return response.data;
-        }
+      function dataComplete(response) {
+        return response.data;
+      }
 
-        function dataFailed(error) {
-            console.log('XHR Failed for getListingsData.' + error.data);
-        }
+      function dataFailed(error) {
+        console.log('XHR Failed for getListingsData.' + error.data);
+      }
     }
-
 
     //function getNewsRelatedData() {
     //
@@ -52099,43 +52096,36 @@ function EventsDataService($http, API_URL) {
      */
     function getListingsData() {
 
-        console.log("EventsDataService.getListingsData");
+      return $http.get(listingsAPI, {cache: true})
+        .then(dataComplete)
+        .catch(dataFailed);
 
-        return $http.get(listingsAPI, {cache: true})
-            .then(dataComplete)
-            .catch(dataFailed);
+      function dataComplete(response) {
+        return response.data;
+      }
 
-        function dataComplete(response) {
-            console.log("complete called");
-            return response.data;
-        }
-
-        function dataFailed(error) {
-            console.log('XHR Failed for getListingsData.' + error.data);
-        }
+      function dataFailed(error) {
+        console.log('XHR Failed for getListingsData.' + error.data);
+      }
     }
 
+  }
 
-};
-
-
-/**
- *
- * Events Controller
- *
- * @param $http
- * @constructor
- */
-function EventsController(EventsDataService, MEDIA_URL) {
+  /**
+   *
+   * Events Controller
+   *
+   * @param $http
+   * @constructor
+   */
+  function EventsController(EventsDataService, MEDIA_URL) {
 
     var vm = this;
 
     // data not loaded
     vm.loading = true;
-    vm.media_url = MEDIA_URL;
+    vm.mediaUrl = MEDIA_URL;
     vm.listings = [];
-
-    console.log("Events controller");
 
     // Call main controller function
     activate();
@@ -52147,9 +52137,9 @@ function EventsController(EventsDataService, MEDIA_URL) {
      */
     function activate() {
 
-        return getEventsData().then(function () {
-            console.log('Activated Event View');
-        });
+      return getEventsData().then(function() {
+        console.log('Activated Event View');
+      });
 
     }
 
@@ -52161,66 +52151,54 @@ function EventsController(EventsDataService, MEDIA_URL) {
      */
     function getEventsData() {
 
-        console.log("controller closure");
+      var content = [];
 
-        var content = [];
+      content = EventsDataService.getListingsData()
 
+        .then(function(data) {
 
-        content = EventsDataService.getListingsData()
+          vm.listings = data;
+          // data loaded
+          vm.loading = false;
 
-            .then(function (data) {
+          return vm.listings;
+        })
+        .catch(console.log.bind(console));
 
-                vm.listings = data;
-
-                // data loaded
-                vm.loading = false;
-
-                console.log("controller listings data caller");
-
-                return vm.listings;
-            })
-            .catch(console.log.bind(console));
-
-
-        return content;
+      return content;
     }
 
+  }
 
-}
-
-
-/**
- *
- * Events Detail Controller
- *
- * @param $http
- * @constructor
- *
- */
-function EventsDetailController(EventsDataService, $routeParams, API_URL, MEDIA_URL) {
+  /**
+   *
+   * Events Detail Controller
+   *
+   * @param $http
+   * @constructor
+   *
+   */
+  function EventsDetailController(EventsDataService, $routeParams, API_URL, MEDIA_URL) {
 
     var vm = this;
 
-
-
-
     // Map Data
     vm.map = {
-        center: {
-            latitude: 53.2501435,
-            longitude: -0.4775298
-        },
-        zoom: 14,
-        options: {
-            scrollwheel: false
-        },
-        marker: {
-            id: 0,
-            coords: {
-                latitude: 40.1451,
-                longitude: -99.6680
-            }
+      center: {
+        latitude: 53.2501435,
+        longitude: -0.4775298
+      },
+      zoom: 14,
+      options: {
+        scrollwheel: false
+      },
+      marker: {
+        id: 0,
+        coords: {
+          latitude: 40.1451,
+          longitude: -99.6680
         }
+      }
     };
 
     vm.loading = true;
@@ -52228,10 +52206,8 @@ function EventsDetailController(EventsDataService, $routeParams, API_URL, MEDIA_
     vm.geocode = {};
     vm.id = $routeParams.id;
 
-
     // Call main controller function
     activate();
-
 
     /**
      * Controller main funciton
@@ -52240,9 +52216,9 @@ function EventsDetailController(EventsDataService, $routeParams, API_URL, MEDIA_
      */
     function activate() {
 
-        return getEventsData(vm.id).then(function () {
-            console.log('Activated Event View ' + vm.id);
-        }).catch(console.log.bind(console));
+      return getEventsData(vm.id).then(function() {
+        console.log('Activated Event View ' + vm.id);
+      }).catch(console.log.bind(console));
 
     }
 
@@ -52255,25 +52231,19 @@ function EventsDetailController(EventsDataService, $routeParams, API_URL, MEDIA_
      */
     function getGeocodePostcode(postcode) {
 
-        //Get the Lat + Long from Postcode
+      return EventsDataService.getGeocodePostcode(postcode)
+        .then(dataComplete)
+        .catch(dataFailed);
 
-        console.log("Call getGeocodePostcode");
+      function dataComplete(response) {
+        return response;
+      }
 
-        return EventsDataService.getGeocodePostcode(postcode)
-            .then(dataComplete)
-            .catch(dataFailed);
-
-        function dataComplete(response) {
-            console.log("getGeocodePostcode complete called", response);
-            return response;
-        }
-
-        function dataFailed(error) {
-            console.log('XHR Failed for getGeocodePostcode. ' + error.data);
-        }
+      function dataFailed(error) {
+        console.log('XHR Failed for getGeocodePostcode. ' + error.data);
+      }
 
     }
-
 
     /**
      *
@@ -52283,99 +52253,100 @@ function EventsDetailController(EventsDataService, $routeParams, API_URL, MEDIA_
      */
     function getEventsData(id) {
 
-        var content = [];
+      var content = [];
 
-        // Get the event data
-        content = EventsDataService.getDetailsData(id)
+      // Get the event data
+      content = EventsDataService.getDetailsData(id)
 
-            // Get Data from the API about the Event.
-            .then(function (data) {
+        // Get Data from the API about the Event.
+        .then(function(data) {
 
-                vm.details = data;
+          vm.details = data;
 
-                //
-                console.log("postcode " + vm.details[0].postcode);
+          //
+          console.log('postcode ' + vm.details[0].postcode);
 
-                return vm.details;
-            })
-            .catch(console.log.bind(console))
+          return vm.details;
+        })
+        .catch(console.log.bind(console))
 
-            // Do a look up to get lat + long (geocode) for the returned Postcode
-            .then(function (data) {
+        // Do a look up to get lat + long (geocode) for the returned Postcode
+        .then(function(data) {
 
-                var eventPostcode = data[0].postcode;
+          var eventPostcode = data[0].postcode;
 
-                // Call Google Geocode
-                getGeocodePostcode(eventPostcode)
+          // Call Google Geocode
+          getGeocodePostcode(eventPostcode)
 
-                    .then(function (geodata) {
+            .then(function(geodata) {
 
-                        vm.map.center.latitude = geodata.results[0].geometry.location.lat;
-                        vm.map.center.longitude = geodata.results[0].geometry.location.lng;
+              vm.map.center.latitude = geodata.results[0].geometry.location.lat;
+              vm.map.center.longitude = geodata.results[0].geometry.location.lng;
 
-                        vm.map.marker.coords.latitude = geodata.results[0].geometry.location.lat;
-                        vm.map.marker.coords.longitude = geodata.results[0].geometry.location.lng;
+              vm.map.marker.coords.latitude = geodata.results[0].geometry.location.lat;
+              vm.map.marker.coords.longitude = geodata.results[0].geometry.location.lng;
 
+              console.log('LATLONG ->', vm.map.center);
 
-                        console.log("LATLONG ->", vm.map.center);
-
-                        return geodata;
-
-                    })
-                    .catch(console.log.bind(console));
-
-                console.log("data postcode ", eventPostcode);
-
-
-                vm.loading = false;
+              return geodata;
 
             })
             .catch(console.log.bind(console));
 
+          vm.loading = false;
 
-        return content;
+        })
+        .catch(console.log.bind(console));
+
+      return content;
     }
 
+  }
 
-}
-
+}());
 
 /**
  *
  * ARTICLES COMPONENT
  *
- * @file
+ * @description
  * Provides functionality for the section
+ *
+ * @class app.Articles
+ *
+ * @memberof app
  *
  */
 
-'use strict';
+(function() {
 
-angular.module('project.articles', ['ngRoute','angularUtils.directives.dirPagination'])
+  'use strict';
+
+  angular.module('project.articles', ['ngRoute', 'angularUtils.directives.dirPagination'])
 
     // Component config
-    .config(['$routeProvider', function ($routeProvider) {
+    .config(['$routeProvider', function($routeProvider) {
 
-        $routeProvider.when('/articles', {
-            pageTitle: 'Articles',
-            metaDescription: 'Latest food articles and news',
-            templateUrl: './site/components/articles/articles.tpl.html',
-            controller: 'ArticlesController',
-            controllerAs: 'vm',
-            config: {
-                roles: ['news', 'auth']
-            }
-        });
+      $routeProvider.when('/articles', {
+        pageTitle: 'Articles',
+        metaDescription: 'Latest food articles and news',
+        templateUrl: './site/components/articles/articles.tpl.html',
+        controller: 'ArticlesController',
+        controllerAs: 'vm',
+        config: {
+          roles: ['news', 'auth']
+        }
+      });
 
-        $routeProvider.when('/articles/:id', {
-            pageTitle: 'Article Detail',
-            templateUrl: './site/components/articles/articles-detail.tpl.html',
-            controller: 'ArticlesDetailController',
-            controllerAs: 'vm',
-            config: {
-                roles: ['news', 'auth']
-            }
-        });
+      $routeProvider.when('/articles/:id', {
+        pageTitle: 'Article Detail',
+        templateUrl: './site/components/articles/articles-detail.tpl.html',
+        controller: 'ArticlesDetailController',
+        controllerAs: 'vm',
+        config: {
+          roles: ['news', 'auth']
+        }
+      });
 
     }])
 
@@ -52388,33 +52359,31 @@ angular.module('project.articles', ['ngRoute','angularUtils.directives.dirPagina
     // Declare Component Data Controller
     .controller('ArticlesDetailController', ArticlesDetailController);
 
+  // Define deps
+  ArticlesDataService.$inject = ['$http', 'API_URL'];
+  ArticlesController.$inject = ['ArticlesDataService'];
+  ArticlesDetailController.$inject = ['ArticlesDataService', '$routeParams'];
 
-// Define deps
-ArticlesDataService.$inject = ['$http', 'API_URL'];
-ArticlesController.$inject = ['ArticlesDataService'];
-ArticlesDetailController.$inject = ['ArticlesDataService', '$routeParams'];
-
-/**
- *
- * Articles Data Service
- *
- * @param $http
- * @constructor
- *
- *
- */
-function ArticlesDataService($http, API_URL) {
+  /**
+   *
+   * Articles Data Service
+   *
+   * @param $http
+   * @constructor
+   *
+   *
+   */
+  function ArticlesDataService($http, API_URL) {
 
     // Data Endpoints
-    var listingsAPI = API_URL + "views/feed_articles?limit=250&page=0";
-    var detailsAPI = API_URL + "views/feed_articles_details?filters[nid]=";
+    var listingsAPI = API_URL + 'views/feed_articles?limit=250&page=0';
+    var detailsAPI = API_URL + 'views/feed_articles_details?filters[nid]=';
 
     return {
-        getDetailsData: getDetailsData,
-        //getNewsRelatedData: getNewsRelatedData,
-        getListingsData: getListingsData
+      getDetailsData: getDetailsData,
+      //getNewsRelatedData: getNewsRelatedData,
+      getListingsData: getListingsData
     };
-
 
     /**
      *
@@ -52424,40 +52393,19 @@ function ArticlesDataService($http, API_URL) {
      */
     function getDetailsData(id) {
 
+      return $http.get(detailsAPI + id,
+        {cache: true})
+        .then(dataComplete)
+        .catch(dataFailed);
 
-        return $http.get(detailsAPI + id,
-            {cache: true})
-            .then(dataComplete)
-            .catch(dataFailed);
+      function dataComplete(response) {
+        return response.data;
+      }
 
-        function dataComplete(response) {
-            console.log("complete called");
-            return response.data;
-        }
-
-        function dataFailed(error) {
-            console.log('XHR Failed for getListingsData.' + error.data);
-        }
+      function dataFailed(error) {
+        console.log('XHR Failed for getListingsData.' + error.data);
+      }
     }
-
-
-    //function getNewsRelatedData() {
-    //
-    //    console.log("EventsDataService.getEventsData");
-    //
-    //    return $http.get("http://www.omdbapi.com/?t=" + term + "&tomatoes=true&plot=full")
-    //        .then(dataComplete)
-    //        .catch(dataFailed);
-    //
-    //    function dataComplete(response) {
-    //        console.log("complete called");
-    //        return response.data;
-    //    }
-    //
-    //    function dataFailed(error) {
-    //        console.log('XHR Failed for getNewsRelatedData.' + error.data);
-    //    }
-    //}
 
     /**
      *
@@ -52467,45 +52415,35 @@ function ArticlesDataService($http, API_URL) {
      */
     function getListingsData() {
 
-        console.log("EventsDataService.getListingsData");
+      return $http.get(listingsAPI, {cache: true})
+        .then(dataComplete)
+        .catch(dataFailed);
 
-        return $http.get(listingsAPI, {cache: true})
-            .then(dataComplete)
-            .catch(dataFailed);
+      function dataComplete(response) {
+        return response.data;
+      }
 
-        function dataComplete(response) {
-            console.log("complete called");
-            return response.data;
-        }
-
-        function dataFailed(error) {
-            console.log('XHR Failed for getListingsData.' + error.data);
-        }
+      function dataFailed(error) {
+        console.log('XHR Failed for getListingsData.' + error.data);
+      }
     }
 
+  }
 
-};
-
-
-/**
- *
- * Articles Controller
- *
- * @param $http
- * @constructor
- *
- */
-function ArticlesController(ArticlesDataService) {
-
+  /**
+   *
+   * Articles Controller
+   *
+   * @param $http
+   * @constructor
+   *
+   */
+  function ArticlesController(ArticlesDataService) {
 
     var vm = this;
-
     // data not loaded
     vm.loading = true;
     vm.listings = [];
-
-    console.log("Articles controller");
-
 
     // Call Controller Main Function
     activate();
@@ -52518,12 +52456,11 @@ function ArticlesController(ArticlesDataService) {
      */
     function activate() {
 
-        return getListingsData().then(function () {
-            console.log(' -- Activated Data View');
-        });
+      return getListingsData().then(function() {
+        console.log(' -- Activated Data View');
+      });
 
     }
-
 
     /**
      *
@@ -52533,51 +52470,37 @@ function ArticlesController(ArticlesDataService) {
      */
     function getListingsData() {
 
-        var content = [];
+      var content = [];
 
-        content = ArticlesDataService.getListingsData()
+      content = ArticlesDataService.getListingsData()
 
-            .then(function (data) {
+        .then(function(data) {
 
-                vm.listings = data;
+          vm.listings = data;
+          vm.loading = false;
 
-                console.log("controller listings data caller");
+          return vm.listings;
+        });
 
-                vm.loading = false;
-
-                return vm.listings;
-            });
-
-
-        return content;
+      return content;
     }
 
+  }
 
-}
-
-
-
-/**
- *
- * Details Controller
- *
- * @param $http
- * @constructor
- *
- */
-function ArticlesDetailController(ArticlesDataService, $routeParams, API_URL, MEDIA_URL) {
+  /**
+   *
+   * Details Controller
+   *
+   * @param $http
+   * @constructor
+   *
+   */
+  function ArticlesDetailController(ArticlesDataService, $routeParams, API_URL, MEDIA_URL) {
 
     var vm = this;
-
     vm.loading = true;
-
     vm.details = [];
-
     vm.id = $routeParams.id;
-
-    console.log(vm.id);
-
-    console.log("Articles Details controller " + $routeParams);
 
     // Call main controller function
     activate();
@@ -52589,9 +52512,9 @@ function ArticlesDetailController(ArticlesDataService, $routeParams, API_URL, ME
      */
     function activate() {
 
-        return getArticlesData(vm.id).then(function () {
-            console.log('Activated Event View ' + vm.id);
-        });
+      return getArticlesData(vm.id).then(function() {
+        console.log('Activated Event View ' + vm.id);
+      });
 
     }
 
@@ -52603,252 +52526,70 @@ function ArticlesDetailController(ArticlesDataService, $routeParams, API_URL, ME
      */
     function getArticlesData(id) {
 
-        console.log("controller closure");
+      var content = [];
 
-        var content = [];
+      content = ArticlesDataService.getDetailsData(id)
 
-        content = ArticlesDataService.getDetailsData(id)
+        .then(function(data) {
 
-            .then(function (data) {
+          vm.details = data;
+          vm.loading = false;
 
-                vm.details = data;
-
-                console.log("controller listings data caller");
-
-                vm.loading = false;
-
-                return vm.details;
-            });
-
-
-        return content;
-    }
-
-
-}
-
-
-
-/**
- *
- * News Module
- *
- */
-
-'use strict';
-
-
-angular.module('project.reviews', ['ngRoute'])
-
-    //
-    .config(['$routeProvider', function ($routeProvider) {
-        $routeProvider.when('/reviews', {
-            title: 'Reviews',
-            templateUrl: './site/components/reviews/reviews.tpl.html',
-            controller: 'ReviewsController',
-            controllerAs: 'vm',
-            config: {
-                roles: ['news', 'auth']
-            }
-        });
-    }])
-
-    //
-
-
-    .service('ReviewsDataService', ReviewsDataService)
-
-    .controller('ReviewsController', ReviewsController);
-
-ReviewsDataService.$inject = ['$http'];
-
-ReviewsController.$inject = ['ReviewsDataService'];
-
-/**
- *
- * News Data Service
- *
- * @param $http
- * @constructor
- */
-function ReviewsDataService($http) {
-
-
-    var listingsAPI = "http://localhost:1337/_YOUR_DATA_PROXY_";
-
-    var term = "Sherlock Holmes";
-
-    return {
-        getNewsData: getNewsData,
-        getNewsRelatedData: getNewsRelatedData,
-        getListingsData: getListingsData
-    };
-
-
-    function getNewsData() {
-
-
-        console.log("ReviewsDataService.getNewsData");
-
-        return $http.get("http://www.omdbapi.com/?t=" + term + "&tomatoes=true&plot=full")
-            .then(dataComplete)
-            .catch(dataFailed);
-
-        function dataComplete(response) {
-            console.log("complete called");
-            return response.data;
-        }
-
-        function dataFailed(error) {
-            console.log('XHR Failed for getNewsData.' + error.data);
-        }
-    }
-
-    function getNewsRelatedData() {
-
-        console.log("ReviewsDataService.getNewsData");
-
-        return $http.get("http://www.omdbapi.com/?t=" + term + "&tomatoes=true&plot=full")
-            .then(dataComplete)
-            .catch(dataFailed);
-
-        function dataComplete(response) {
-            console.log("complete called");
-            return response.data;
-        }
-
-        function dataFailed(error) {
-            console.log('XHR Failed for getNewsRelatedData.' + error.data);
-        }
-    }
-
-    function getListingsData() {
-
-        console.log("ReviewsDataService.getListingsData");
-
-        return $http.get(listingsAPI, {cache: true})
-            .then(dataComplete)
-            .catch(dataFailed);
-
-        function dataComplete(response) {
-            console.log("complete called");
-            return response.data;
-        }
-
-        function dataFailed(error) {
-            console.log('XHR Failed for getListingsData.' + error.data);
-        }
-    }
-
-
-};
-
-
-/**
- *
- * News Controller
- *
- * @param $http
- * @constructor
- */
-function ReviewsController(ReviewsDataService) {
-
-    var vm = this;
-
-    vm.term = "News data";
-
-    vm.news = [];
-
-    vm.listings = [];
-
-    console.log("news controller");
-
-    activate();
-
-    function activate() {
-
-        return getNewsData().then(function () {
-            console.log('Activated News View');
+          return vm.details;
         });
 
+      return content;
     }
 
+  }
 
-    function getNewsData() {
-
-        console.log("controller closure");
-
-        var content = [];
-
-        content = ReviewsDataService.getNewsData()
-
-            .then(function (data) {
-
-                vm.news = data;
-
-                console.log("controller news data caller");
-
-                return vm.news;
-            });
-
-        content = ReviewsDataService.getListingsData()
-
-            .then(function (data) {
-
-                vm.listings = data;
-
-                console.log("controller news data caller");
-
-                return vm.listings;
-            });
-
-
-        return content;
-    }
-
-
-};
+}());
 
 
 /**
  *
  * RECIPES COMPONENT
  *
- * @file
- * Provides functionality for the section component 
+ * @description
+ * Provides functionality for the section component
+ *
+ * @class app.Recipes
+ *
+ * @memberof app
  *
  */
 
-'use strict';
+(function() {
 
-angular.module('project.recipes', ['ngRoute','angularUtils.directives.dirPagination'])
+  'use strict';
+
+  angular.module('project.recipes', ['ngRoute', 'angularUtils.directives.dirPagination'])
 
     // Component config
-    .config(['$routeProvider', function ($routeProvider) {
+    .config(['$routeProvider', function($routeProvider) {
 
-        //
-        $routeProvider.when('/recipes', {
-            pageTitle: 'Recipes',
-            metaDescription: 'Latest food recipes',
-            templateUrl: './site/components/recipes/recipes.tpl.html',
-            controller: 'RecipesController',
-            controllerAs: 'vm',
-            config: {
-                roles: ['news', 'auth']
-            }
-        });
+      //
+      $routeProvider.when('/recipes', {
+        pageTitle: 'Recipes',
+        metaDescription: 'Latest food recipes',
+        templateUrl: './site/components/recipes/recipes.tpl.html',
+        controller: 'RecipesController',
+        controllerAs: 'vm',
+        config: {
+          roles: ['news', 'auth']
+        }
+      });
 
-        //
-        $routeProvider.when('/recipes/:id', {
-            pageTitle: 'Recipe Detail',
-            templateUrl: './site/components/recipes/recipes-detail.tpl.html',
-            controller: 'RecipesDetailController',
-            controllerAs: 'vm',
-            config: {
-                roles: ['news', 'auth']
-            }
-        });
-
+      //
+      $routeProvider.when('/recipes/:id', {
+        pageTitle: 'Recipe Detail',
+        templateUrl: './site/components/recipes/recipes-detail.tpl.html',
+        controller: 'RecipesDetailController',
+        controllerAs: 'vm',
+        config: {
+          roles: ['news', 'auth']
+        }
+      });
 
     }])
 
@@ -52861,34 +52602,30 @@ angular.module('project.recipes', ['ngRoute','angularUtils.directives.dirPaginat
     // Declare Component Detail Controller
     .controller('RecipesDetailController', RecipesDetailController);
 
+  // Define dependancies
+  RecipesDataService.$inject = ['$http', 'API_URL'];
+  RecipesController.$inject = ['RecipesDataService'];
+  RecipesDetailController.$inject = ['RecipesDataService', '$routeParams'];
 
-
-
-// Define dependancies
-RecipesDataService.$inject = ['$http', 'API_URL'];
-RecipesController.$inject = ['RecipesDataService'];
-RecipesDetailController.$inject = ['RecipesDataService', '$routeParams'];
-
-/**
- *
- * Recipes Data Service
- *
- * @param $http
- * @constructor
- *
- *
- */
-function RecipesDataService($http, API_URL) {
+  /**
+   *
+   * Recipes Data Service
+   *
+   * @param $http
+   * @constructor
+   *
+   *
+   */
+  function RecipesDataService($http, API_URL) {
 
     // Data Endpoints
-    var listingsAPI = API_URL + "views/feed_recipes?limit=250&page=0";
-    var detailsAPI = API_URL + "views/feed_recipes_details?filters[nid]=";
+    var listingsAPI = API_URL + 'views/feed_recipes?limit=250&page=0';
+    var detailsAPI = API_URL + 'views/feed_recipes_details?filters[nid]=';
 
     return {
-        getDetailsData: getDetailsData,
-        getListingsData: getListingsData
+      getDetailsData: getDetailsData,
+      getListingsData: getListingsData
     };
-
 
     /**
      *
@@ -52898,20 +52635,18 @@ function RecipesDataService($http, API_URL) {
      */
     function getDetailsData(id) {
 
+      return $http.get(detailsAPI + id,
+        {cache: true})
+        .then(dataComplete)
+        .catch(dataFailed);
 
-        return $http.get(detailsAPI + id,
-            {cache: true})
-            .then(dataComplete)
-            .catch(dataFailed);
+      function dataComplete(response) {
+        return response.data;
+      }
 
-        function dataComplete(response) {
-            console.log("complete called");
-            return response.data;
-        }
-
-        function dataFailed(error) {
-            console.log('XHR Failed for getListingsData.' + error.data);
-        }
+      function dataFailed(error) {
+        console.log('XHR Failed for getListingsData.' + error.data);
+      }
     }
 
     //function getNewsRelatedData() {
@@ -52940,42 +52675,35 @@ function RecipesDataService($http, API_URL) {
      */
     function getListingsData() {
 
-        console.log("EventsDataService.getListingsData");
+      return $http.get(listingsAPI, {cache: true})
+        .then(dataComplete)
+        .catch(dataFailed);
 
-        return $http.get(listingsAPI, {cache: true})
-            .then(dataComplete)
-            .catch(dataFailed);
+      function dataComplete(response) {
+        return response.data;
+      }
 
-        function dataComplete(response) {
-            console.log("complete called");
-            return response.data;
-        }
-
-        function dataFailed(error) {
-            console.log('XHR Failed for getListingsData.' + error.data);
-        }
+      function dataFailed(error) {
+        console.log('XHR Failed for getListingsData.' + error.data);
+      }
     }
 
+  }
 
-};
-
-
-/**
- *
- * Recipes Controller
- *
- * @param $http
- * @constructor
- *
- */
-function RecipesController(RecipesDataService) {
+  /**
+   *
+   * Recipes Controller
+   *
+   * @param $http
+   * @constructor
+   *
+   */
+  function RecipesController(RecipesDataService) {
 
     var vm = this;
 
     vm.loading = true;
     vm.listings = [];
-
-    console.log("Recipes controller");
 
     // Call main controller function
     activate();
@@ -52988,12 +52716,11 @@ function RecipesController(RecipesDataService) {
      */
     function activate() {
 
-        return getListingsData().then(function () {
-            console.log(' -- Activated Data View');
-        });
+      return getListingsData().then(function() {
+        console.log(' -- Activated Data View');
+      });
 
     }
-
 
     /**
      *
@@ -53003,41 +52730,32 @@ function RecipesController(RecipesDataService) {
      */
     function getListingsData() {
 
-        console.log("controller closure");
+      var content = [];
 
-        var content = [];
+      content = RecipesDataService.getListingsData()
 
-        content = RecipesDataService.getListingsData()
+        .then(function(data) {
 
-            .then(function (data) {
+          vm.listings = data;
+          vm.loading = false;
 
-                vm.listings = data;
+          return vm.listings;
+        });
 
-                console.log("controller listings data caller");
-
-                vm.loading = false;
-
-                return vm.listings;
-            });
-
-
-        return content;
+      return content;
     }
 
+  }
 
-}
-
-
-
-/**
- *
- * Events Detail Controller
- *
- * @param $http
- * @constructor
- *
- */
-function RecipesDetailController(RecipesDataService, $routeParams, API_URL, MEDIA_URL) {
+  /**
+   *
+   * Events Detail Controller
+   *
+   * @param $http
+   * @constructor
+   *
+   */
+  function RecipesDetailController(RecipesDataService, $routeParams, API_URL, MEDIA_URL) {
 
     var vm = this;
 
@@ -53045,10 +52763,6 @@ function RecipesDetailController(RecipesDataService, $routeParams, API_URL, MEDI
     vm.details = [];
 
     vm.id = $routeParams.id;
-
-    console.log(vm.id);
-
-    console.log("Recipes Details controller " + $routeParams);
 
     // Call main controller function
     activate();
@@ -53060,9 +52774,9 @@ function RecipesDetailController(RecipesDataService, $routeParams, API_URL, MEDI
      */
     function activate() {
 
-        return getRecipesData(vm.id).then(function () {
-            console.log('Activated Event View ' + vm.id);
-        });
+      return getRecipesData(vm.id).then(function() {
+        console.log('Activated Event View ' + vm.id);
+      });
 
     }
 
@@ -53074,284 +52788,86 @@ function RecipesDetailController(RecipesDataService, $routeParams, API_URL, MEDI
      */
     function getRecipesData(id) {
 
-        console.log("controller closure");
+      var content = [];
 
-        var content = [];
+      content = RecipesDataService.getDetailsData(id)
 
-        content = RecipesDataService.getDetailsData(id)
+        .then(function(data) {
 
-            .then(function (data) {
+          vm.details = data;
+          vm.loading = false;
 
-                vm.details = data;
+          return vm.details;
+        });
 
-                console.log("controller listings data caller");
-
-                vm.loading = false;
-
-                return vm.details;
-            });
-
-
-        return content;
+      return content;
     }
 
+  }
 
-}
-
-
-
-/**
- *
- * News Module
- *
- */
-
-'use strict';
-
-
-angular.module('project.news', ['ngRoute'])
-
-    //
-    .config(['$routeProvider', function ($routeProvider) {
-        $routeProvider.when('/news', {
-            title: 'News',
-            templateUrl: './site/components/news/news.html',
-            controller: 'NewsController',
-            controllerAs: 'vm',
-            config: {
-                roles: [
-                    'news',
-                    'auth'
-                ]
-            }
-        });
-    }])
-
-    //
-
-
-    .service('NewsDataService', NewsDataService)
-
-    .controller('NewsController', NewsController);
-
-NewsDataService.$inject = ['$http'];
-
-NewsController.$inject = ['NewsDataService'];
+}());
 
 /**
  *
- * News Data Service
+ * DASHBOARD MODULE
  *
- * @param $http
- * @constructor
+ * @description Provides a user dashboard for registered accounts
+ *
+ * @class app.Dashboard
+ *
+ * @memberof app
+ *
  */
-function NewsDataService($http) {
 
+(function() {
 
-    var listingsAPI = "http://localhost:1337/_YOUR_DATA_PROXY_";
+  'use strict';
 
-    var term = "Sherlock Holmes";
+  angular.module('project.dashboard', ['ngRoute', 'angular-jwt'])
 
-    return {
-        //getNewsData: getNewsData,
-        //getNewsRelatedData: getNewsRelatedData,
-        getListingsData: getListingsData
-    };
-
-
-    //function getNewsData() {
     //
-    //
-    //    console.log("NewsDataService.getNewsData");
-    //
-    //    return $http.get("http://www.omdbapi.com/?t=" + term + "&tomatoes=true&plot=full")
-    //        .then(dataComplete)
-    //        .catch(dataFailed);
-    //
-    //    function dataComplete(response) {
-    //        console.log("complete called");
-    //        return response.data;
-    //    }
-    //
-    //    function dataFailed(error) {
-    //        console.log('XHR Failed for getNewsData.' + error.data);
-    //    }
-    //}
-    //
-    //function getNewsRelatedData() {
-    //
-    //    console.log("NewsDataService.getNewsData");
-    //
-    //    return $http.get("http://www.omdbapi.com/?t=" + term + "&tomatoes=true&plot=full")
-    //        .then(dataComplete)
-    //        .catch(dataFailed);
-    //
-    //    function dataComplete(response) {
-    //        console.log("complete called");
-    //        return response.data;
-    //    }
-    //
-    //    function dataFailed(error) {
-    //        console.log('XHR Failed for getNewsRelatedData.' + error.data);
-    //    }
-    //}
-
-    /**
-     *
-     * Get Listings Data
-     *
-     * @returns {*}
-     */
-    function getListingsData() {
-
-        console.log("NewsDataService.getListingsData");
-
-        return $http.get(listingsAPI, {cache: true})
-            .then(dataComplete)
-            .catch(dataFailed);
-
-        function dataComplete(response) {
-            console.log("complete called");
-            return response.data;
+    .config(['$routeProvider', function($routeProvider) {
+      $routeProvider.when('/dashboard', {
+        title: 'dashboard',
+        templateUrl: './site/components/dashboard/dashboard.tpl.html',
+        controller: 'DashboardController',
+        controllerAs: 'vm',
+        access: {
+          requiresLogin: true,
+          roles: ['dashboard', 'auth']
         }
-
-        function dataFailed(error) {
-            console.log('XHR Failed for getListingsData.' + error.data);
-        }
-    }
-
-
-};
-
-
-/**
- *
- * News Controller
- *
- * @param $http
- * @constructor
- */
-function NewsController(NewsDataService) {
-
-    var vm = this;
-
-    vm.term = "News data";
-
-    vm.news = [];
-
-    vm.listings = [];
-
-    console.log("news controller");
-
-    activate();
-
-    function activate() {
-
-        return getNewsData().then(function () {
-            console.log('Activated News View');
-        });
-
-    }
-
-
-    function getNewsData() {
-
-        console.log("controller closure");
-
-        var content = [];
-
-        content = NewsDataService.getNewsData()
-
-            .then(function (data) {
-
-                vm.news = data;
-
-                console.log("controller news data caller");
-
-                return vm.news;
-            });
-
-        content = NewsDataService.getListingsData()
-
-            .then(function (data) {
-
-                vm.listings = data;
-
-                console.log("controller news data caller");
-
-                return vm.listings;
-            });
-
-
-        return content;
-    }
-
-
-};
-
-
-/**
- *
- * dashboard Module
- *
- */
-
-'use strict';
-
-
-angular.module('project.dashboard', ['ngRoute', 'angular-jwt'])
-
-    //
-    .config(['$routeProvider', function ($routeProvider) {
-        $routeProvider.when('/dashboard', {
-            title: 'dashboard',
-            templateUrl: './site/components/dashboard/dashboard.tpl.html',
-            controller: 'DashboardController',
-            controllerAs: 'vm',
-            access: {
-                requiresLogin: true,
-                roles: ['dashboard', 'auth']
-            }
-        });
+      });
     }])
-
-    //
-
 
     .service('DashboardDataService', DashboardDataService)
-
     .controller('DashboardController', DashboardController);
 
-DashboardDataService.$inject = ['$http', '$window', 'API_URL', 'jwtHelper'];
+  DashboardDataService.$inject = ['$http', '$window', 'API_URL', 'jwtHelper'];
+  DashboardController.$inject = ['DashboardDataService', 'API_URL', 'jwtHelper'];
 
-DashboardController.$inject = ['DashboardDataService', 'API_URL', 'jwtHelper'];
-
-/**
- *
- * dashboard Data Service
- *
- * @param $http
- * @constructor
- */
-function DashboardDataService($http, $window, API_URL, jwtHelper) {
-
+  /**
+   *
+   * Dashboard Data Service
+   *
+   * @param $http
+   * @constructor
+   */
+  function DashboardDataService($http, $window, API_URL, jwtHelper) {
 
     // Check token
     var token = localStorage.getItem('aat-auth-token');
 
     if (token) {
-        var tokenPayload = jwtHelper.decodeToken(token);
-        var uuid = tokenPayload.uuid;
+      var tokenPayload = jwtHelper.decodeToken(token);
+      var uuid = tokenPayload.uuid;
 
-        console.log(uuid);
+      console.log(uuid);
     }
 
-
     return {
-        getdashboardData: getdashboardData,
-        //getListingsData: getListingsData
+      getdashboardData: getdashboardData,
+      //getListingsData: getListingsData
     };
-
 
     /**
      *
@@ -53360,43 +52876,28 @@ function DashboardDataService($http, $window, API_URL, jwtHelper) {
      */
     function getdashboardData() {
 
+      return $http.get(API_URL + '/user/' + uuid)
+        .then(dataComplete)
+        .catch(dataFailed);
 
+      /**
+       *
+       * @param response
+       * @returns {*}
+       */
+      function dataComplete(response) {
+        return response.data;
+      }
 
-            console.log("DashboardDataService.getdashboardData -> " + uuid);
-
-            return $http.get(API_URL + '/user/' + uuid)
-
-                .then(dataComplete)
-                .catch(dataFailed);
-
-
-            /**
-             *
-             * @param response
-             * @returns {*}
-             */
-            function dataComplete(response) {
-
-                console.log("complete called " + response);
-
-                return response.data;
-            }
-
-            /**
-             *
-             *
-             * @param error
-             */
-            function dataFailed(error) {
-                console.log('XHR Failed for getdashboardData.' + error.data);
-            }
-
-
-
-
-
+      /**
+       *
+       *
+       * @param error
+       */
+      function dataFailed(error) {
+        console.log('XHR Failed for getdashboardData.' + error.data);
+      }
     }
-
 
     /**
      *
@@ -53405,51 +52906,46 @@ function DashboardDataService($http, $window, API_URL, jwtHelper) {
      */
     function getListingsData() {
 
-        console.log("DashboardDataService.getListingsData");
+      /**
+       *
+       */
+      return $http.get(listingsAPI, {cache: true})
+        .then(dataComplete)
+        .catch(dataFailed);
 
-        return $http.get(listingsAPI, {cache: true})
-            .then(dataComplete)
-            .catch(dataFailed);
+      /**
+       *
+       * @param response
+       * @returns {*}
+       */
+      function dataComplete(response) {
+        return response.data;
+      }
 
-        function dataComplete(response) {
-            console.log("complete called");
-            return response.data;
-        }
-
-        function dataFailed(error) {
-            console.log('XHR Failed for getListingsData.' + error.data);
-        }
+      /**
+       *
+       * @param error
+       */
+      function dataFailed(error) {
+        console.log('XHR Failed for getListingsData.' + error.data);
+      }
     }
+  }
 
-
-}
-
-
-/**
- *
- * dashboard Controller
- *
- * @param $http
- * @constructor
- */
-function DashboardController(DashboardDataService, API_URL, jwtHelper) {
+  /**
+   *
+   * Dashboard Controller
+   *
+   * @param $http
+   * @constructor
+   */
+  function DashboardController(DashboardDataService, API_URL, jwtHelper) {
 
     var vm = this;
 
-    vm.term = "dashboard data";
+    vm.term = 'dashboard data';
     vm.dashboard = [];
     vm.listings = [];
-
-
-    //// Check token
-    //var token = localStorage.getItem('aat-auth-token');
-    //
-    //if(token){
-    //    var tokenPayload  = jwtHelper.decodeToken(token);
-    //}
-    //
-    //console.log(tokenPayload);
-
 
     //
     activate();
@@ -53461,12 +52957,11 @@ function DashboardController(DashboardDataService, API_URL, jwtHelper) {
      */
     function activate() {
 
-        return getdashboardData().then(function () {
-            console.log('Activated dashboard View');
-        });
+      return getdashboardData().then(function() {
+        console.log('Activated dashboard View');
+      });
 
     }
-
 
     /**
      *
@@ -53476,166 +52971,161 @@ function DashboardController(DashboardDataService, API_URL, jwtHelper) {
      */
     function getdashboardData() {
 
-        console.log("controller closure");
+      var content = [];
 
-        var content = [];
+      content = DashboardDataService.getdashboardData()
 
-        content = DashboardDataService.getdashboardData()
+        .then(function(data) {
 
-            .then(function (data) {
+          vm.dashboard = data;
 
-                vm.dashboard = data;
-
-                console.log("controller dashboard data caller");
-
-                return vm.dashboard;
-            });
-
-
-        return content;
-    }
-
-
-}
-
-
-/***
- *
- *  contact Module
- *
- */
-
-'use strict';
-
-
-angular.module('project.contact', ['ngRoute','formly', 'formlyBootstrap'])
-
-    // Route
-    .config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
-
-        $routeProvider.when('/contact', {
-
-            title: 'Contact',
-            templateUrl: './site/components/contact/contact.tpl.html',
-            controller: 'ContactController',
-            controllerAs: 'vm'
-
+          return vm.dashboard;
         });
 
+      return content;
+    }
 
+  }
 
-    }])
-
-
-    .controller('ContactController', ContactController);
-
-
-
+}());
 
 /**
  *
- * About Controller
+ *  CONTACT MODULE
  *
- * @constructor
+ *  @description Provides a simple contact form
+ *
+ *  @class app.Contact
+ *
+ *  @memberof app
+ *
  */
-function ContactController(){
+
+(function() {
+
+  'use strict';
+
+  angular.module('project.contact', ['ngRoute', 'formly', 'formlyBootstrap'])
+
+    // Route
+    .config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
+
+      $routeProvider.when('/contact', {
+
+        title: 'Contact',
+        templateUrl: './site/components/contact/contact.tpl.html',
+        controller: 'ContactController',
+        controllerAs: 'vm'
+
+      });
+
+    }])
+
+    .controller('ContactController', ContactController);
+
+  /**
+   *
+   * About Controller
+   *
+   * @constructor
+   */
+  function ContactController() {
 
     var vm = this;
 
     vm.user = {};
 
+    // Define submit handler
     vm.onSubmit = onSubmit;
 
     vm.env = {
-        angularVersion: angular.version.full
-        //formlyVersion: formlyVersion
+      angularVersion: angular.version.full
+      //formlyVersion: formlyVersion
     };
 
     vm.model = {};
     vm.options = {};
 
-
     // http://docs.angular-formly.com/v6.4.0/docs/custom-templates
     vm.fields = [
-        {
-            key: 'marvel1',
-            type: 'select',
-            templateOptions: {
-                label: 'Normal Select',
-                options: [
-                    {name: 'Iron Man', value: 'iron_man'},
-                    {name: 'Captain America', value: 'captain_america'},
-                    {name: 'Black Widow', value: 'black_widow'},
-                    {name: 'Hulk', value: 'hulk'},
-                    {name: 'Captain Marvel', value: 'captain_marvel'}
-                ]
-            }
-        },
-        {
-            key: 'first_name',
-            type: 'input',
-            templateOptions: {
-                type: 'text',
-                label: 'First Name',
-                placeholder: 'Enter your first name',
-                required: false
-            }
-        },
-        {
-            key: 'last_name',
-            type: 'input',
-            templateOptions: {
-                type: 'text',
-                label: 'Last Name',
-                placeholder: 'Enter your last name',
-                required: false
-            }
-        },
-        {
-            key: 'email',
-            type: 'input',
-            templateOptions: {
-                type: 'email',
-                label: 'Email address',
-                placeholder: 'Enter email',
-                required: false
-            }
-        },
-
-        {
-            key: 'checked',
-            type: 'checkbox',
-            templateOptions: {
-                label: 'Check me out'
-            }
+      {
+        key: 'marvel1',
+        type: 'select',
+        templateOptions: {
+          label: 'Normal Select',
+          options: [
+            {name: 'Iron Man', value: 'iron_man'},
+            {name: 'Captain America', value: 'captain_america'},
+            {name: 'Black Widow', value: 'black_widow'},
+            {name: 'Hulk', value: 'hulk'},
+            {name: 'Captain Marvel', value: 'captain_marvel'}
+          ]
         }
+      },
+      {
+        key: 'first_name',
+        type: 'input',
+        templateOptions: {
+          type: 'text',
+          label: 'First Name',
+          placeholder: 'Enter your first name',
+          required: false
+        }
+      },
+      {
+        key: 'last_name',
+        type: 'input',
+        templateOptions: {
+          type: 'text',
+          label: 'Last Name',
+          placeholder: 'Enter your last name',
+          required: false
+        }
+      },
+      {
+        key: 'email',
+        type: 'input',
+        templateOptions: {
+          type: 'email',
+          label: 'Email address',
+          placeholder: 'Enter email',
+          required: false
+        }
+      },
+
+      {
+        key: 'checked',
+        type: 'checkbox',
+        templateOptions: {
+          label: 'Check me out'
+        }
+      }
     ];
 
-
+    /**
+     * OnSubmit Handler
+     */
     function onSubmit() {
 
-        var formSubmitted = true;
+      var formSubmitted = true;
 
-        alert(JSON.stringify(vm.model), null, 2);
+      alert(JSON.stringify(vm.model), null, 2);
 
     }
+  }
 
+}());
 
-
-}
-
-
-
-
-
-
-
-/***
+/**
  *
  *  LOGIN COMPONENT
  *
- * @file
+ * @description
  *  Provides login section and functionality for the site, including directives
+ *
+ * @class app.login
+ *
+ * @memberof app
  *
  * @todo :
  *
@@ -53643,25 +53133,27 @@ function ContactController(){
  *
  */
 
-'use strict';
+(function() {
 
-angular.module('project.login', ['ngRoute', 'formly', 'formlyBootstrap', 'angular-jwt', 'project.auth'])
+  'use strict';
+
+  angular.module('project.login', ['ngRoute', 'formly', 'formlyBootstrap', 'angular-jwt', 'project.auth'])
 
     // Route
-    .config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
+    .config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
 
-        $routeProvider.when('/login', {
+      $routeProvider.when('/login', {
 
-            title: 'Login',
-            templateUrl: './site/components/login/login.tpl.html',
-            controller: 'LoginController',
-            controllerAs: 'vm',
-            access: {
-                requiresLogin: false,
-                roles: []
-            }
+        title: 'Login',
+        templateUrl: './site/components/login/login.tpl.html',
+        controller: 'LoginController',
+        controllerAs: 'vm',
+        access: {
+          requiresLogin: false,
+          roles: []
+        }
 
-        });
+      });
 
     }])
 
@@ -53671,62 +53163,58 @@ angular.module('project.login', ['ngRoute', 'formly', 'formlyBootstrap', 'angula
 
     .controller('LoginController', LoginController);
 
+  // Inject Deps
+  loginDirectiveTopLinks.$inject = ['$window', '$location'];
 
-// Inject Deps
-loginDirectiveTopLinks.$inject = ['$window', '$location'];
+  LoginDataService.$inject = ['$http', '$rootScope', 'API_URL', 'jwtHelper', '$window', 'AuthTokenService'];
 
-LoginDataService.$inject = ['$http', '$rootScope', 'API_URL', 'jwtHelper', '$window', 'AuthTokenService'];
+  LoginController.$inject = ['LoginDataService', 'jwtHelper', '$location', '$window', 'AuthTokenService'];
 
-LoginController.$inject = ['LoginDataService', 'jwtHelper', '$location', '$window', 'AuthTokenService'];
-
-
-/**
- *
- * Login Directive : Top Bar
- *
- * @returns {{replace: boolean, restrict: string, template: string, link: link}}
- *
- */
-function loginDirectiveTopLinks($window, $location) {
+  /**
+   *
+   * Login Directive : Top Bar
+   *
+   * @returns {{replace: boolean, restrict: string, template: string, link: link}}
+   *
+   */
+  function loginDirectiveTopLinks($window, $location) {
 
     return {
-        replace: true,
-        restrict: 'AE',
-        controller: LoginController,
-        controllerAs: 'vm',
-        bindToController: true,
-        templateUrl: 'site/components/login/templates/login-top-bar.html',
-        link: function (scope, elem, attrs) {
+      replace: true,
+      restrict: 'AE',
+      controller: LoginController,
+      controllerAs: 'vm',
+      bindToController: true,
+      templateUrl: 'site/components/login/templates/login-top-bar.html',
+      link: function(scope, elem, attrs) {
 
-            // Logout User
-            scope.logout = function () {
+        // Logout User
+        scope.logout = function() {
 
-                console.log("LOGGED OUT");
+          // Delete JWT token
+          sessionStorage.removeItem('auth-token');
 
-                // Delete JWT token
-                sessionStorage.removeItem('auth-token');
+          // Check to see if token
+          console.log(sessionStorage.getItem('auth-token'));
 
-                // Check to see if token
-                console.log(sessionStorage.getItem('auth-token'));
+          // Redirect
+          $location.path('/frontend');
 
-                // Redirect
-                $location.path("/frontend");
+        };
 
-            };
+      }
+    };
 
-        }
-    }
+  }
 
-}
-
-/**
- *
- * Login Controller
- *
- * @constructor
- *
- */
-function LoginController(LoginDataService, jwtHelper, $location, $window, AuthTokenService) {
+  /**
+   *
+   * Login Controller
+   *
+   * @constructor
+   *
+   */
+  function LoginController(LoginDataService, jwtHelper, $location, $window, AuthTokenService) {
 
     var vm = this;
 
@@ -53735,52 +53223,49 @@ function LoginController(LoginDataService, jwtHelper, $location, $window, AuthTo
     vm.onSubmit = onSubmit;
 
     vm.env = {
-        angularVersion: angular.version.full
-        //formlyVersion: formlyVersion
+      angularVersion: angular.version.full
+      //formlyVersion: formlyVersion
     };
 
     vm.model = {};
     vm.options = {};
 
-
     // Check token
     var token = sessionStorage.getItem('auth-token');
 
     if (token) {
-        vm.authUser = jwtHelper.decodeToken(token);
+      vm.authUser = jwtHelper.decodeToken(token);
 
-        //// Redirect if token i.e logged in
-        $window.location = '/dashboard';
-        $window.location.reload();
+      //// Redirect if token i.e logged in
+      $window.location = '/dashboard';
+      $window.location.reload();
     }
-
 
     // http://docs.angular-formly.com/v6.4.0/docs/custom-templates
     vm.fields = [
 
-        {
-            key: 'email',
-            type: 'input',
-            templateOptions: {
-                type: 'email',
-                label: 'Email',
-                placeholder: 'Please enter your username',
-                required: true
-            }
-        },
-        {
-            key: 'password',
-            type: 'input',
-            templateOptions: {
-                type: 'text',
-                label: 'Password',
-                placeholder: 'Please enter your password',
-                required: true
-            }
+      {
+        key: 'email',
+        type: 'input',
+        templateOptions: {
+          type: 'email',
+          label: 'Email',
+          placeholder: 'Please enter your username',
+          required: true
         }
+      },
+      {
+        key: 'password',
+        type: 'input',
+        templateOptions: {
+          type: 'text',
+          label: 'Password',
+          placeholder: 'Please enter your password',
+          required: true
+        }
+      }
 
     ];
-
 
     /**
      *
@@ -53788,11 +53273,8 @@ function LoginController(LoginDataService, jwtHelper, $location, $window, AuthTo
      *
      */
     function logout() {
-
-        alert("logged out from controller...!");
-
+      alert('logged out from controller...!');
     }
-
 
     /**
      *
@@ -53801,36 +53283,32 @@ function LoginController(LoginDataService, jwtHelper, $location, $window, AuthTo
      */
     function onSubmit() {
 
-        var formSubmitted = true;
+      var formSubmitted = true;
 
-        console.log("ctrl : ", AuthTokenService);
+      LoginDataService.login(vm.model.email, vm.model.password)
+        .then(function success(response) {
 
-        LoginDataService.login(vm.model.email, vm.model.password)
-            .then(function success(response) {
-
-                // Redirect if succesful login
-                $window.location.href = '#/dashboard';
-                $window.location.reload();
-            });
+          // Redirect if succesful login
+          $window.location.href = '#/dashboard';
+          $window.location.reload();
+        });
 
     }
 
+  }
 
-}
-
-/**
- *
- * Login Data Service
- *
- * @constructor
- */
-function LoginDataService($http, $rootScope, API_URL, jwtHelper, $window, AuthTokenService) {
-
+  /**
+   *
+   * Login Data Service
+   *
+   * @constructor
+   */
+  function LoginDataService($http, $rootScope, API_URL, jwtHelper, $window, AuthTokenService) {
 
     return {
-        login: login,
-        logout: logout,
-        getUser: getUser
+      login: login,
+      logout: logout,
+      getUser: getUser
     };
 
     /**
@@ -53841,31 +53319,26 @@ function LoginDataService($http, $rootScope, API_URL, jwtHelper, $window, AuthTo
      */
     function login(email, password) {
 
+      return $http.post(API_URL + '/auth', {
+
+        email: email,
+        password: password
+
+      }).then(function success(response) {
 
         console.log(AuthTokenService);
 
-        return $http.post(API_URL + '/auth', {
+        AuthTokenService.setToken(response.data);
 
-            email: email,
-            password: password
+        return response;
 
-
-        }).then(function success(response) {
-
-            console.log(AuthTokenService);
-
-            AuthTokenService.setToken(response.data);
-
-            return response;
-
-        });
+      });
     }
 
-
-    function logout(){
-
-
-    }
+    /**
+     *
+     */
+    function logout() {}
 
     /**
      *
@@ -53875,27 +53348,29 @@ function LoginDataService($http, $rootScope, API_URL, jwtHelper, $window, AuthTo
      */
     function getUser() {
 
-        console.log("get-user");
+      if (AuthTokenService.getToken()) {
 
-        if (AuthTokenService.getToken()) {
+        return $http.get(API_URL + '/me');
 
-            return $http.get(API_URL + '/me');
+      } else {
 
-        } else {
+        return $q.reject({data: 'client has no auth token'});
 
-            return $q.reject({data: 'client has no auth token'});
-
-        }
+      }
     }
 
-}
+  }
+}());
 
-/***
+/**
  *
  * USER COMPONENT
  *
- * @file
+ * @description
  *  Provides user functionality for the site, including directives
+ *
+ * @class app.User
+ * @memberof app
  *
  * @todo :
  *
@@ -53903,226 +53378,214 @@ function LoginDataService($http, $rootScope, API_URL, jwtHelper, $window, AuthTo
  *
  */
 
-'use strict';
+(function() {
 
-angular.module('project.user', [])
+  'use strict';
+
+  angular.module('project.user', [])
 
     .service('UserService', UserService)
 
     .directive('userMenuTopBar', userMenuTopBar);
 
+  // Inject Deps
+  UserService.$inject = ['$http'];
+  userMenuTopBar.$inject = ['$window', '$location'];
 
-// Inject Deps
-UserService.$inject = ['$http'];
-userMenuTopBar.$inject = ['$window', '$location'];
-
-
-/**
- *
- * User Controller
- *
- * @constructor
- */
-function UserService($http) {
+  /**
+   *
+   * User Controller
+   *
+   * @constructor
+   */
+  function UserService($http) {
 
     var user = user || {};
-
-
-    console.log("USER OBJECT = " + user);
-
 
     /**
      *
      */
     return {
-        user: user
+      user: user
     };
-
 
     /**
      *
      * @returns {user|{}}
      */
-    function user(){
-
-        return user;
+    function getUser() {
+      return user;
     }
+  }
 
+  /**
+   *
+   * User Directive : Top Bar
+   *
+   * @returns {{replace: boolean, restrict: string, template: string, link: link}}
+   *
+   */
+  function userMenuTopBar($window, $location) {
 
+    return {
+      replace: true,
+      restrict: 'AE',
+      //scope: {
+      //    logout: '='
+      //},
 
-}
+      templateUrl: './site/components/user/templates/user-menu-top-bar.html',
 
+      link: function(scope, elem, attrs) {
+
+        // Logout User
+        //scope.logout = function () {
+        //
+        //    console.log("LOGGED OUT");
+        //
+        //    // Delete JWT token
+        //    localStorage.removeItem('aat-auth-token');
+        //
+        //    // Check to see if token
+        //    console.log(localStorage.getItem('aat-auth-token'));
+        //
+        //    // Redirect
+        //    $location.path("/frontend");
+        //
+        //};
+
+      }
+    };
+  }
+
+}());
 
 /**
  *
- * User Directive : Top Bar
+ * REGISTER COMPONENT
  *
- * @returns {{replace: boolean, restrict: string, template: string, link: link}}
+ * @description
+ * Provides register section and functionality for the site, including directives
  *
- */
-function userMenuTopBar($window, $location) {
-
-    return {
-        replace: true,
-        restrict: 'AE',
-        //scope: {
-        //    logout: '='
-        //},
-
-        templateUrl: './site/components/user/templates/user-menu-top-bar.html',
-
-        link: function (scope, elem, attrs) {
-
-            // Logout User
-            //scope.logout = function () {
-            //
-            //    console.log("LOGGED OUT");
-            //
-            //    // Delete JWT token
-            //    localStorage.removeItem('aat-auth-token');
-            //
-            //    // Check to see if token
-            //    console.log(localStorage.getItem('aat-auth-token'));
-            //
-            //    // Redirect
-            //    $location.path("/frontend");
-            //
-            //};
-
-        }
-    }
-
-}
-
-/***
+ * @class app.Register
  *
- *  REGISTER COMPONENT
- *
- * @file
- *  Provides register section and functionality for the site, including directives
+ * @memberof app
  *
  * @todo :
- *
- *  - form error validation to return error on non successful register with messaging
+ * - form error validation to return error on non successful register with messaging
  *
  */
 
-'use strict';
+(function() {
 
-angular.module('project.register', ['ngRoute', 'formly', 'formlyBootstrap', 'angular-jwt', 'project.auth'])
+  'use strict';
+
+  angular.module('project.register', ['ngRoute', 'formly', 'formlyBootstrap', 'angular-jwt', 'project.auth'])
 
     // Route
-    .config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
+    .config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
 
-        $routeProvider.when('/register', {
+      $routeProvider.when('/register', {
 
-            title: 'Sign up',
-            templateUrl: './site/components/register/register.tpl.html',
-            controller: 'registerController',
-            controllerAs: 'vm',
-            access: {
-                requiresregister: false,
-                roles: []
-            }
+        title: 'Sign up',
+        templateUrl: './site/components/register/register.tpl.html',
+        controller: 'registerController',
+        controllerAs: 'vm',
+        access: {
+          requiresregister: false,
+          roles: []
+        }
 
-        });
+      });
 
     }])
 
     .service('registerDataService', registerDataService)
-    
+
     .controller('registerController', registerController);
 
+  // Injectables
+  registerDataService.$inject = ['$http', '$rootScope', 'API_URL', 'jwtHelper', '$window', 'AuthTokenService'];
 
-// Injectables
-registerDataService.$inject = ['$http', '$rootScope', 'API_URL', 'jwtHelper', '$window', 'AuthTokenService'];
+  registerController.$inject = ['registerDataService', 'jwtHelper', '$location', '$window', 'AuthTokenService'];
 
-registerController.$inject = ['registerDataService', 'jwtHelper', '$location', '$window', 'AuthTokenService'];
-
-
-/**
- *
- * register Controller
- *
- * @constructor
- *
- */
-function registerController(registerDataService, jwtHelper, $location, $window, AuthTokenService) {
-
-    var vm = this;
-
-    vm.user = {};
+  /**
+   *
+   * Register Controller
+   *
+   * @param {object} registerDataService
+   * @param {object} jwtHelper
+   * @param {object} $location
+   * @param {object} $window
+   * @param {object} AuthTokenService
+   */
+  function registerController(registerDataService, jwtHelper, $location, $window, AuthTokenService) {
 
     vm.onSubmit = onSubmit;
 
     vm.env = {
-        angularVersion: angular.version.full
-        //formlyVersion: formlyVersion
+      angularVersion: angular.version.full
+      //formlyVersion: formlyVersion
     };
 
     vm.model = {};
     vm.options = {};
 
-
     // Check token
     var token = sessionStorage.getItem('auth-token');
 
     if (token) {
-        vm.authUser = jwtHelper.decodeToken(token);
+      vm.authUser = jwtHelper.decodeToken(token);
 
-        //// Redirect if token i.e logged in
-        $window.location = '#/dashboard';
-        $window.location.reload();
+      //// Redirect if token i.e logged in
+      $window.location = '#/dashboard';
+      $window.location.reload();
     }
-
 
     // http://docs.angular-formly.com/v6.4.0/docs/custom-templates
     vm.fields = [
-
-
-        {
-            key: 'first_name',
-            type: 'input',
-            templateOptions: {
-                type: 'text',
-                label: 'First name',
-                placeholder: '',
-                required: true
-            }
-        },
-        {
-            key: 'last_name',
-            type: 'input',
-            templateOptions: {
-                type: 'text',
-                label: 'Last name',
-                placeholder: '',
-                required: true
-            }
-        },
-        {
-            key: 'email',
-            type: 'input',
-            templateOptions: {
-                type: 'email',
-                label: 'Email',
-                placeholder: 'Please enter your username',
-                required: true
-            }
-        },
-        {
-            key: 'password',
-            type: 'input',
-            templateOptions: {
-                type: 'text',
-                label: 'Password',
-                placeholder: 'Please enter your password',
-                required: true
-            }
+      {
+        key: 'first_name',
+        type: 'input',
+        templateOptions: {
+          type: 'text',
+          label: 'First name',
+          placeholder: '',
+          required: true
         }
+      },
+      {
+        key: 'last_name',
+        type: 'input',
+        templateOptions: {
+          type: 'text',
+          label: 'Last name',
+          placeholder: '',
+          required: true
+        }
+      },
+      {
+        key: 'email',
+        type: 'input',
+        templateOptions: {
+          type: 'email',
+          label: 'Email',
+          placeholder: 'Please enter your username',
+          required: true
+        }
+      },
+      {
+        key: 'password',
+        type: 'input',
+        templateOptions: {
+          type: 'text',
+          label: 'Password',
+          placeholder: 'Please enter your password',
+          required: true
+        }
+      }
 
     ];
-
 
     /**
      *
@@ -54130,11 +53593,8 @@ function registerController(registerDataService, jwtHelper, $location, $window, 
      *
      */
     function logout() {
-
-        alert("logged out from controller...!");
-
+      alert('logged out from controller...!');
     }
-
 
     /**
      *
@@ -54143,36 +53603,32 @@ function registerController(registerDataService, jwtHelper, $location, $window, 
      */
     function onSubmit() {
 
-        var formSubmitted = true;
+      var formSubmitted = true;
 
-        console.log("ctrl : ", AuthTokenService);
+      console.log('ctrl : ', AuthTokenService);
 
-        registerDataService.register(vm.model.email, vm.model.password)
-            .then(function success(response) {
+      registerDataService.register(vm.model.email, vm.model.password)
+        .then(function success(response) {
 
-                // Redirect if succesful register
-                $window.location.href = '#/dashboard';
-                $window.location.reload();
-            });
-
+          // Redirect if succesful register
+          $window.location.href = '#/dashboard';
+          $window.location.reload();
+        });
     }
+  }
 
-
-}
-
-/**
- *
- * register Data Service
- *
- * @constructor
- */
-function registerDataService($http, $rootScope, API_URL, jwtHelper, $window, AuthTokenService) {
-
+  /**
+   *
+   * register Data Service
+   *
+   * @constructor
+   */
+  function registerDataService($http, $rootScope, API_URL, jwtHelper, $window, AuthTokenService) {
 
     return {
-        register: register,
-        logout: logout,
-        getUser: getUser
+      register: register,
+      logout: logout,
+      //getUser: getUser
     };
 
     /**
@@ -54183,30 +53639,24 @@ function registerDataService($http, $rootScope, API_URL, jwtHelper, $window, Aut
      */
     function register(email, password) {
 
+      return $http.post(API_URL + '/auth', {
 
-        console.log(AuthTokenService);
+        email: email,
+        password: password
 
-        return $http.post(API_URL + '/auth', {
+      }).then(function success(response) {
 
-            email: email,
-            password: password
+        AuthTokenService.setToken(response.data);
 
+        return response;
 
-        }).then(function success(response) {
-
-            console.log(AuthTokenService);
-
-            AuthTokenService.setToken(response.data);
-
-            return response;
-
-        });
+      });
     }
 
-
-    function logout(){
-
-
+    /**
+     *  logout
+     */
+    function logout() {
     }
 
     /**
@@ -54217,20 +53667,19 @@ function registerDataService($http, $rootScope, API_URL, jwtHelper, $window, Aut
      */
     function getUser() {
 
-        console.log("get-user");
+      if (AuthTokenService.getToken()) {
 
-        if (AuthTokenService.getToken()) {
+        return $http.get(API_URL + '/me');
 
-            return $http.get(API_URL + '/me');
+      } else {
 
-        } else {
+        return $q.reject({data: 'client has no auth token'});
 
-            return $q.reject({data: 'client has no auth token'});
-
-        }
+      }
     }
 
-}
+  }
+}());
 
 /**
  *
@@ -54274,150 +53723,131 @@ function registerDataService($http, $rootScope, API_URL, jwtHelper, $window, Aut
  *
  * META MODULE
  *
- * @file Handles page meta data content i.e. MetaTags, PageTitle and Socials...
+ * @description Handles page meta data content i.e. MetaTags, PageTitle and Socials...
+ *
+ * @class app.Meta
+ *
+ * @memberof app
  *
  */
 
-'use strict';
+(function() {
 
-angular.module('meta', [])
+  'use strict';
 
-    // Define services 
+  angular.module('meta', [])
+
+    // Define services
     .service('MetaTagsService', MetaTagsService);
 
+  // Define Injectables
+  MetaTagsService.$inject = [];
 
-// Define Injectables
-MetaTagsService.$inject = [];
+  /**
+   *
+   * PageTitle Service
+   */
+  function MetaTagsService() {
 
-
-
-/**
- *
- * PageTitle Service
- */
-function MetaTagsService() {
-
-    var title = 'iLoveMyGrub.com | Foodie Goodness'
+    var title = 'iLoveMyGrub.com | Foodie Goodness';
     var metaDescription = '';
     var metaKeywords = '';
 
     return {
-        title: function () {
-            return title;
-        },
-        setTitle: function (newTitle) {
-            title = newTitle;
-        },
-        metaDescription: function () {
-            return metaDescription;
-        },
-        metaKeywords: function () {
-            return metaKeywords;
-        },
-        reset: function () {
-            metaDescription = '';
-            metaKeywords = '';
-        },
-        setMetaDescription: function (newMetaDescription) {
-            metaDescription = newMetaDescription;
-        },
-        appendMetaKeywords: function (newKeywords) {
-            for (var key in newKeywords) {
-                if (metaKeywords === '') {
-                    metaKeywords += newKeywords[key].name;
-                } else {
-                    metaKeywords += ', ' + newKeywords[key].name;
-                }
-            }
+      title: function() {
+        return title;
+      },
+      setTitle: function(newTitle) {
+        title = newTitle;
+      },
+      metaDescription: function() {
+        return metaDescription;
+      },
+      metaKeywords: function() {
+        return metaKeywords;
+      },
+      reset: function() {
+        metaDescription = '';
+        metaKeywords = '';
+      },
+      setMetaDescription: function(newMetaDescription) {
+        metaDescription = newMetaDescription;
+      },
+      appendMetaKeywords: function(newKeywords) {
+        for (var key in newKeywords) {
+          if (metaKeywords === '') {
+            metaKeywords += newKeywords[key].name;
+          } else {
+            metaKeywords += ', ' + newKeywords[key].name;
+          }
         }
+      }
     };
 
-}
+  }
 
+}());
 
-//
-//<meta name="description" content="{{ MetaInformation.metaDescription() }}">
-//    <meta name="keywords" content="{{ MetaInformation.metaKeywords() }}">
-/***
+/**
  *
  * MOBILE MENU COMPONENT
  *
- * @file
- *  Provides the mobile menu functionality for the site, including directives
+ * @description
+ * Provides the mobile menu functionality for the site, including directives
  *
  */
 
-'use strict';
+(function() {
 
-angular.module('mobile-menu', [])
+  'use strict';
+
+  angular.module('mobile-menu', [])
 
     // Directives
     .directive('mobileMenu', mobileMenu);
 
-// Inject Deps
-mobileMenu.$inject = [];
+  // Inject Deps
+  mobileMenu.$inject = [];
 
-
-/**
- *
- * Mobile Meny Directive : Provides the hamburger icon and menu overlay functionality.
- *
- * @returns {{replace: boolean, restrict: string, template: string, link: link}}
- *
- */
-function mobileMenu() {
+  /**
+   *
+   * Mobile Meny Directive : Provides the hamburger icon and menu overlay functionality.
+   *
+   * @returns {{replace: boolean, restrict: string, template: string, link: link}}
+   *
+   */
+  function mobileMenu() {
 
     return {
-        replace: true,
-        restrict: 'AE',
+      replace: true,
+      restrict: 'AE',
 
-        scope: {
-            toggle: '='
-        },
+      scope: {
+        toggle: '='
+      },
 
-        templateUrl: 'site/shared/directives/mobile-menu/mobile-menu.tpl.html',
+      templateUrl: 'shared/directives/mobile-menu/mobile-menu.tpl.html',
 
-        link: function (scope, elem, attrs) {
+      link: function(scope, elem, attrs) {
 
-            // Toggle Menu
-            scope.toggle = false;
+        // Toggle Menu
+        scope.toggle = false;
 
-            scope.toggleOverlay = function () {
-                scope.toggle = scope.toggle === false ? true : false;
-            };
+        scope.toggleOverlay = function() {
+          scope.toggle = scope.toggle === false ? true : false;
+        };
+      }
+    };
+  }
 
-
-            ///**
-            // *
-            // *
-            // */
-            //MenuDataService.getMobileMenu()
-            //
-            //    .then(function (response) {
-            //        scope.menu = response
-            //    })
-            //    .catch(function (error) {
-            //
-            //        console.log("Mobile Menu get error");
-            //
-            //    });
-            //
-
-
-        }
-    }
-
-
-}
-
-/**
- *
- * Mobile Menu Controller
- *
- * @constructor
- *
- */
-function MobileMenuController(MobileMenuDataService, jwtHelper, $location, $window, AuthTokenService) {
+  /**
+   *
+   * Mobile Menu Controller
+   *
+   * @constructor
+   *
+   */
+  function MobileMenuController(MobileMenuDataService, jwtHelper, $location, $window, AuthTokenService) {
 
     //var vm = this;
     //
@@ -54447,24 +53877,21 @@ function MobileMenuController(MobileMenuDataService, jwtHelper, $location, $wind
     //        });
     //
     //}
+  }
 
+  /**
+   *
+   * Mobile Menu Data Service
+   *
+   * @constructor
+   */
+  function MobileMenuDataService($http, $rootScope, API_URL, jwtHelper, $window, AuthTokenService) {
 
-}
-
-/**
- *
- * Mobile Menu Data Service
- *
- * @constructor
- */
-function MobileMenuDataService($http, $rootScope, API_URL, jwtHelper, $window, AuthTokenService) {
-
-    var endpointAPI = API_URL + "/mobile-menu";
+    var endpointAPI = API_URL + '/mobile-menu';
 
     return {
-        getMobileMenu: getMobileMenu
+      getMobileMenu: getMobileMenu
     };
-
 
     /**
      *
@@ -54475,24 +53902,31 @@ function MobileMenuDataService($http, $rootScope, API_URL, jwtHelper, $window, A
      */
     function getMobileMenu(uuid) {
 
-        return $http.get(endpointAPI + "/" + uuid)
-            .then(dataComplete)
-            .catch(dataFailed);
+      return $http.get(endpointAPI + '/' + uuid)
+        .then(dataComplete)
+        .catch(dataFailed);
 
-        function dataComplete(response) {
+      /**
+       *
+       * @param response
+       * @returns {*}
+       */
+      function dataComplete(response) {
+        console.log(response.data);
+        return response.data;
+      }
 
-            console.log(response.data);
-            return response.data;
-
-        }
-
-        function dataFailed(error) {
-            console.log('XHR Failed for get data .' + error);
-        }
+      /**
+       *
+       * @param error
+       */
+      function dataFailed(error) {
+        console.log('XHR Failed for get data .' + error);
+      }
     }
+  }
 
-
-}
+}());
 
 /**
  *
@@ -54530,9 +53964,9 @@ function MobileMenuDataService($http, $rootScope, API_URL, jwtHelper, $window, A
       'project.frontpage',
       'project.events',
       'project.articles',
-      'project.reviews',
       'project.recipes',
-      'project.news',
+      //'project.reviews',
+      //'project.news',
       'project.dashboard',
       'project.contact',
       'project.static-pages',
@@ -54650,24 +54084,24 @@ function MobileMenuDataService($http, $rootScope, API_URL, jwtHelper, $window, A
 
 }());
 
-angular.module("templates").run(["$templateCache", function($templateCache) {$templateCache.put("components/articles/articles-detail.tpl.html","<div class=\"page-content\">\n\n    <div class=\"container\">\n\n        <div class=\"row\">\n            <div class=\" col-sm-12 text-center\">\n\n                <p class=\"section-title\">Articles</p>\n\n            </div>\n\n        </div>\n\n\n        <!-- Loading Icons -->\n        <div ng-if=\"vm.loading\" class=\"loading-info\">\n            <div class=\"loading-info-content\">\n                <img src=\"/img/ring.gif\" alt=\"LOADING DATA\" />\n            </div>\n        </div>\n\n        <!-- Content -->\n        <div ng-if=\"!vm.loading\" class=\"row\">\n\n            <div class=\"col-sm-12 col-md-6\">\n\n                <img ng-src=\"{{ vm.details[0].features_image }}\" class=\"img-responsive\"/>\n\n                <!--  @todo : Related content + links  -->\n\n            </div>\n\n            <div class=\"col-sm-12 col-md-6 bg-white\">\n\n                <!--<pre>{{ vm.details | json }}</pre>-->\n\n                <div>\n\n                    <!--  {{ vm.id }}  -->\n\n                    <h1 class=\"title\" ng-bind-html=\"vm.details[0].node_title\"></h1>\n\n                    <p class=\"lead\" ng-bind-html=\"vm.details[0].strapline\"></p>\n\n                    <p ng-bind-html=\"vm.details[0].body\"></p>\n\n                </div>\n\n            </div>\n\n        </div>\n\n    </div>\n\n</div>");
-$templateCache.put("components/articles/articles.tpl.html","<!-- articles.tpl -->\n\n<div class=\"page-content\">\n\n    <div class=\"container\">\n\n        <div class=\"row\">\n            <div class=\"lp-hero col-sm-12 text-center\">\n\n                <h1>Articles</h1>\n\n                <p class=\"lead\">We\'re suckers for food, and we LOVE talking about it. Find all the tasty food chat\n                    here.</p>\n\n            </div>\n\n        </div>\n\n        <div class=\"row\">\n\n            <div class=\"col-sm-12\">\n\n                <!--<pre>{{ vm.listings | json }}</pre>-->\n\n                <div ng-if=\"vm.loading\" class=\"loading-info\">\n                    <div class=\"loading-info-content\">\n                        <img src=\"/img/ring.gif\" alt=\"LOADING DATA\" />\n\n                    </div>\n                </div>\n\n                <!-- grid list  -->\n                <div class=\"bucket\">\n\n                    <div\n                            dir-paginate=\"item in vm.listings\n                        | filter:query\n                        | orderBy: \'item.event_start_date\'\n                        | itemsPerPage: 12\" class=\"grid-item\">\n\n\n                        <div class=\"content\">\n\n                            <div>\n                                <a href=\"/articles/{{ item.nid}}\">\n                                    <img ng-src=\"{{ item.features_image }}\" class=\"img-responsive\"/>\n                                </a>\n\n                                <div class=\"caption\">\n                                    <h4 class=\"title\" ng-bind-html=\"item.node_title\"></h4>\n\n                                    <!--<p class=\"\">{{ item.event_start_date }}</p>-->\n\n                                </div>\n                            </div>\n\n                        </div>\n\n                    </div>\n\n                </div>\n                <!-- / grid list  -->\n\n\n            </div>\n\n\n        </div>\n\n\n        <!-- pager -->\n        <div class=\"row\">\n            <div class=\"col-sm-12 text-center\">\n                <!-- ngDirective provided by the dir-pagination module @bower_components -->\n                <dir-pagination-controls></dir-pagination-controls>\n\n            </div>\n\n        </div>\n\n\n    </div>\n</div>");
+angular.module("templates").run(["$templateCache", function($templateCache) {$templateCache.put("bower_components/angularUtils-pagination/dirPagination.tpl.html","<ul class=\"pagination\" ng-if=\"1 < pages.length || !autoHide\">\n    <li ng-if=\"boundaryLinks\" ng-class=\"{ disabled : pagination.current == 1 }\">\n        <a href=\"\" ng-click=\"setCurrent(1)\">&laquo;</a>\n    </li>\n    <li ng-if=\"directionLinks\" ng-class=\"{ disabled : pagination.current == 1 }\">\n        <a href=\"\" ng-click=\"setCurrent(pagination.current - 1)\">&lsaquo;</a>\n    </li>\n    <li ng-repeat=\"pageNumber in pages track by tracker(pageNumber, $index)\" ng-class=\"{ active : pagination.current == pageNumber, disabled : pageNumber == \'...\' }\">\n        <a href=\"\" ng-click=\"setCurrent(pageNumber)\">{{ pageNumber }}</a>\n    </li>\n\n    <li ng-if=\"directionLinks\" ng-class=\"{ disabled : pagination.current == pagination.last }\">\n        <a href=\"\" ng-click=\"setCurrent(pagination.current + 1)\">&rsaquo;</a>\n    </li>\n    <li ng-if=\"boundaryLinks\"  ng-class=\"{ disabled : pagination.current == pagination.last }\">\n        <a href=\"\" ng-click=\"setCurrent(pagination.last)\">&raquo;</a>\n    </li>\n</ul>");
+$templateCache.put("components/articles/articles-detail.tpl.html","<div class=\"page-content\">\n\n    <div class=\"container\">\n\n        <div class=\"row\">\n            <div class=\" col-sm-12 text-center\">\n\n                <p class=\"section-title\">Articles</p>\n\n            </div>\n\n        </div>\n\n\n        <!-- Loading Icons -->\n        <div ng-if=\"vm.loading\" class=\"loading-info\">\n            <div class=\"loading-info-content\">\n                <img src=\"/img/ring.gif\" alt=\"LOADING DATA\"/>\n            </div>\n        </div>\n\n        <!-- Content -->\n        <div ng-if=\"!vm.loading\" class=\"row\">\n\n            <div class=\"col-sm-12 col-md-6\">\n\n                <img ng-src=\"{{ vm.details[0].features_image }}\" class=\"img-responsive\"/>\n\n                <!--  @todo : Related content + links  -->\n\n            </div>\n\n            <div class=\"col-sm-12 col-md-6 bg-white\">\n\n                <!--<pre>{{ vm.details | json }}</pre>-->\n\n                <div>\n\n                    <!--  {{ vm.id }}  -->\n\n                    <h1 class=\"title\" ng-bind-html=\"vm.details[0].node_title\"></h1>\n\n                    <p class=\"lead\" ng-bind-html=\"vm.details[0].strapline\"></p>\n\n                    <p ng-bind-html=\"vm.details[0].body\"></p>\n\n                </div>\n\n            </div>\n\n        </div>\n\n    </div>\n\n</div>");
+$templateCache.put("components/articles/articles.tpl.html","<!-- articles.tpl -->\n\n<div class=\"page-content\">\n\n    <div class=\"container\">\n\n        <div class=\"row\">\n            <div class=\"lp-hero col-sm-12 text-center\">\n\n                <h1>Articles</h1>\n\n                <p class=\"lead\">We\'re suckers for food, and we LOVE talking about it. Find all the tasty food chat\n                    here.</p>\n\n            </div>\n\n        </div>\n\n        <div class=\"row\">\n\n            <div class=\"col-sm-12\">\n\n                <!--<pre>{{ vm.listings | json }}</pre>-->\n\n                <div ng-if=\"vm.loading\" class=\"loading-info\">\n                    <div class=\"loading-info-content\">\n                        <img src=\"/img/ring.gif\" alt=\"LOADING DATA\"/>\n\n                    </div>\n                </div>\n\n                <!-- grid list  -->\n                <div class=\"bucket\">\n\n                    <div\n                            dir-paginate=\"item in vm.listings\n                        | filter:query\n                        | orderBy: \'item.event_start_date\'\n                        | itemsPerPage: 12\" class=\"grid-item\">\n\n\n                        <div class=\"content\">\n\n                            <div>\n                                <a href=\"/articles/{{ item.nid}}\">\n                                    <img ng-src=\"{{ item.features_image }}\" class=\"img-responsive\"/>\n                                </a>\n\n                                <div class=\"caption\">\n                                    <h4 class=\"title\" ng-bind-html=\"item.node_title\"></h4>\n\n                                    <!--<p class=\"\">{{ item.event_start_date }}</p>-->\n\n                                </div>\n                            </div>\n\n                        </div>\n\n                    </div>\n\n                </div>\n                <!-- / grid list  -->\n\n\n            </div>\n\n\n        </div>\n\n\n        <!-- pager -->\n        <div class=\"row\">\n            <div class=\"col-sm-12 text-center\">\n                <!-- ngDirective provided by the dir-pagination module @bower_components -->\n                <dir-pagination-controls></dir-pagination-controls>\n\n            </div>\n\n        </div>\n\n\n    </div>\n</div>");
 $templateCache.put("components/contact/contact.tpl.html","<!-- contact.html -->\n<div class=\"page-content\">\n\n    <section id=\"contact\">\n\n        <div class=\"container\">\n\n            <div class=\"row\">\n\n                <div class=\"col-sm-12\">\n                    <h1 id=\"page-title\">Contact</h1>\n\n\n                    <form ng-submit=\"vm.onSubmit()\" name=\"vm.form\" novalidate>\n                        <formly-form model=\"vm.model\" fields=\"vm.fields\" options=\"vm.options\">\n                            <button type=\"submit\" class=\"btn btn-primary submit-button\" ng-disabled=\"vm.form.$invalid\">\n                                Submit\n                            </button>\n                            <button type=\"button\" class=\"btn btn-default\" ng-click=\"vm.options.resetModel()\">Reset\n                            </button>\n                        </formly-form>\n                    </form>\n\n                </div>\n\n            </div>\n\n        </div>\n\n    </section>\n\n</div>");
 $templateCache.put("components/dashboard/dashboard.tpl.html","<!-- Dashboard Section -->\n<div class=\"page-content\">\n    <section class=\"dashboard-section\" id=\"dashboard\">\n\n\n        <div class=\"container\">\n            <div class=\"row\">\n                <div class=\"col-sm-12\">\n\n                    <h1>Dashboard</h1>\n\n\n                <pre>\n                    {{ vm.dashboard  }}\n                    {{ vm.userData }}\n                </pre>\n\n\n                </div>\n\n                <div ng-show=\"main.user\" class=\"row\">\n                    <div class=\"col-md-8\">\n\n                        <!-- panel -->\n                        <h2>News</h2>\n\n                        <div class=\"panel\">\n\n\n                        </div>\n\n\n                    </div>\n                    <div class=\"col-md-4\">\n\n                        <!-- panel -->\n                        <h2>User Info</h2>\n\n                        <div class=\"panel\">\n\n                        </div>\n\n                        <!-- panel -->\n                        <h2>User Qual Progress</h2>\n\n                        <div class=\"panel\">\n\n                        </div>\n\n                    </div>\n                </div>\n\n            </div>\n        </div>\n\n    </section>\n    <!-- End Dashboard Section -->\n\n</div>");
-$templateCache.put("components/events/events-detail.tpl.html","<div class=\"page-content\">\n    <div class=\"container\">\n\n        <div class=\"row\">\n            <div class=\" col-sm-12 text-center\">\n\n                <p class=\"section-title\">Food Events</p>\n\n            </div>\n\n        </div>\n\n\n        <!-- Loading Icon -->\n        <div ng-if=\"vm.loading\" class=\"loading-info\">\n            <div class=\"loading-info-content\">\n                <img src=\"/img/ring.gif\" alt=\"LOADING DATA\"/>\n            </div>\n        </div>\n\n\n        <!-- Content -->\n        <div ng-if=\"!vm.loading\" class=\"row\">\n\n            <div class=\"col-md-6\">\n\n\n                <div class=\"details-img\">\n\n\n                    <img ng-if=\"vm.details[0].event_img_url\" ng-src=\"{{ vm.details[0].event_img_url }}\" class=\"img-responsive\"/>\n\n                    <img ng-if=\"!vm.details[0].event_img_url\" ng-src=\"{{ vm.details[0].event_image }}\" class=\"img-responsive\"/>\n\n\n                </div>\n\n\n\n\n                <!-- Google Maps Directives -->\n                <ui-gmap-google-map\n                        center=\'vm.map.center\'\n                        zoom=\'vm.map.zoom\'\n                        options=\'vm.map.options\'\n                >\n\n                    <ui-gmap-marker coords=\'vm.map.marker.coords\' options=\"vm.map.marker.options\"\n                                    events=\"vm.map.marker.events\" idkey=\"vm.map.marker.id\">\n                    </ui-gmap-marker>\n                </ui-gmap-google-map>\n\n            </div>\n\n            <div class=\"col-sm-12 col-md-6\">\n\n                <!--<pre>{{ vm.details | json }}</pre>-->\n\n                <!-- Data Listings -->\n\n                <div>\n\n\n                    <h1 class=\"title\" ng-bind-html=\"vm.details[0].node_title\"></h1>\n\n                    <hr>\n\n                    <h3>Dates &amp; Times</h3>\n\n                    <p class=\"\">\n                        Start Date : {{ vm.details[0].event_start_date }}<br>\n                        End Date : {{ vm.details[0].event_end_date }}\n                    </p>\n\n                    <hr>\n\n\n                    <h3>Venue Details</h3>\n\n                    <p ng-if=\"vm.details[0].venue\">\n\n                        <strong>{{ vm.details[0].venue }}</strong>,\n\n                        {{ vm.details[0].address_1 }}\n                        {{ vm.details[0].address_1 }}, {{ vm.details[0].address_2 }}, {{ vm.details[0].city }} {{\n                        vm.details[0].postcode }}\n\n                    </p>\n\n                    <hr>\n\n                    <h3>Info</h3>\n\n                    <!--<p><strong>Event Type: </strong> {{ vm.details[0].event_type }}</p>-->\n\n                    <p ng-bind-html=\"vm.details[0].body\"></p>\n\n                    <p><em>Event ID: {{ vm.id }}</em></p>\n\n                    <p ng-bind-html=\"vm.details[0].more_details\"></p>\n\n                </div>\n\n            </div>\n\n            <!--<div ng-repeat=\"item in vm.listings\" ng-if=\"$index % 3 == 0\" class=\"row\">-->\n            <!--<div class=\"col-xs-4\">{{item[$index]}}</div>-->\n            <!--<div class=\"col-xs-4\">{{item[$index + 1]}}</div>-->\n            <!--<div class=\"col-xs-4\">{{item[$index + 2]}}</div>-->\n            <!--</div>-->\n\n\n        </div>\n\n\n    </div>\n\n\n</div>\n</div>");
+$templateCache.put("components/events/events-detail.tpl.html","<div class=\"page-content\">\n    <div class=\"container\">\n\n        <div class=\"row\">\n            <div class=\" col-sm-12 text-center\">\n\n                <p class=\"section-title\">Food Events</p>\n\n            </div>\n\n        </div>\n\n\n        <!-- Loading Icon -->\n        <div ng-if=\"vm.loading\" class=\"loading-info\">\n            <div class=\"loading-info-content\">\n                <img src=\"/img/ring.gif\" alt=\"LOADING DATA\"/>\n            </div>\n        </div>\n\n\n        <!-- Content -->\n        <div ng-if=\"!vm.loading\" class=\"row\">\n\n            <div class=\"col-md-6\">\n\n\n                <div class=\"details-img\">\n\n\n                    <img ng-if=\"vm.details[0].event_img_url\" ng-src=\"{{ vm.details[0].event_img_url }}\"\n                         class=\"img-responsive\"/>\n\n                    <img ng-if=\"!vm.details[0].event_img_url\" ng-src=\"{{ vm.details[0].event_image }}\"\n                         class=\"img-responsive\"/>\n\n\n                </div>\n\n\n                <!-- Google Maps Directives -->\n                <ui-gmap-google-map\n                        center=\'vm.map.center\'\n                        zoom=\'vm.map.zoom\'\n                        options=\'vm.map.options\'\n                >\n\n                    <ui-gmap-marker coords=\'vm.map.marker.coords\' options=\"vm.map.marker.options\"\n                                    events=\"vm.map.marker.events\" idkey=\"vm.map.marker.id\">\n                    </ui-gmap-marker>\n                </ui-gmap-google-map>\n\n            </div>\n\n            <div class=\"col-sm-12 col-md-6\">\n\n                <!--<pre>{{ vm.details | json }}</pre>-->\n\n                <!-- Data Listings -->\n\n                <div>\n\n\n                    <h1 class=\"title\" ng-bind-html=\"vm.details[0].node_title\"></h1>\n\n                    <hr>\n\n                    <h3>Dates &amp; Times</h3>\n\n                    <p class=\"\">\n                        Start Date : {{ vm.details[0].event_start_date }}<br>\n                        End Date : {{ vm.details[0].event_end_date }}\n                    </p>\n\n                    <hr>\n\n\n                    <h3>Venue Details</h3>\n\n                    <p ng-if=\"vm.details[0].venue\">\n\n                        <strong>{{ vm.details[0].venue }}</strong>,\n\n                        {{ vm.details[0].address_1 }}\n                        {{ vm.details[0].address_1 }}, {{ vm.details[0].address_2 }}, {{ vm.details[0].city }} {{\n                        vm.details[0].postcode }}\n\n                    </p>\n\n                    <hr>\n\n                    <h3>Info</h3>\n\n                    <!--<p><strong>Event Type: </strong> {{ vm.details[0].event_type }}</p>-->\n\n                    <p ng-bind-html=\"vm.details[0].body\"></p>\n\n                    <p><em>Event ID: {{ vm.id }}</em></p>\n\n                    <p ng-bind-html=\"vm.details[0].more_details\"></p>\n\n                </div>\n\n            </div>\n\n            <!--<div ng-repeat=\"item in vm.listings\" ng-if=\"$index % 3 == 0\" class=\"row\">-->\n            <!--<div class=\"col-xs-4\">{{item[$index]}}</div>-->\n            <!--<div class=\"col-xs-4\">{{item[$index + 1]}}</div>-->\n            <!--<div class=\"col-xs-4\">{{item[$index + 2]}}</div>-->\n            <!--</div>-->\n\n\n        </div>\n\n\n    </div>\n\n\n</div>\n</div>");
 $templateCache.put("components/events/events.tpl.html","<div class=\"page-content\">\n    <div class=\"container\">\n\n        <div class=\"row\">\n            <div class=\"lp-hero col-sm-12 text-center\">\n                <h1>Food Events</h1>\n\n                <p class=\"lead\">Find the latest London and UK food events, shows & festivals.</p>\n\n            </div>\n\n        </div>\n\n        <!-- content -->\n        <div class=\"row\">\n\n            <div class=\"col-sm-12\">\n\n                <!--<pre>{{ vm.listings | json }}</pre>-->\n\n                <!-- Loading Icons -->\n                <div ng-if=\"vm.loading\" class=\"loading-info\">\n                    <div class=\"loading-info-content\">\n                        <img src=\"/img/ring.gif\" alt=\"LOADING DATA\"/>\n                    </div>\n                </div>\n\n                <!-- grid list  -->\n                <div class=\"bucket\">\n\n                    <div\n                            dir-paginate=\"item in vm.listings\n                        | filter:query\n                        | orderBy: \'item.event_start_date\'\n                        | itemsPerPage: 12\" class=\"grid-item\">\n\n\n                        <div class=\"content\">\n\n                            <div>\n\n                                <div class=\"grid-img\">\n                                    <a ng-if=\"!item.event_img_url\" href=\"/food-events/{{ item.nid}}\">\n                                        <img ng-src=\"{{ item.event_image }}\" class=\"img-responsive\"/>\n                                    </a>\n\n                                    <a ng-if=\"item.event_img_url\" href=\"/food-events/{{ item.nid}}\">\n                                        <!--img url -->\n                                        <img ng-src=\"{{ item.event_img_url }}\" class=\"img-responsive\"/>\n                                    </a>\n                                </div>\n\n\n                                <div class=\"caption\">\n                                    <h4 class=\"title\" ng-bind-html=\"item.node_title\"></h4>\n\n                                    <p class=\"start-date\">{{ item.event_start_date }}</p>\n                                </div>\n\n                            </div>\n\n                        </div>\n\n                    </div>\n\n                </div>\n                <!-- / grid list  -->\n\n            </div>\n\n        </div>\n\n        <!-- pager -->\n        <div class=\"row\">\n            <div class=\"col-sm-12 text-center\">\n                <!-- ngDirective provided by the dir-pagination module @bower_components -->\n                <dir-pagination-controls></dir-pagination-controls>\n\n            </div>\n\n        </div>\n\n    </div>\n</div>");
-$templateCache.put("bower_components/angularUtils-pagination/dirPagination.tpl.html","<ul class=\"pagination\" ng-if=\"1 < pages.length || !autoHide\">\n    <li ng-if=\"boundaryLinks\" ng-class=\"{ disabled : pagination.current == 1 }\">\n        <a href=\"\" ng-click=\"setCurrent(1)\">&laquo;</a>\n    </li>\n    <li ng-if=\"directionLinks\" ng-class=\"{ disabled : pagination.current == 1 }\">\n        <a href=\"\" ng-click=\"setCurrent(pagination.current - 1)\">&lsaquo;</a>\n    </li>\n    <li ng-repeat=\"pageNumber in pages track by tracker(pageNumber, $index)\" ng-class=\"{ active : pagination.current == pageNumber, disabled : pageNumber == \'...\' }\">\n        <a href=\"\" ng-click=\"setCurrent(pageNumber)\">{{ pageNumber }}</a>\n    </li>\n\n    <li ng-if=\"directionLinks\" ng-class=\"{ disabled : pagination.current == pagination.last }\">\n        <a href=\"\" ng-click=\"setCurrent(pagination.current + 1)\">&rsaquo;</a>\n    </li>\n    <li ng-if=\"boundaryLinks\"  ng-class=\"{ disabled : pagination.current == pagination.last }\">\n        <a href=\"\" ng-click=\"setCurrent(pagination.last)\">&raquo;</a>\n    </li>\n</ul>");
+$templateCache.put("components/footer/footer.tpl.html","<!-- footer.tpl.html -->\n\n<!-- @todo : this needs cleaning and simplifying -->\n\n<section class=\"to-top\">\n    <div class=\"container\">\n        <div class=\"row\">\n            <div class=\"col-sm-12 text-center\">\n\n                <div class=\"socials\">\n                    <a href=\"https://twitter.com/ilovemygrub\" target=\"_blank\" class=\"icon-medium\"><i\n                            class=\"icon-twitter\"></i></a>\n                    <a href=\"https://www.facebook.com/pages/iLoveMyGrubcom-FAN/309353911709\" target=\"_blank\"\n                       class=\"icon-medium\"><i class=\"icon-facebook\"></i></a>\n                    <a href=\"https://www.pinterest.com/ilovemygrub\" target=\"_blank\" class=\"icon-medium\"><i\n                            class=\"icon-pinterest\"></i></a>\n                </div>\n\n            </div>\n\n            <!--<div class=\"col-xs-1 col-sm-4 to-top-wrap\">-->\n            <!--&lt;!&ndash; @todo : scroll to top directive &ndash;&gt;-->\n            <!--</div>-->\n\n        </div>\n    </div>\n</section>\n\n<!-- footers-->\n<footer>\n    <div class=\"container\">\n\n        <div class=\"footer-links row\">\n\n            <!-- footer logo -->\n            <div class=\"logo-wrap col-xs-12 col-sm-6\">\n\n                <div class=\"logo\">\n                    <!-- needs sizing -->\n                    <a href=\"/#/frontpage\"><img src=\"/img/ilmg_logo.png\" alt=\"iLoveMyGrub.com logo\"></a>\n                </div>\n\n                <p class=\"text-wrap\">&copy; iLoveMyGrub.com 2016</p>\n\n            </div>\n\n\n            <ul class=\"footer-group col-xs-12 col-sm-3\">\n                <h5>Read more</h5>\n                <li><a href=\"/about\">About </a></li>\n                <li><a href=\"/articles\">Articles</a></li>\n                <li><a href=\"/food-events\">Events</a></li>\n                <li><a href=\"/recipes\">Recipes</a></li>\n                <!--<li><a href=\"/#/news\">News</a></li>-->\n                <li>\n                    <a href=\"https://docs.google.com/a/modernfidelity.co.uk/forms/d/1OaI6LJGCdMO1JEA0O8BeVBNZcTONQki9dniTC91qFqY/viewform\"\n                       target=\"_blank\">Contact us</a></li>\n            </ul>\n\n            <!-- Food Events  -->\n            <div class=\"col-xs-12 col-sm-3\">\n                <h5>Find an Event</h5>\n\n                <p>Get the latest info and details on up and coming food events</p>\n                <a href=\"/food-events\">\n                    <div class=\"btn btn-primary\"> Find Food Events</div>\n                </a>\n            </div>\n\n\n        </div>\n    </div>\n</footer>\n\n<div class=\"footer-terms\">\n    <div class=\"container\">\n        <div class=\"row\">\n            <div class=\"col-xs-12\">\n                <ul class=\"list-inline footer-links\">\n                    <li><a href=\"/privacy-policy\" title=\"Privacy policy\">Privacy policy</a></li>\n                    <li><a href=\"/terms\" title=\"Terms and conditions\">Terms and\n                        conditions</a></li>\n                </ul>\n\n            </div>\n\n        </div>\n    </div>\n</div>");
 $templateCache.put("components/frontpage/frontpage.tpl.html","<!-- frontpage.tpl.html -->\n\n<section class=\"hero\">\n\n    <div class=\"container\">\n\n        <div class=\"row\">\n\n            <div id=\"head-content\" class=\"col-xs-12 text-center\">\n\n                <div class=\"head-content-cell\">\n\n                    <h1>Unearthing the best in food</h1>\n\n                    <h2>For the food-obsessed, and the ever-peckish...</h2>\n\n                </div>\n\n            </div>\n            <!-- end col -->\n\n        </div>\n        <!-- end row -->\n\n\n    </div>\n    <!-- end head container -->\n\n</section>\n\n\n<section class=\"section-2 module\">\n    <div class=\"container\">\n        <div id=\"section-2-container\" class=\"row\">\n            <div class=\"col-xs-12 col-sm-4 col-md-4 section-2-cta cta-1\">\n                <h2>Food Events</h2>\n\n                <p>Find the latest London and UK food events, shows & festivals.</p>\n\n                <div class=\"section-2-btn-wrap\"><a href=\"/food-events\"\n                                                   class=\"btn btn-default section-2-btn frontpage-vbottom\">Find a\n                    food event</a></div>\n\n            </div>\n\n            <div class=\"col-xs-12 col-sm-4 col-md-4 section-2-cta cta-2\">\n                <h2>Articles</h2>\n\n                <p>We\'re suckers for food, and we LOVE talking about it. Find all the tasty food chat here.</p>\n\n                <div class=\"section-2-btn-wrap\"><a href=\"/#/articles\"\n                                                   class=\"btn btn-default section-2-btn frontpage-vbottom\">Read latest\n                    articles</a></div>\n            </div>\n\n            <div class=\"col-xs-12 col-sm-4 col-md-4 section-2-cta cta-3\">\n                <h2>Recipes</h2>\n\n                <p>Soups, desserts, vegetarian recipes and of course CAKE. Drool away people.</p>\n\n                <div class=\"section-2-btn-wrap\"><a href=\"/#/recipes\"\n                                                   class=\"btn btn-default section-2-btn frontpage-vbottom\">Find the best\n                    recipes</a></div>\n\n            </div>\n\n        </div>\n        <!-- end #section-2-container - row -->\n\n    </div>\n    <!-- end container -->\n\n\n</section>\n<!-- end section-2 -->\n\n\n<!-- #3 -->\n<section class=\"section-3 module text-center\">\n\n    <div id=\"section-3-container\" class=\"container\">\n\n        <div class=\"row\">\n\n            <div id=\"section-3-content-wrap\">\n\n\n                <div class=\"section-3-img\"></div>\n\n                <div id=\"section-3-text-wrap\" class=\"\"></div>\n\n            </div>\n\n        </div>\n\n    </div>\n\n</section>\n\n\n");
-$templateCache.put("components/login/login.tpl.html","<!-- login.tpl -->\n\n<div class=\"page-content\">\n\n    <div class=\"container\">\n\n        <div class=\"row\">\n            <div class=\"col-sm-12 text-center\"><h1>Log in</h1></div>\n        </div>\n\n\n        <div class=\"row\">\n\n\n            <div class=\"col-sm-12\">\n\n                <div ng-if=\"vm.authUser\">\n                    <pre>{{ vm.authUser }}</pre>\n                </div>\n\n                <div>\n                    <form ng-submit=\"vm.onSubmit()\" name=\"vm.form\" novalidate>\n                        <formly-form model=\"vm.model\" fields=\"vm.fields\" options=\"vm.options\">\n\n                            <button type=\"submit\" class=\"btn btn-primary submit-button\" ng-disabled=\"vm.form.$invalid\">\n                                Submit\n                            </button>\n\n                        </formly-form>\n                    </form>\n                </div>\n                <div>\n\n                    <p class=\"text-center\">\n                        <a href=\"/register\">Not a member ? Sign up</a> | <a href=\"/forgotten\">Forgotten Password ?</a>\n                    </p>\n                </div>\n            </div>\n\n        </div>\n\n\n        <div class=\"row\">\n            <div class=\"col-sm-12\">\n\n            </div>\n        </div>\n\n\n    </div>\n\n\n</div>");
 $templateCache.put("components/header/header.tpl.html","<!-- header.tpl.html -->\n<nav class=\"navbar navbar-white navbar-fixed-top\">\n\n    <div class=\"container-fluid\">\n\n        <div class=\"navbar-header \">\n\n            <div class=\"logo-top-bar\">\n                <a href=\"/frontpage\">\n\n                    <img src=\"/img/ilmg_logo.png\" height=\"35px\">\n\n                </a>\n            </div>\n\n        </div>\n\n\n        <!-- Desktop Menu  -->\n        <div class=\"hidden-sm hidden-xs\">\n\n            <ul class=\"nav navbar-nav menu-top-bar\">\n\n                <li><a href=\"/food-events\">Events</a></li>\n                <li><a href=\"/recipes\">Recipes</a></li>\n                <li><a href=\"/articles\">Articles</a></li>\n\n            </ul>\n\n            <!-- Search -->\n            <!--<form class=\"navbar-form navbar-left\" role=\"search\">-->\n            <!--<div class=\"form-group\">-->\n            <!--<input type=\"text\" class=\"form-control\" placeholder=\"Search\">-->\n            <!--</div>-->\n            <!--</form>-->\n\n        </div>\n\n        <!-- Add hamburger + mobile menu overlay -->\n        <div class=\"mobile-menu-holder\">\n            <div data-mobile-menu toggle=\"menu\"></div>\n        </div>\n\n\n        <!--<div class=\"account-utilities nav-right\">-->\n\n        <!--&lt;!&ndash; User Component Directive &ndash;&gt;-->\n        <!--&lt;!&ndash;<div data-user-menu-top-bar></div>&ndash;&gt;-->\n\n        <!--&lt;!&ndash; Login Component Directive &ndash;&gt;-->\n        <!--<div data-login-directive-top-links></div>-->\n\n\n        <!--</div>-->\n\n\n    </div>\n\n</nav>");
+$templateCache.put("components/login/login.tpl.html","<!-- login.tpl -->\n\n<div class=\"page-content\">\n\n    <div class=\"container\">\n\n        <div class=\"row\">\n            <div class=\"col-sm-12 text-center\"><h1>Log in</h1></div>\n        </div>\n\n\n        <div class=\"row\">\n\n\n            <div class=\"col-sm-12\">\n\n                <div ng-if=\"vm.authUser\">\n                    <pre>{{ vm.authUser }}</pre>\n                </div>\n\n                <div>\n                    <form ng-submit=\"vm.onSubmit()\" name=\"vm.form\" novalidate>\n                        <formly-form model=\"vm.model\" fields=\"vm.fields\" options=\"vm.options\">\n\n                            <button type=\"submit\" class=\"btn btn-primary submit-button\" ng-disabled=\"vm.form.$invalid\">\n                                Submit\n                            </button>\n\n                        </formly-form>\n                    </form>\n                </div>\n                <div>\n\n                    <p class=\"text-center\">\n                        <a href=\"/register\">Not a member ? Sign up</a> | <a href=\"/forgotten\">Forgotten Password ?</a>\n                    </p>\n                </div>\n            </div>\n\n        </div>\n\n\n        <div class=\"row\">\n            <div class=\"col-sm-12\">\n\n            </div>\n        </div>\n\n\n    </div>\n\n\n</div>");
 $templateCache.put("components/news/news-detail.tpl.html","<div class=\"page-content\">\n    <div class=\"container\">\n\n        <div class=\"row\">\n            <div class=\" col-sm-12 text-center\">\n\n                <p class=\"section-title\">Food Events</p>\n\n            </div>\n\n        </div>\n\n\n        <div class=\"row\">\n\n            <div class=\"col-\">\n            </div>\n\n            <div class=\"col-sm-12 col-md-8\">\n\n                <pre>{{ vm.details | json }}</pre>\n\n                <!-- Data Listings -->\n\n\n                <div>\n\n                    {{ vm.id }}\n\n                    <h1 class=\"title\" ng-bind-html=\"vm.details[0].node_title\"></h1>\n                    <img ng-src=\"{{ vm.details[0].event_image }}\" class=\"img-responsive\"/>\n\n\n                    <p class=\"\">Start Date : {{ vm.details[0].event_start_date }}</p>\n\n                    <p class=\"\">End Date : {{ vm.details[0].event_end_date }}</p>\n\n                    <p ng-bind-html=\"vm.details[0].body\"></p>\n\n                </div>\n\n            </div>\n\n            <!--<div ng-repeat=\"item in vm.listings\" ng-if=\"$index % 3 == 0\" class=\"row\">-->\n            <!--<div class=\"col-xs-4\">{{item[$index]}}</div>-->\n            <!--<div class=\"col-xs-4\">{{item[$index + 1]}}</div>-->\n            <!--<div class=\"col-xs-4\">{{item[$index + 2]}}</div>-->\n            <!--</div>-->\n\n\n        </div>\n\n\n    </div>\n\n    <!-- pager -->\n    <div class=\"row\">\n        <div class=\"col-sm-12 text-center\">\n\n\n        </div>\n\n    </div>\n\n</div>\n</div>");
-$templateCache.put("components/recipes/recipes-detail.tpl.html","<div class=\"page-content\">\n    <div class=\"container\">\n\n        <div class=\"row\">\n            <div class=\" col-sm-12 text-center\">\n\n                <p class=\"section-title\">Recipes</p>\n\n            </div>\n\n        </div>\n\n\n\n        <div ng-if=\"vm.loading\" class=\"loading-info\">\n            <div class=\"loading-info-content\">\n                <img src=\"/img/ring.gif\" alt=\"LOADING DATA\" />\n\n            </div>\n        </div>\n\n        <div class=\"row\" ng-if=\"!vm.loading\">\n\n            <div class=\"col-sm-12 col-md-5\">\n\n                <img ng-src=\"{{ vm.details[0].recipes_image }}\" class=\"img-responsive\"/>\n            </div>\n\n\n            <div class=\"col-sm-12 col-md-7\">\n\n                <!--<pre>{{ vm.details | json }}</pre>-->\n\n\n\n                <div>\n\n                    <!--  {{ vm.id }}  -->\n\n                    <h1 class=\"title\" ng-bind-html=\"vm.details[0].node_title\"></h1>\n\n                    <p class=\"lead\" ng-bind-html=\"vm.details[0].strapline\"></p>\n\n                    <hr>\n\n                    <div class=\"row\">\n\n                        <div class=\"col-md-6\">\n                            <h2>Ingredients</h2>\n                            <p ng-bind-html=\"vm.details[0].ingredients\"></p>\n                        </div>\n\n                        <div class=\"col-md-6\">\n                            <h2>Instructions</h2>\n                            <p ng-bind-html=\"vm.details[0].instructions\"></p>\n                        </div>\n\n                    </div>\n\n                </div>\n\n            </div>\n\n\n        </div>\n\n    </div>\n\n</div>");
-$templateCache.put("components/recipes/recipes.tpl.html","<!-- recipes.tpl -->\n\n<div class=\"page-content\">\n\n    <div class=\"container\">\n\n        <div class=\"row\">\n\n        <div class=\"lp-hero col-sm-12 text-center\">\n\n        <h1>Recipes</h1>\n\n        <p class=\"lead\">Soups, desserts, vegetarian recipes and of course CAKE. Drool away people.</p>\n\n        </div>\n\n        </div>\n\n        <div class=\"row\">\n\n            <div class=\"col-sm-12\">\n\n                <!--<pre>{{ vm.listings | json }}</pre>-->\n\n                <div ng-if=\"vm.loading\" class=\"loading-info\">\n                    <div class=\"loading-info-content\">\n                        <img src=\"/img/ring.gif\" alt=\"LOADING DATA\" />\n\n                    </div>\n                </div>\n\n                <!-- grid list  -->\n                <div class=\"bucket\">\n\n                    <div\n                            dir-paginate=\"item in vm.listings\n                        | filter:query\n                        | orderBy: \'item.event_start_date\'\n                        | itemsPerPage: 12\" class=\"grid-item\">\n\n\n                        <div class=\"content\">\n\n                            <div>\n                                <a href=\"/recipes/{{ item.nid }}\">\n                                    <img ng-src=\"{{ item.recipe_image }}\" class=\"img-responsive\"/>\n                                </a>\n\n                                <div class=\"caption\">\n                                    <h4 class=\"title\" ng-bind-html=\"item.node_title\"></h4>\n                                </div>\n                            </div>\n\n                        </div>\n\n                    </div>\n\n                </div>\n                <!-- / grid list  -->\n\n\n            </div>\n        </div>\n\n        <!--pager-->\n        <div class=\"row\">\n            <div class=\"col-sm-12 text-center\">\n                <!-- ngDirective provided by the dir-pagination module @bower_components -->\n                <dir-pagination-controls></dir-pagination-controls>\n\n            </div>\n\n        </div>\n\n    </div>\n</div>");
+$templateCache.put("components/recipes/recipes-detail.tpl.html","<div class=\"page-content\">\n    <div class=\"container\">\n\n        <div class=\"row\">\n            <div class=\" col-sm-12 text-center\">\n\n                <p class=\"section-title\">Recipes</p>\n\n            </div>\n\n        </div>\n\n\n        <div ng-if=\"vm.loading\" class=\"loading-info\">\n            <div class=\"loading-info-content\">\n                <img src=\"/img/ring.gif\" alt=\"LOADING DATA\"/>\n\n            </div>\n        </div>\n\n        <div class=\"row\" ng-if=\"!vm.loading\">\n\n            <div class=\"col-sm-12 col-md-5\">\n\n                <img ng-src=\"{{ vm.details[0].recipes_image }}\" class=\"img-responsive\"/>\n            </div>\n\n\n            <div class=\"col-sm-12 col-md-7\">\n\n                <!--<pre>{{ vm.details | json }}</pre>-->\n\n\n                <div>\n\n                    <!--  {{ vm.id }}  -->\n\n                    <h1 class=\"title\" ng-bind-html=\"vm.details[0].node_title\"></h1>\n\n                    <p class=\"lead\" ng-bind-html=\"vm.details[0].strapline\"></p>\n\n                    <hr>\n\n                    <div class=\"row\">\n\n                        <div class=\"col-md-6\">\n                            <h2>Ingredients</h2>\n                            <p ng-bind-html=\"vm.details[0].ingredients\"></p>\n                        </div>\n\n                        <div class=\"col-md-6\">\n                            <h2>Instructions</h2>\n                            <p ng-bind-html=\"vm.details[0].instructions\"></p>\n                        </div>\n\n                    </div>\n\n                </div>\n\n            </div>\n\n\n        </div>\n\n    </div>\n\n</div>");
+$templateCache.put("components/recipes/recipes.tpl.html","<!-- recipes.tpl -->\n\n<div class=\"page-content\">\n\n    <div class=\"container\">\n\n        <div class=\"row\">\n\n            <div class=\"lp-hero col-sm-12 text-center\">\n\n                <h1>Recipes</h1>\n\n                <p class=\"lead\">Soups, desserts, vegetarian recipes and of course CAKE. Drool away people.</p>\n\n            </div>\n\n        </div>\n\n        <div class=\"row\">\n\n            <div class=\"col-sm-12\">\n\n                <!--<pre>{{ vm.listings | json }}</pre>-->\n\n                <div ng-if=\"vm.loading\" class=\"loading-info\">\n                    <div class=\"loading-info-content\">\n                        <img src=\"/img/ring.gif\" alt=\"LOADING DATA\"/>\n\n                    </div>\n                </div>\n\n                <!-- grid list  -->\n                <div class=\"bucket\">\n\n                    <div\n                            dir-paginate=\"item in vm.listings\n                        | filter:query\n                        | orderBy: \'item.event_start_date\'\n                        | itemsPerPage: 12\" class=\"grid-item\">\n\n\n                        <div class=\"content\">\n\n                            <div>\n                                <a href=\"/recipes/{{ item.nid }}\">\n                                    <img ng-src=\"{{ item.recipe_image }}\" class=\"img-responsive\"/>\n                                </a>\n\n                                <div class=\"caption\">\n                                    <h4 class=\"title\" ng-bind-html=\"item.node_title\"></h4>\n                                </div>\n                            </div>\n\n                        </div>\n\n                    </div>\n\n                </div>\n                <!-- / grid list  -->\n\n\n            </div>\n        </div>\n\n        <!--pager-->\n        <div class=\"row\">\n            <div class=\"col-sm-12 text-center\">\n                <!-- ngDirective provided by the dir-pagination module @bower_components -->\n                <dir-pagination-controls></dir-pagination-controls>\n\n            </div>\n\n        </div>\n\n    </div>\n</div>");
 $templateCache.put("components/register/register.tpl.html","<!-- login.tpl -->\n\n<div class=\"page-content\">\n\n    <div class=\"container\">\n\n        <div class=\"row\">\n            <div class=\"col-sm-12 text-center\"><h1>Sign up</h1></div>\n        </div>\n\n\n        <div class=\"row\">\n\n\n            <div class=\"col-sm-12\">\n\n                <div ng-if=\"vm.authUser\">\n                    <pre>{{ vm.authUser }}</pre>\n                </div>\n\n                <div>\n                    <form ng-submit=\"vm.onSubmit()\" name=\"vm.form\" novalidate>\n                        <formly-form model=\"vm.model\" fields=\"vm.fields\" options=\"vm.options\">\n\n                            <button type=\"submit\" class=\"btn btn-primary submit-button\" ng-disabled=\"vm.form.$invalid\">\n                                Submit\n                            </button>\n\n                        </formly-form>\n                    </form>\n                </div>\n                <div>\n\n                    <p class=\"text-center\">\n                        <a href=\"/register\">Not a member ? Sign up</a> | <a href=\"/forgotten\">Forgotten Password ?</a>\n                    </p>\n                </div>\n            </div>\n\n        </div>\n\n\n        <div class=\"row\">\n            <div class=\"col-sm-12\">\n\n            </div>\n        </div>\n\n\n    </div>\n\n\n</div>");
 $templateCache.put("components/reviews/reviews-detail.tpl.html","<div class=\"page-content\">\n    <div class=\"container\">\n\n        <div class=\"row\">\n            <div class=\" col-sm-12 text-center\">\n\n                <p class=\"section-title\">Food Events</p>\n\n            </div>\n\n        </div>\n\n\n        <div class=\"row\">\n\n            <div class=\"col-\">\n            </div>\n\n            <div class=\"col-sm-12 col-md-8\">\n\n                <pre>{{ vm.details | json }}</pre>\n\n                <!-- Data Listings -->\n\n\n                <div>\n\n                    {{ vm.id }}\n\n                    <h1 class=\"title\" ng-bind-html=\"vm.details[0].node_title\"></h1>\n                    <img ng-src=\"{{ vm.details[0].event_image }}\" class=\"img-responsive\"/>\n\n\n                    <p class=\"\">Start Date : {{ vm.details[0].event_start_date }}</p>\n\n                    <p class=\"\">End Date : {{ vm.details[0].event_end_date }}</p>\n\n                    <p ng-bind-html=\"vm.details[0].body\"></p>\n\n                </div>\n\n            </div>\n\n            <!--<div ng-repeat=\"item in vm.listings\" ng-if=\"$index % 3 == 0\" class=\"row\">-->\n            <!--<div class=\"col-xs-4\">{{item[$index]}}</div>-->\n            <!--<div class=\"col-xs-4\">{{item[$index + 1]}}</div>-->\n            <!--<div class=\"col-xs-4\">{{item[$index + 2]}}</div>-->\n            <!--</div>-->\n\n\n        </div>\n\n\n    </div>\n\n    <!-- pager -->\n    <div class=\"row\">\n        <div class=\"col-sm-12 text-center\">\n\n\n        </div>\n\n    </div>\n\n</div>\n</div>");
-$templateCache.put("components/reviews/reviews.tpl.html","<!-- recipes.tpl -->\n\n<div class=\"page-content\">\n\n    <div class=\"container\">\n\n        <div class=\"row\">\n            <div class=\"col-sm-12 text-center\">\n                <h1>Reviews</h1>\n\n                <p>Watch us devour the latest food products, recipe books and restaurants. And then see what we think.</p>\n\n            </div>\n\n        </div>\n\n        <div class=\"row\">\n\n            <div class=\"col-sm-12\">\n\n                <pre>{{ vm.listings | json }}</pre>\n\n                <ul class=\"media-list\">\n                    <li class=\"media\" ng-repeat=\"item in vm.listings track by $index\">\n                        <div class=\"media-left\">\n                            <a href=\"#\">\n                                <img ng-src=\"{{item.field_image[0].url}}\" width=\"250px\" class=\"media-object\"/>\n                            </a>\n                        </div>\n                        <div class=\"media-body\">\n                            <h4 class=\"media-heading\">{{item.title[0].value}}</h4>\n\n                            <p ng-bind-html=\"item.body[0].value\"></p>\n\n                        </div>\n                    </li>\n                </ul>\n\n            </div>\n\n\n        </div>\n\n    </div>\n</div>");
-$templateCache.put("components/static-pages/about.tpl.html","<!-- about.html  -->\n<div class=\"page-content\">\n\n    <section id=\"about\">\n\n        <div class=\"container\">\n\n            <div class=\"row\">\n\n                <div class=\"col-sm-12\">\n\n                    <h1 id=\"page-title\" class=\"text-center\">About Us</h1>\n\n\n\n                    <p>We love our food at iLoveMyGrub.com, and we suspect you might too, seeing as you\'ve stumbled across\n                    us. Whether you\'re a sucker for fry-ups, a chocolate connoisseur or simply love licking cake mix\n                    from the bowl, we\'ve got something to tickle your culinary senses. We\'ll be reviewing great places\n                    to eat out, devising fabulous ways to eat in and keeping you abreast of the best recipes, food\n                    products and kitchen gadgets that we come across. </p>\n\n                    <p>We\'re also big fans of food that\'s been produced\n                    with the consumer, the produce and the environment in mind, so we\'ll be flagging up some healthy and\n                    ethical ideas on eating too.</p>\n\n                    <p>Every month we\'ll be putting the best of the bunch in our monthly newsletter, so sign up if you\'d\n                    like to find out more about the food that we love.</p>\n\n                    <h3>Newsletter sign-up</h3>\n                    <p>To sign up to our monthly newsletter, click here</p>\n\n                    <!--The iLoveMyGrub team-->\n                    <!--To find out more about the team, click here-->\n\n                    <!--Advertising-->\n                    <!--For advertisers and information on advertising click here-->\n\n                    <!--Competitions-->\n                    <!--Find out more about arranging competitions with iLoveMyGrub.com-->\n\n                    <h3>Contact us</h3>\n                    <p>iLoveMyGrub.com<br>\n                    PO Box 900A<br>\n                    Surbiton<br>\n                    KT1 9LT<br>\n                    Tel: 020 8133 8417<br>\n                    Company No: 6374490</p>\n\n                    <p>Note to PRs: Please do not send food & drink samples to the address above. If you would like to send\n                    samples to the team at iLoveMyGrub.com, please contact the Editor for further information.</p>\n                </div>\n\n\n            </div>\n\n        </div>\n\n    </section>\n</div>");
+$templateCache.put("components/reviews/reviews.tpl.html","<!-- recipes.tpl -->\n\n<div class=\"page-content\">\n\n    <div class=\"container\">\n\n        <div class=\"row\">\n            <div class=\"col-sm-12 text-center\">\n                <h1>Reviews</h1>\n\n                <p>Watch us devour the latest food products, recipe books and restaurants. And then see what we\n                    think.</p>\n\n            </div>\n\n        </div>\n\n        <div class=\"row\">\n\n            <div class=\"col-sm-12\">\n\n                <pre>{{ vm.listings | json }}</pre>\n\n                <ul class=\"media-list\">\n                    <li class=\"media\" ng-repeat=\"item in vm.listings track by $index\">\n                        <div class=\"media-left\">\n                            <a href=\"#\">\n                                <img ng-src=\"{{item.field_image[0].url}}\" width=\"250px\" class=\"media-object\"/>\n                            </a>\n                        </div>\n                        <div class=\"media-body\">\n                            <h4 class=\"media-heading\">{{item.title[0].value}}</h4>\n\n                            <p ng-bind-html=\"item.body[0].value\"></p>\n\n                        </div>\n                    </li>\n                </ul>\n\n            </div>\n\n\n        </div>\n\n    </div>\n</div>");
+$templateCache.put("components/static-pages/about.tpl.html","<!-- about.html  -->\n<div class=\"page-content\">\n\n    <section id=\"about\">\n\n        <div class=\"container\">\n\n            <div class=\"row\">\n\n                <div class=\"col-sm-12\">\n\n                    <h1 id=\"page-title\" class=\"text-center\">About Us</h1>\n\n\n                    <p>We love our food at iLoveMyGrub.com, and we suspect you might too, seeing as you\'ve stumbled\n                        across\n                        us. Whether you\'re a sucker for fry-ups, a chocolate connoisseur or simply love licking cake mix\n                        from the bowl, we\'ve got something to tickle your culinary senses. We\'ll be reviewing great\n                        places\n                        to eat out, devising fabulous ways to eat in and keeping you abreast of the best recipes, food\n                        products and kitchen gadgets that we come across. </p>\n\n                    <p>We\'re also big fans of food that\'s been produced\n                        with the consumer, the produce and the environment in mind, so we\'ll be flagging up some healthy\n                        and\n                        ethical ideas on eating too.</p>\n\n                    <p>Every month we\'ll be putting the best of the bunch in our monthly newsletter, so sign up if you\'d\n                        like to find out more about the food that we love.</p>\n\n                    <h3>Newsletter sign-up</h3>\n                    <p>To sign up to our monthly newsletter, click here</p>\n\n                    <!--The iLoveMyGrub team-->\n                    <!--To find out more about the team, click here-->\n\n                    <!--Advertising-->\n                    <!--For advertisers and information on advertising click here-->\n\n                    <!--Competitions-->\n                    <!--Find out more about arranging competitions with iLoveMyGrub.com-->\n\n                    <h3>Contact us</h3>\n                    <p>iLoveMyGrub.com<br>\n                        PO Box 900A<br>\n                        Surbiton<br>\n                        KT1 9LT<br>\n                        Tel: 020 8133 8417<br>\n                        Company No: 6374490</p>\n\n                    <p>Note to PRs: Please do not send food & drink samples to the address above. If you would like to\n                        send\n                        samples to the team at iLoveMyGrub.com, please contact the Editor for further information.</p>\n                </div>\n\n\n            </div>\n\n        </div>\n\n    </section>\n</div>");
 $templateCache.put("components/static-pages/privacy-policy.tpl.html","<div class=\"page-content\">\n\n    <section id=\"about\">\n\n        <div class=\"container\">\n\n            <div class=\"row\">\n\n                <div class=\"col-sm-12\">\n\n                    <h1>Privacy Policy</h1>\n\n                    <div class=\"field field-name-body field-type-text-with-summary field-label-hidden\">\n                        <div class=\"field-items\">\n                            <div class=\"field-item even\"><p>This privacy policy sets out the data processing practices\n                                carried out through the use of the Internet and any other electronic communications\n                                networks by iLoveMyGrub.com. If you have any requests concerning your personal\n                                information or any queries with regard to these practices please contact us at <a\n                                        href=\"mailto:info@ilovemygrub.co.uk\" rel=\"nofollow\">info@ilovemygrub.co.uk</a>.\n                            </p>\n\n                                <p><strong>1. Information collected</strong><br/>\n                                    We collect personal information from visitors to this website through the use of our\n                                    on-line forms and every time you e-mail us your details. If you have signed up for\n                                    iLoveMyGrub membership or the iLoveMyGrub newsletter, we may need you to provide\n                                    your name, address and contact details etc. Whenever you provide such information,\n                                    we will treat that information in accordance with this policy and the current UK\n                                    legislation, namely the Data Protection Act 1998.<br/>\n                                    We collect additional information automatically about your visit to our website to\n                                    measure the number of visits, pages visited, average time spent on the website etc.\n                                    For more information, please see below the section on cookies.</p>\n\n                                <p><strong>2. Use of personal information</strong><br/>\n                                    We will hold your personal information on our systems for as long as you use the\n                                    services you have requested or until your membership is terminated for any reason.\n                                    However, for safety reasons, we may store details entered onto or in connection with\n                                    your membership for a period of six months.</p>\n\n                                <p><strong>3. Disclosures</strong><br/>\n                                    We will only disclose your personal information when necessary and only to our\n                                    associated organisations, our agents and/or service providers and suppliers we\n                                    engage to process data on our behalf. We may also need to disclose your information\n                                    to law enforcement authorities or other third parties if required or permitted to do\n                                    so by law. We may also use and disclose information in aggregate (so that no\n                                    individuals are identified) for marketing and strategic development purposes.</p>\n\n                                <p><strong>4. Use of cookies</strong><br/>\n                                    A cookie is a small piece of information sent by a web server to a web browser,\n                                    which enables the server to collect information from the browser. Find out more\n                                    about the use of cookies on <a href=\"http://www.cookiecentral.com/\" rel=\"nofollow\">http://www.cookiecentral.com/</a>.\n                                </p>\n\n                                <p>We use cookies to identify you when you visit this website and to keep track of your\n                                    browsing patterns and build up a demographic profile. Our use of cookies also allows\n                                    registered members to be presented with a personalised version of the site, use\n                                    particular services and have access to specific information. Most browsers allow you\n                                    to turn off cookies. If you want to know how to do this please look at the help menu\n                                    on your browser. However, switching off cookies will restrict your use of our\n                                    website.</p>\n\n                                <p><strong>5. Other websites</strong><br/>\n                                    Our website may contain links to other websites which are outside our control and\n                                    are not covered by this Privacy Policy. If you access other sites using the links\n                                    provided, the operators of these sites may collect information from you, which will\n                                    be used by them in accordance with their privacy policy, which may differ from ours.\n                                </p>\n\n                                <p><strong>6. Access rights</strong><br/>\n                                    You have a right to access the personal data held about you and to have any\n                                    inaccuracies corrected. To obtain a copy of the personal information we hold about\n                                    you, please write to us at I Love My Grub Limited, I Love My Grub, PO Box 900A,\n                                    Surbiton, KT1 9LT. We charge £12 for information requests.</p>\n\n                                <p><strong>7. Users 16 and under</strong><br/>\n                                    Some parts of our site are accessible to over 18s only (online alcohol purchases for\n                                    example). However most of our site is accessible to everybody. Please note that if\n                                    you are under 18, it is illegal to purchase alcoholic products online through this\n                                    website. </p>\n\n                                <p><strong>8. Internet-based transfers</strong><br/>\n                                    Given that the Internet is a global environment, using the Internet to collect and\n                                    process personal data necessarily involves the transmission of data on an\n                                    international basis. Therefore, by browsing this website and communicating\n                                    electronically with us, you acknowledge and agree to our processing of personal data\n                                    in this way.</p>\n\n                                <p>For further information on the use of this website, please read our terms &amp;\n                                    conditions.</p>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n\n\n            </div>\n        </div>\n    </section>\n</div>\n\n\n");
 $templateCache.put("components/static-pages/terms.tpl.html","<div class=\"page-content\">\n\n    <section id=\"about\">\n\n        <div class=\"container\">\n\n            <div class=\"row\">\n\n                <div class=\"col-sm-12\">\n\n\n                    <h1>Terms &amp; conditions</h1>\n\n                    <div class=\"field field-name-body field-type-text-with-summary field-label-hidden\">\n                        <div class=\"field-items\">\n                            <div class=\"field-item even\"><p>These are the Terms and Conditions on which you may make use\n                                of this website. This document, together with any other document referred to below (such\n                                as our privacy policy) should be read carefully. Please note that by accessing and using\n                                this website, you agree to be bound by our terms and conditions. Please also note that\n                                we may update this document at any time. You should therefore check this page on a\n                                regular basis.</p>\n\n                                <p><strong>1. iLoveMyGrub.com</strong><br/>\n                                    This website is operated by I Love My Grub Limited (referred to below as ‘I Love My\n                                    Grub Limited’ or ‘we’) which is a registered company in England and Wales (Company\n                                    No: 6374490), established in 2007. Our registered address is I Love My Grub, PO Box\n                                    900A, Surbiton, KT1 9LT.</p>\n\n                                <p><strong>2. Access to this site</strong><br/>\n                                    Although we have made and will carry on to make reasonable efforts to prevent this\n                                    type of problem, please note that this website is provided on an “as available”\n                                    basis and it is not technically possible for us to guarantee that this website will\n                                    be bug-free or error-free. You also understand and accept that this website may be\n                                    inaccessible on occasions due to essential maintenance or technical\n                                    difficulties.<br/>\n                                    Please note that we reserve the right to withdraw or suspend access to this website\n                                    and to amend any of the services offered by this website at any time and without\n                                    notice. We will not therefore accept any liability in case of temporary or\n                                    indefinite unavailability of this website. </p>\n\n                                <p><strong>3. Your Registration as a Member</strong><br/>\n                                    You undertake to supply true and accurate information when submitting a membership\n                                    form and to keep such information up to date. In the event that you submit unlawful,\n                                    inaccurate, outdated or incomplete information, I Love My Grub Limited has the right\n                                    to suspend or terminate your membership and to deny immediately and for the future\n                                    your access to all or part of the site. </p>\n\n                                <p><strong>4. Information posted on this website</strong><br/>\n                                    The information posted on this website or in any communication which we may send to\n                                    you in accordance with our privacy policy is indicative only and is not intended to\n                                    be representations or advice on which you should solely rely. </p>\n\n                                <p>Please note that whilst I Love My Grub Limited has made reasonable efforts to check\n                                    the accuracy of this website, it is nonetheless provided on an “as is” basis.\n                                    Accordingly, we do not accept any liability for any errors or omissions. If you are\n                                    in any doubt as to the accuracy of information made available within these pages, we\n                                    recommend you seek verification by contacting us at <a\n                                            href=\"mailto:info@ilovemygrub.co.uk\"\n                                            rel=\"nofollow\">info@ilovemygrub.co.uk</a>. </p>\n\n                                <p><strong>5. Use of iLoveMyGrub’s community/forum</strong><br/>\n                                    You agree to use the community section of the website (including the message boards)\n                                    in accordance with the rules set out below.</p>\n\n                                <p>a) You must not submit any defamatory or illegal material of any nature. This\n                                    includes text, graphics, video, programs or audio;</p>\n\n                                <p>b) Submissions (including, but not limited to, submissions to the message board, case\n                                    studies, blogs and discussion groups) must be civil, constructive and tasteful.\n                                    Unlawful or objectionable content (including, but not limited to, abusive,\n                                    threatening, racially offensive, sexually orientated or harmful content) is not\n                                    acceptable. We will fully co-operate with any law enforcement authorities or court\n                                    order requesting or directing us to disclose the identity of anyone posting such\n                                    information or materials on this website;</p>\n\n                                <p>c) You must not submit any misleading or false information;</p>\n\n                                <p>d) You must not submit material with the intention of committing or promoting an\n                                    illegal act or purpose;</p>\n\n                                <p>e) You must only submit materials that are your own original work. You must not copy,\n                                    plagiarise or otherwise infringe the intellectual property rights of third parties\n                                    including copyright, trade mark, trade secrets, privacy, publicity, personal or\n                                    proprietary rights;</p>\n\n                                <p>f) No inappropriate (for example, vulgar or offensive) user names will be\n                                    permitted;</p>\n\n                                <p>g) No spamming or off-topic material;</p>\n\n                                <p>h) No impersonation; and</p>\n\n                                <p>i) The views expressed in the community section are those of members of the public\n                                    and are not necessarily those of I Love My Grub Limited.</p>\n\n                                <p>You agree and accept that I Love My Grub Limited can monitor the material published\n                                    on this website (whether in the Forum Section or elsewhere on the website) before\n                                    and while it is being published. I Love My Grub Limited reserves the right to refuse\n                                    or withdraw, at its sole discretion, any material submitted for publication and I\n                                    Love My Grub Limited’s decision in this respect shall be final. </p>\n\n                                <p>You further agree and accept that I Love My Grub Limited has the right to delete any\n                                    material it deems to violate these Terms and Conditions of Use or which would\n                                    otherwise be unacceptable, and/or to terminate completely or partially the right of\n                                    access corresponding to your account immediately or to deny any future access to the\n                                    service. </p>\n\n                                <p><strong>6. Sanction</strong><br/>\n                                    If you fail to abide by any of these terms and conditions, I Love My Grub Limited\n                                    reserves the right to take action against you and to suspend your membership on a\n                                    temporary or permanent basis. If you post or send material which contravenes section\n                                    5 above, I Love My Grub Limited may use whatever information that is available to it\n                                    about you to stop any further infringements. This may include disclosing any\n                                    relevant information to the relevant law enforcement authorities.</p>\n\n                                <p><strong>7. Data Protection</strong><br/>\n                                    I Love My Grub Limited strongly recommends that members should never disclose to\n                                    other members (unless it is necessary for them to do so) personal information such\n                                    as their name, address, e-mail address, telephone number or any other personal\n                                    information that could allow them to be identified outside the site. Any personal\n                                    information collected through this website will be processed in accordance with our\n                                    privacy policy.<br/>\n                                    I Love My Grub Limited will not be liable should members or non-members meet or\n                                    enter into a contract or agreement as a consequence of their use of its site or\n                                    services. </p>\n\n                                <p><strong>8. Linking to and from this web site</strong><br/>\n                                    We encourage links to this website provided always that is done fairly and legally.\n                                    However, we will not accept the following:</p>\n\n                                <p>a) “framing” of a part of our web site on any other website.</p>\n\n                                <p>b) any suggestion that I Love My Grub Limited in some way endorses and/or sponsors\n                                    your website or your activities or that there is a formal relationship of any kind\n                                    between you and I Love My Grub Limited unless this is true. </p>\n\n                                <p>Please note that we may withdraw any authorisation in relation to linking at any time\n                                    and without notice. This website may also contain links to websites operated by\n                                    third parties. Please note that I Love My Grub Limited has no control over the\n                                    contents and the Privacy Policy of these websites. We will therefore accept no\n                                    liability in this respect. Links are provided for convenience and inclusion of any\n                                    link does not imply endorsement in any way of the site to which it links.</p>\n\n                                <p><strong>9. Intellectual property</strong><br/>\n                                    Unless stated otherwise, I Love My Grub Limited owns (or is duly licensed to use)\n                                    the copyright in this website and in any material posted on it (including, but not\n                                    limited, to the text, trade marks, trade names, logos, graphics, illustrations,\n                                    designs, software and written or other material). This material is protected by\n                                    trade mark, copyright and/or other proprietary rights owned by or licensed to I Love\n                                    My Grub Limited and all rights are reserved. Except as expressly permitted by these\n                                    terms of use, this website and all or any part of its content shall remain the\n                                    exclusive property of I Love My Grub Limited, or its licensors and may not be used,\n                                    sold, licensed, copied or reproduced in whole or in part in any manner or form by\n                                    any person without the prior written consent of I Love My Grub Limited.</p>\n\n                                <p>Members may be allowed by I Love My Grub Limited to download some material from this\n                                    website but only to the extent that the material is used for private non-commercial\n                                    purposes and/or to the extent the use is covered by the fair dealing provisions of\n                                    the relevant UK law.</p>\n\n                                <p><strong>10. Web site security</strong><br/>\n                                    You agree that you will not do anything or allow anything to be done to compromise\n                                    the security of this web site. </p>\n\n                                <p><strong>11. Disclaimer</strong><br/>\n                                    I Love My Grub Limited does not make any representation or warranty of any kind (to\n                                    the fullest extent permissible by law), including the implied warranties of\n                                    satisfactory quality, fitness for a particular purpose, non-infringement,\n                                    capability, security and accuracy.<br/>\n                                    To the fullest extent permissible by law, I Love My Grub Limited excludes its\n                                    liability for any loss of use, loss of data, loss of revenue or anticipated profits,\n                                    loss of business, loss of opportunity, loss of goodwill or injury to reputation,\n                                    loss suffered by third parties and any indirect, special or consequential damages or\n                                    losses, whether such losses arise in contract, negligence or tort, including without\n                                    limitation to the foregoing any losses in relation to your use of, reliance upon or\n                                    inability to use the website.</p>\n\n                                <p><strong>12. General</strong><br/>\n                                    English law shall govern the use of the website and in the event of a dispute you\n                                    irrevocably submit to the exclusive jurisdiction of the English Courts.<br/>\n                                    If any of these terms are determined to be illegal, invalid or otherwise\n                                    unenforceable, then to the extent in which that term is illegal, invalid or\n                                    otherwise unenforceable it shall be severed and deleted from these terms and the\n                                    remaining terms shall survive, remain in full force and effect and continue to be\n                                    binding and enforceable.</p>\n\n                                <p><strong>13. Contact us</strong><br/>\n                                    If you have any queries in relation to any aspect of this website, please contact us\n                                    at <a href=\"mailto:info@ilovemygrub.co.uk\" rel=\"nofollow\">info@ilovemygrub.co.uk</a>.\n                                </p>\n                            </div>\n                        </div>\n                    </div>\n\n                </div>\n            </div>\n    </section>\n</div>\n\n");
-$templateCache.put("components/footer/footer.tpl.html","<!-- footer.tpl.html -->\n\n<!-- @todo : this needs cleaning and simplifying -->\n\n<section class=\"to-top\">\n    <div class=\"container\">\n        <div class=\"row\">\n            <div class=\"col-sm-12 text-center\">\n\n                <div class=\"socials\">\n                    <a href=\"https://twitter.com/ilovemygrub\" target=\"_blank\" class=\"icon-medium\"><i class=\"icon-twitter\"></i></a>\n                    <a href=\"https://www.facebook.com/pages/iLoveMyGrubcom-FAN/309353911709\" target=\"_blank\" class=\"icon-medium\"><i class=\"icon-facebook\"></i></a>\n                    <a href=\"https://www.pinterest.com/ilovemygrub\" target=\"_blank\" class=\"icon-medium\"><i class=\"icon-pinterest\"></i></a>\n                </div>\n\n            </div>\n\n            <!--<div class=\"col-xs-1 col-sm-4 to-top-wrap\">-->\n                <!--&lt;!&ndash; @todo : scroll to top directive &ndash;&gt;-->\n            <!--</div>-->\n\n        </div>\n    </div>\n</section>\n\n<!-- footers-->\n<footer>\n    <div class=\"container\">\n\n        <div class=\"footer-links row\">\n\n            <!-- footer logo -->\n            <div class=\"logo-wrap col-xs-12 col-sm-6\">\n\n                <div class=\"logo\">\n                    <!-- needs sizing -->\n                    <a href=\"/#/frontpage\"><img src=\"/img/ilmg_logo.png\" alt=\"iLoveMyGrub.com logo\"></a>\n                </div>\n\n                <p class=\"text-wrap\">&copy; iLoveMyGrub.com 2016</p>\n\n            </div>\n\n\n            <ul class=\"footer-group col-xs-12 col-sm-3\">\n                <h5>Read more</h5>\n                <li><a href=\"/about\">About </a></li>\n                <li><a href=\"/articles\">Articles</a></li>\n                <li><a href=\"/food-events\">Events</a></li>\n                <li><a href=\"/recipes\">Recipes</a></li>\n                <!--<li><a href=\"/#/news\">News</a></li>-->\n                <li><a href=\"https://docs.google.com/a/modernfidelity.co.uk/forms/d/1OaI6LJGCdMO1JEA0O8BeVBNZcTONQki9dniTC91qFqY/viewform\" target=\"_blank\">Contact us</a></li>\n            </ul>\n\n            <!-- Food Events  -->\n            <div class=\"col-xs-12 col-sm-3\">\n                <h5>Find an Event</h5>\n\n                <p>Get the latest info and details on up and coming food events</p>\n                <a href=\"/food-events\">\n                    <div class=\"btn btn-primary\"> Find Food Events</div>\n                </a>\n            </div>\n\n\n        </div>\n    </div>\n</footer>\n\n<div class=\"footer-terms\">\n    <div class=\"container\">\n        <div class=\"row\">\n            <div class=\"col-xs-12\">\n                <ul class=\"list-inline footer-links\">\n                    <li><a href=\"/privacy-policy\" title=\"Privacy policy\">Privacy policy</a></li>\n                    <li><a href=\"/terms\" title=\"Terms and conditions\">Terms and\n                        conditions</a></li>\n                </ul>\n\n            </div>\n\n        </div>\n    </div>\n</div>");
 $templateCache.put("shared/directives/mobile-menu/mobile-menu.tpl.html","<div class=\"mobile-menu\">\n\n    <div class=\"burger\">\n        <div ng-click=\"toggleOverlay()\"><img src=\"/img/svg/burger_menu.svg\" height=\"25px\" class=\"mobile-nav-btn\"/></div>\n    </div>\n\n\n    <div class=\"menu-overlay\" ng-show=\"toggle\">\n\n        <div class=\"overlay-close\" ng-click=\"toggleOverlay()\">\n            <img src=\"/img/img_toggle-close.png\">\n        </div>\n\n        <div class=\"content\">\n\n            <div>\n\n                <!--<div class=\"logo\">-->\n                <!--<img src=\"/img/logo_invert.svg\" width=\"80px\">-->\n                <!--</div>-->\n\n\n                <!--<div class=\"row\">-->\n                <!--<div class=\"col-xs-12\">-->\n                <!--<form class=\"navbar-form navbar-left\" role=\"search\">-->\n                <!--<div class=\"form-group\">-->\n                <!--<input type=\"text\" class=\"form-control\" placeholder=\"Search\">-->\n                <!--</div>-->\n                <!--</form>-->\n                <!--</div>-->\n                <!--</div>-->\n\n\n                <ul class=\"list-unstyled overlay-links\">\n                    <li>\n                        <a ng-click=\"toggleOverlay()\" href=\"/food-events\">Events</a>\n                    </li>\n                    <li>\n                        <a ng-click=\"toggleOverlay()\" href=\"/articles\">Articles</a>\n                    </li>\n                    <li>\n                        <a ng-click=\"toggleOverlay()\" href=\"/recipes\">Recipes</a>\n                    </li>\n                    <li>\n                        <a ng-click=\"toggleOverlay()\"\n                           href=\"https://docs.google.com/a/modernfidelity.co.uk/forms/d/1OaI6LJGCdMO1JEA0O8BeVBNZcTONQki9dniTC91qFqY/viewform\"\n                           target=\"_blank\">Contact</a>\n                    </li>\n                    <li>\n                        <a ng-click=\"toggleOverlay()\" href=\"/about\">About</a>\n                    </li>\n                </ul>\n\n\n                <div>\n                    <a href=\"https://twitter.com/ilovemygrub\" target=\"_blank\" class=\"icon-medium\"><i class=\"icon-twitter\"></i></a>\n                    <a href=\"https://www.facebook.com/pages/iLoveMyGrubcom-FAN/309353911709\" target=\"_blank\" class=\"icon-medium\"><i class=\"icon-facebook\"></i></a>\n                    <a href=\"https://www.pinterest.com/ilovemygrub\" target=\"_blank\" class=\"icon-medium\"><i class=\"icon-pinterest\"></i></a>\n                </div>\n\n            </div>\n\n        </div>\n\n    </div>\n\n\n</div>\n");}]);

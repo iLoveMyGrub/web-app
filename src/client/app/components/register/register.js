@@ -1,132 +1,129 @@
-/***
+/**
  *
- *  REGISTER COMPONENT
+ * REGISTER COMPONENT
  *
- * @file
- *  Provides register section and functionality for the site, including directives
+ * @description
+ * Provides register section and functionality for the site, including directives
+ *
+ * @class app.Register
+ *
+ * @memberof app
  *
  * @todo :
- *
- *  - form error validation to return error on non successful register with messaging
+ * - form error validation to return error on non successful register with messaging
  *
  */
 
-'use strict';
+(function() {
 
-angular.module('project.register', ['ngRoute', 'formly', 'formlyBootstrap', 'angular-jwt', 'project.auth'])
+  'use strict';
+
+  angular.module('project.register', ['ngRoute', 'formly', 'formlyBootstrap', 'angular-jwt', 'project.auth'])
 
     // Route
-    .config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
+    .config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
 
-        $routeProvider.when('/register', {
+      $routeProvider.when('/register', {
 
-            title: 'Sign up',
-            templateUrl: './site/components/register/register.tpl.html',
-            controller: 'registerController',
-            controllerAs: 'vm',
-            access: {
-                requiresregister: false,
-                roles: []
-            }
+        title: 'Sign up',
+        templateUrl: './site/components/register/register.tpl.html',
+        controller: 'registerController',
+        controllerAs: 'vm',
+        access: {
+          requiresregister: false,
+          roles: []
+        }
 
-        });
+      });
 
     }])
 
     .service('registerDataService', registerDataService)
-    
+
     .controller('registerController', registerController);
 
+  // Injectables
+  registerDataService.$inject = ['$http', '$rootScope', 'API_URL', 'jwtHelper', '$window', 'AuthTokenService'];
 
-// Injectables
-registerDataService.$inject = ['$http', '$rootScope', 'API_URL', 'jwtHelper', '$window', 'AuthTokenService'];
+  registerController.$inject = ['registerDataService', 'jwtHelper', '$location', '$window', 'AuthTokenService'];
 
-registerController.$inject = ['registerDataService', 'jwtHelper', '$location', '$window', 'AuthTokenService'];
-
-
-/**
- *
- * register Controller
- *
- * @constructor
- *
- */
-function registerController(registerDataService, jwtHelper, $location, $window, AuthTokenService) {
-
-    var vm = this;
-
-    vm.user = {};
+  /**
+   *
+   * Register Controller
+   *
+   * @param {object} registerDataService
+   * @param {object} jwtHelper
+   * @param {object} $location
+   * @param {object} $window
+   * @param {object} AuthTokenService
+   */
+  function registerController(registerDataService, jwtHelper, $location, $window, AuthTokenService) {
 
     vm.onSubmit = onSubmit;
 
     vm.env = {
-        angularVersion: angular.version.full
-        //formlyVersion: formlyVersion
+      angularVersion: angular.version.full
+      //formlyVersion: formlyVersion
     };
 
     vm.model = {};
     vm.options = {};
 
-
     // Check token
     var token = sessionStorage.getItem('auth-token');
 
     if (token) {
-        vm.authUser = jwtHelper.decodeToken(token);
+      vm.authUser = jwtHelper.decodeToken(token);
 
-        //// Redirect if token i.e logged in
-        $window.location = '#/dashboard';
-        $window.location.reload();
+      //// Redirect if token i.e logged in
+      $window.location = '#/dashboard';
+      $window.location.reload();
     }
-
 
     // http://docs.angular-formly.com/v6.4.0/docs/custom-templates
     vm.fields = [
-
-
-        {
-            key: 'first_name',
-            type: 'input',
-            templateOptions: {
-                type: 'text',
-                label: 'First name',
-                placeholder: '',
-                required: true
-            }
-        },
-        {
-            key: 'last_name',
-            type: 'input',
-            templateOptions: {
-                type: 'text',
-                label: 'Last name',
-                placeholder: '',
-                required: true
-            }
-        },
-        {
-            key: 'email',
-            type: 'input',
-            templateOptions: {
-                type: 'email',
-                label: 'Email',
-                placeholder: 'Please enter your username',
-                required: true
-            }
-        },
-        {
-            key: 'password',
-            type: 'input',
-            templateOptions: {
-                type: 'text',
-                label: 'Password',
-                placeholder: 'Please enter your password',
-                required: true
-            }
+      {
+        key: 'first_name',
+        type: 'input',
+        templateOptions: {
+          type: 'text',
+          label: 'First name',
+          placeholder: '',
+          required: true
         }
+      },
+      {
+        key: 'last_name',
+        type: 'input',
+        templateOptions: {
+          type: 'text',
+          label: 'Last name',
+          placeholder: '',
+          required: true
+        }
+      },
+      {
+        key: 'email',
+        type: 'input',
+        templateOptions: {
+          type: 'email',
+          label: 'Email',
+          placeholder: 'Please enter your username',
+          required: true
+        }
+      },
+      {
+        key: 'password',
+        type: 'input',
+        templateOptions: {
+          type: 'text',
+          label: 'Password',
+          placeholder: 'Please enter your password',
+          required: true
+        }
+      }
 
     ];
-
 
     /**
      *
@@ -134,11 +131,8 @@ function registerController(registerDataService, jwtHelper, $location, $window, 
      *
      */
     function logout() {
-
-        alert("logged out from controller...!");
-
+      alert('logged out from controller...!');
     }
-
 
     /**
      *
@@ -147,36 +141,32 @@ function registerController(registerDataService, jwtHelper, $location, $window, 
      */
     function onSubmit() {
 
-        var formSubmitted = true;
+      var formSubmitted = true;
 
-        console.log("ctrl : ", AuthTokenService);
+      console.log('ctrl : ', AuthTokenService);
 
-        registerDataService.register(vm.model.email, vm.model.password)
-            .then(function success(response) {
+      registerDataService.register(vm.model.email, vm.model.password)
+        .then(function success(response) {
 
-                // Redirect if succesful register
-                $window.location.href = '#/dashboard';
-                $window.location.reload();
-            });
-
+          // Redirect if succesful register
+          $window.location.href = '#/dashboard';
+          $window.location.reload();
+        });
     }
+  }
 
-
-}
-
-/**
- *
- * register Data Service
- *
- * @constructor
- */
-function registerDataService($http, $rootScope, API_URL, jwtHelper, $window, AuthTokenService) {
-
+  /**
+   *
+   * register Data Service
+   *
+   * @constructor
+   */
+  function registerDataService($http, $rootScope, API_URL, jwtHelper, $window, AuthTokenService) {
 
     return {
-        register: register,
-        logout: logout,
-        getUser: getUser
+      register: register,
+      logout: logout,
+      //getUser: getUser
     };
 
     /**
@@ -187,30 +177,24 @@ function registerDataService($http, $rootScope, API_URL, jwtHelper, $window, Aut
      */
     function register(email, password) {
 
+      return $http.post(API_URL + '/auth', {
 
-        console.log(AuthTokenService);
+        email: email,
+        password: password
 
-        return $http.post(API_URL + '/auth', {
+      }).then(function success(response) {
 
-            email: email,
-            password: password
+        AuthTokenService.setToken(response.data);
 
+        return response;
 
-        }).then(function success(response) {
-
-            console.log(AuthTokenService);
-
-            AuthTokenService.setToken(response.data);
-
-            return response;
-
-        });
+      });
     }
 
-
-    function logout(){
-
-
+    /**
+     *  logout
+     */
+    function logout() {
     }
 
     /**
@@ -221,17 +205,16 @@ function registerDataService($http, $rootScope, API_URL, jwtHelper, $window, Aut
      */
     function getUser() {
 
-        console.log("get-user");
+      if (AuthTokenService.getToken()) {
 
-        if (AuthTokenService.getToken()) {
+        return $http.get(API_URL + '/me');
 
-            return $http.get(API_URL + '/me');
+      } else {
 
-        } else {
+        return $q.reject({data: 'client has no auth token'});
 
-            return $q.reject({data: 'client has no auth token'});
-
-        }
+      }
     }
 
-}
+  }
+}());

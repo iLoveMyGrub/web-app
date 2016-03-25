@@ -66,9 +66,7 @@ var customJsFiles = [
   'src/client/app/components/frontpage/frontpage.js',
   'src/client/app/components/events/events.js',
   'src/client/app/components/articles/articles.js',
-  'src/client/app/components/reviews/reviews.js',
   'src/client/app/components/recipes/recipes.js',
-  'src/client/app/components/news/news.js',
   'src/client/app/components/dashboard/dashboard.js',
   'src/client/app/components/contact/contact.js',
   'src/client/app/components/login/login.js',
@@ -76,6 +74,9 @@ var customJsFiles = [
   'src/client/app/components/register/register.js',
   'src/client/app/components/static-pages/static-pages.js',
   'src/client/app/components/meta/meta.js',
+
+  //'src/client/app/components/news/news.js',
+  //'src/client/app/components/reviews/reviews.js',
 
   // SHARED
   'src/client/app/shared/directives/mobile-menu/mobile-menu.js',

@@ -2,38 +2,44 @@
  *
  * ARTICLES COMPONENT
  *
- * @file
+ * @description
  * Provides functionality for the section
+ *
+ * @class app.Articles
+ *
+ * @memberof app
  *
  */
 
-'use strict';
+(function() {
 
-angular.module('project.articles', ['ngRoute','angularUtils.directives.dirPagination'])
+  'use strict';
+
+  angular.module('project.articles', ['ngRoute', 'angularUtils.directives.dirPagination'])
 
     // Component config
-    .config(['$routeProvider', function ($routeProvider) {
+    .config(['$routeProvider', function($routeProvider) {
 
-        $routeProvider.when('/articles', {
-            pageTitle: 'Articles',
-            metaDescription: 'Latest food articles and news',
-            templateUrl: './site/components/articles/articles.tpl.html',
-            controller: 'ArticlesController',
-            controllerAs: 'vm',
-            config: {
-                roles: ['news', 'auth']
-            }
-        });
+      $routeProvider.when('/articles', {
+        pageTitle: 'Articles',
+        metaDescription: 'Latest food articles and news',
+        templateUrl: './site/components/articles/articles.tpl.html',
+        controller: 'ArticlesController',
+        controllerAs: 'vm',
+        config: {
+          roles: ['news', 'auth']
+        }
+      });
 
-        $routeProvider.when('/articles/:id', {
-            pageTitle: 'Article Detail',
-            templateUrl: './site/components/articles/articles-detail.tpl.html',
-            controller: 'ArticlesDetailController',
-            controllerAs: 'vm',
-            config: {
-                roles: ['news', 'auth']
-            }
-        });
+      $routeProvider.when('/articles/:id', {
+        pageTitle: 'Article Detail',
+        templateUrl: './site/components/articles/articles-detail.tpl.html',
+        controller: 'ArticlesDetailController',
+        controllerAs: 'vm',
+        config: {
+          roles: ['news', 'auth']
+        }
+      });
 
     }])
 
@@ -46,33 +52,31 @@ angular.module('project.articles', ['ngRoute','angularUtils.directives.dirPagina
     // Declare Component Data Controller
     .controller('ArticlesDetailController', ArticlesDetailController);
 
+  // Define deps
+  ArticlesDataService.$inject = ['$http', 'API_URL'];
+  ArticlesController.$inject = ['ArticlesDataService'];
+  ArticlesDetailController.$inject = ['ArticlesDataService', '$routeParams'];
 
-// Define deps
-ArticlesDataService.$inject = ['$http', 'API_URL'];
-ArticlesController.$inject = ['ArticlesDataService'];
-ArticlesDetailController.$inject = ['ArticlesDataService', '$routeParams'];
-
-/**
- *
- * Articles Data Service
- *
- * @param $http
- * @constructor
- *
- *
- */
-function ArticlesDataService($http, API_URL) {
+  /**
+   *
+   * Articles Data Service
+   *
+   * @param $http
+   * @constructor
+   *
+   *
+   */
+  function ArticlesDataService($http, API_URL) {
 
     // Data Endpoints
-    var listingsAPI = API_URL + "views/feed_articles?limit=250&page=0";
-    var detailsAPI = API_URL + "views/feed_articles_details?filters[nid]=";
+    var listingsAPI = API_URL + 'views/feed_articles?limit=250&page=0';
+    var detailsAPI = API_URL + 'views/feed_articles_details?filters[nid]=';
 
     return {
-        getDetailsData: getDetailsData,
-        //getNewsRelatedData: getNewsRelatedData,
-        getListingsData: getListingsData
+      getDetailsData: getDetailsData,
+      //getNewsRelatedData: getNewsRelatedData,
+      getListingsData: getListingsData
     };
-
 
     /**
      *
@@ -82,40 +86,19 @@ function ArticlesDataService($http, API_URL) {
      */
     function getDetailsData(id) {
 
+      return $http.get(detailsAPI + id,
+        {cache: true})
+        .then(dataComplete)
+        .catch(dataFailed);
 
-        return $http.get(detailsAPI + id,
-            {cache: true})
-            .then(dataComplete)
-            .catch(dataFailed);
+      function dataComplete(response) {
+        return response.data;
+      }
 
-        function dataComplete(response) {
-            console.log("complete called");
-            return response.data;
-        }
-
-        function dataFailed(error) {
-            console.log('XHR Failed for getListingsData.' + error.data);
-        }
+      function dataFailed(error) {
+        console.log('XHR Failed for getListingsData.' + error.data);
+      }
     }
-
-
-    //function getNewsRelatedData() {
-    //
-    //    console.log("EventsDataService.getEventsData");
-    //
-    //    return $http.get("http://www.omdbapi.com/?t=" + term + "&tomatoes=true&plot=full")
-    //        .then(dataComplete)
-    //        .catch(dataFailed);
-    //
-    //    function dataComplete(response) {
-    //        console.log("complete called");
-    //        return response.data;
-    //    }
-    //
-    //    function dataFailed(error) {
-    //        console.log('XHR Failed for getNewsRelatedData.' + error.data);
-    //    }
-    //}
 
     /**
      *
@@ -125,45 +108,35 @@ function ArticlesDataService($http, API_URL) {
      */
     function getListingsData() {
 
-        console.log("EventsDataService.getListingsData");
+      return $http.get(listingsAPI, {cache: true})
+        .then(dataComplete)
+        .catch(dataFailed);
 
-        return $http.get(listingsAPI, {cache: true})
-            .then(dataComplete)
-            .catch(dataFailed);
+      function dataComplete(response) {
+        return response.data;
+      }
 
-        function dataComplete(response) {
-            console.log("complete called");
-            return response.data;
-        }
-
-        function dataFailed(error) {
-            console.log('XHR Failed for getListingsData.' + error.data);
-        }
+      function dataFailed(error) {
+        console.log('XHR Failed for getListingsData.' + error.data);
+      }
     }
 
+  }
 
-};
-
-
-/**
- *
- * Articles Controller
- *
- * @param $http
- * @constructor
- *
- */
-function ArticlesController(ArticlesDataService) {
-
+  /**
+   *
+   * Articles Controller
+   *
+   * @param $http
+   * @constructor
+   *
+   */
+  function ArticlesController(ArticlesDataService) {
 
     var vm = this;
-
     // data not loaded
     vm.loading = true;
     vm.listings = [];
-
-    console.log("Articles controller");
-
 
     // Call Controller Main Function
     activate();
@@ -176,12 +149,11 @@ function ArticlesController(ArticlesDataService) {
      */
     function activate() {
 
-        return getListingsData().then(function () {
-            console.log(' -- Activated Data View');
-        });
+      return getListingsData().then(function() {
+        console.log(' -- Activated Data View');
+      });
 
     }
-
 
     /**
      *
@@ -191,51 +163,37 @@ function ArticlesController(ArticlesDataService) {
      */
     function getListingsData() {
 
-        var content = [];
+      var content = [];
 
-        content = ArticlesDataService.getListingsData()
+      content = ArticlesDataService.getListingsData()
 
-            .then(function (data) {
+        .then(function(data) {
 
-                vm.listings = data;
+          vm.listings = data;
+          vm.loading = false;
 
-                console.log("controller listings data caller");
+          return vm.listings;
+        });
 
-                vm.loading = false;
-
-                return vm.listings;
-            });
-
-
-        return content;
+      return content;
     }
 
+  }
 
-}
-
-
-
-/**
- *
- * Details Controller
- *
- * @param $http
- * @constructor
- *
- */
-function ArticlesDetailController(ArticlesDataService, $routeParams, API_URL, MEDIA_URL) {
+  /**
+   *
+   * Details Controller
+   *
+   * @param $http
+   * @constructor
+   *
+   */
+  function ArticlesDetailController(ArticlesDataService, $routeParams, API_URL, MEDIA_URL) {
 
     var vm = this;
-
     vm.loading = true;
-
     vm.details = [];
-
     vm.id = $routeParams.id;
-
-    console.log(vm.id);
-
-    console.log("Articles Details controller " + $routeParams);
 
     // Call main controller function
     activate();
@@ -247,9 +205,9 @@ function ArticlesDetailController(ArticlesDataService, $routeParams, API_URL, ME
      */
     function activate() {
 
-        return getArticlesData(vm.id).then(function () {
-            console.log('Activated Event View ' + vm.id);
-        });
+      return getArticlesData(vm.id).then(function() {
+        console.log('Activated Event View ' + vm.id);
+      });
 
     }
 
@@ -261,28 +219,22 @@ function ArticlesDetailController(ArticlesDataService, $routeParams, API_URL, ME
      */
     function getArticlesData(id) {
 
-        console.log("controller closure");
+      var content = [];
 
-        var content = [];
+      content = ArticlesDataService.getDetailsData(id)
 
-        content = ArticlesDataService.getDetailsData(id)
+        .then(function(data) {
 
-            .then(function (data) {
+          vm.details = data;
+          vm.loading = false;
 
-                vm.details = data;
+          return vm.details;
+        });
 
-                console.log("controller listings data caller");
-
-                vm.loading = false;
-
-                return vm.details;
-            });
-
-
-        return content;
+      return content;
     }
 
+  }
 
-}
-
+}());
 

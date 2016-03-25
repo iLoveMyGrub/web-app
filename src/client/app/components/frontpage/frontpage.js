@@ -7,36 +7,38 @@
  *
  */
 
+(function() {
 
-'use strict';
+  'use strict';
 
-angular.module('project.frontpage', ['ngRoute'])
+  angular.module('project.frontpage', ['ngRoute'])
 
-    .config(['$routeProvider', function ($routeProvider) {
-        $routeProvider.when('/frontpage', {
-            pageTitle: 'Welcome',
-            metaDescription: 'Latest food events, features, reviews and recipes',
-            templateUrl: './site/components/frontpage/frontpage.tpl.html',
-            controller: 'FrontpageController',
-            controllerAs: 'vm',
-            access: {
-                requiresLogin: false,
-                roles: []
-            }
-        });
+    .config(['$routeProvider', function($routeProvider) {
+      $routeProvider.when('/frontpage', {
+        pageTitle: 'Welcome',
+        metaDescription: 'Latest food events, features, reviews and recipes',
+        templateUrl: 'components/frontpage/frontpage.tpl.html',
+        controller: 'FrontpageController',
+        controllerAs: 'vm',
+        access: {
+          requiresLogin: false,
+          roles: []
+        }
+      });
     }])
-
 
     // Define controller
     .controller('FrontpageController', FrontpageController);
 
-
-/**
- *
- * Frontpage Controller
- *
- * @constructor
- */
-function FrontpageController() {
+  /**
+   *
+   * Frontpage Controller
+   *
+   * @constructor
+   */
+  function FrontpageController() {
     var vm = this;
-}
+  }
+
+}());
+
