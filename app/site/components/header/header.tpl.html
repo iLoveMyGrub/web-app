@@ -33,7 +33,8 @@
             <div>
                 <input type="submit" value="Login" ng-click="login()" />
                 <input type="submit" value="Logout" ng-click="logout()" />
-                <span>Logged in as {{auth.profile.nickname}}</span>
+                <span>Logged in as: {{auth.profile.nickname}}</span>
+                <img height="32" width="32" src="{{auth.profile.picture}}" />
             </div>
 
             <!-- Search -->
