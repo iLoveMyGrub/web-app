@@ -71,7 +71,7 @@ To now start this as a container, please run the following :
 
 So my example : 
 
-    docker run -itd -p 8001:80 -v /Users/markrushton/Sites/ilmg/web-app/app:/var/www/nginx-default ilmg/web-app
+    docker run -itd -p 8001:80 -v /Users/markrushton/Sites/ilmg/web-app/build:/var/www/nginx-default ilmg/web-app
 
 
 Check your docker machine IP : (dev is the name of the docker-machine env, your may be different i.e. default) 
@@ -92,8 +92,6 @@ So my example :
 
     docker stop $(docker ps -a -q)
     docker rm $(docker ps -a -q)
-
-
 
 
 

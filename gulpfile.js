@@ -1,147 +1,197 @@
 /***
  *
- * GulpJS file v.0.1
+ * GulpJS file v.1.2
  *
- * @author : Fat Elvis featuring Monkey Bob
+ * @author : Mark Rushton <mark@modernfidelity.co.uk>
  *
  * @type {*|exports|module.exports}
  *
  */
 
-var gulp = require('gulp'),
-  concat = require('gulp-concat'),
-  sass = require('gulp-sass'),
-  minifyCSS = require('gulp-minify-css'),
-  uglify = require('gulp-uglify'),
-  rename = require('gulp-rename'),
-  gzip = require('gulp-gzip'),
-  minifyHTML = require('gulp-minify-html'),
-  sourcemaps = require('gulp-sourcemaps'),
-  gulpDocs = require('gulp-ngdocs'),
-  connect = require('connect'),
-  serveStatic = require('serve-static');
+'use strict';
 
-// WATCH
-gulp.task('watch', function() {
+// Include Gulp
+var gulp = require('gulp');
 
-  gulp.watch([
-    './app/sass/**/*.scss',
-    './app/sass/*.scss'
-  ], ['sass']);
-  gulp.watch([
-    './app/site/components/**/*.js',
-    './app/app.js'
-  ], ['js']);
-  //gulp.watch(['./app/components/**/*.html'], ['html']);
+// Include Plugins
+var jshint = require('gulp-jshint');
+var jscs = require('gulp-jscs');
+var jsdoc = require('gulp-jsdoc3');
+var concat = require('gulp-concat');
+var uglify = require('gulp-uglify');
+var rename = require('gulp-rename');
+var sass = require('gulp-sass');
+var Server = require('karma').Server;
+var addStream = require('add-stream');
+var angularTemplateCache = require('gulp-angular-templatecache');
+var minifyCSS = require('gulp-minify-css');
+var minifyHTML = require('gulp-minify-html');
+var sourcemaps = require('gulp-sourcemaps');
+var gzip = require('gulp-gzip');
 
-});
+// Build Destination
+var dest = 'build';
 
+// Vendor JS files
+var vendorJsFiles = [
+  'src/client/app/bower_components/angular/angular.js',
+  'src/client/app/bower_components/angular-route/angular-route.js',
+  'src/client/app/bower_components/angular-animate/angular-animate.js',
+  'src/client/app/bower_components/angular-sanitize/angular-sanitize.js',
+  'src/client/app/bower_components/angular-jwt/dist/angular-jwt.js',
+  'src/client/app/bower_components/a0-angular-storage/dist/angular-storage.js',
+  //'app/bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
 
-// CSS & SASS
-gulp.task('sass', function() {
-  gulp.src([
-      './app/sass/**/*.scss',
-      './app/sass/**/**/*.scss'
+  'src/client/app/bower_components/api-check/dist/api-check.js',
+  'src/client/app/bower_components/angular-formly/dist/formly.js',
+  'src/client/app/bower_components/angular-formly-templates-bootstrap/dist/angular-formly-templates-bootstrap.js',
+  'src/client/app/bower_components/angular-simple-logger/dist/angular-simple-logger.js',
+  'src/client/app/bower_components/angular-google-maps/dist/angular-google-maps.js',
+  //'app/bower_components/slick-carousel/slick/slick.js',
+  //'app/bower_components/angular-slick/dist/slick.js',
+  'src/client/app/bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
+  'src/client/app/bower_components/angularUtils-pagination/dirPagination.js',
+
+  //'app/bower_components/slick-carousel/slick/slick.js',
+  //'app/bower_components/angular-slick/dist/slick.js',
+
+];
+
+// Source JS files
+var customJsFiles = [
+
+  // CUSTOM
+  'src/client/app/components/auth/auth.js',
+
+  'src/client/app/components/frontpage/frontpage.js',
+  'src/client/app/components/events/events.js',
+  'src/client/app/components/articles/articles.js',
+  'src/client/app/components/reviews/reviews.js',
+  'src/client/app/components/recipes/recipes.js',
+  'src/client/app/components/news/news.js',
+  'src/client/app/components/dashboard/dashboard.js',
+  'src/client/app/components/contact/contact.js',
+  'src/client/app/components/login/login.js',
+  'src/client/app/components/user/user.js',
+  'src/client/app/components/register/register.js',
+  'src/client/app/components/static-pages/static-pages.js',
+  'src/client/app/components/meta/meta.js',
+
+  // SHARED
+  'src/client/app/shared/directives/mobile-menu/mobile-menu.js',
+
+  // Main
+  'src/client/app/app.js'
+];
+
+var sourceJsFiles = vendorJsFiles.concat(customJsFiles);
+
+// Source SCSS files
+var sassFiles = [
+  './src/client/app/sass/app.scss'
+];
+
+// Compile CSS from SCSS files
+gulp.task('css', function() {
+  return gulp
+    .src([
+      './src/client/app/sass/app.scss'
     ])
     .pipe(sass().on('error', sass.logError))
     .pipe(minifyCSS())
     .pipe(sourcemaps.write('source-maps'))
     .pipe(rename('build.css'))
-    .pipe(gulp.dest('./app/css/'));
+    .pipe(gulp.dest(dest + '/css'));
 });
 
-// JAVASCRIPT
-gulp.task('js', function() {
-
-  return gulp.src([
-
-      // VENDOR
-      'app/bower_components/lodash/lodash.js',
-      //'app/bower_components/jquery/dist/jquery.js',
-      'app/bower_components/angular/angular.js',
-      'app/bower_components/angular-route/angular-route.js',
-      'app/bower_components/angular-jwt/dist/angular-jwt.js',
-      'app/bower_components/angular-simple-logger/dist/angular-simple-logger.js',
-      'app/bower_components/angular-google-maps/dist/angular-google-maps.js',
-
-
-      // NON-CORE
-      'app/bower_components/a0-angular-storage/dist/angular-storage.js',
-      'app/bower_components/angular-sanitize/angular-sanitize.js',
-      //'app/bower_components/slick-carousel/slick/slick.js',
-      //'app/bower_components/angular-slick/dist/slick.js',
-      'app/bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
-      'app/bower_components/angularUtils-pagination/dirPagination.js',
-
-      // CUSTOM
-      'app/site/components/auth/auth.js',
-
-      'app/site/components/frontpage/frontpage.js',
-      'app/site/components/events/events.js',
-      'app/site/components/articles/articles.js',
-      'app/site/components/reviews/reviews.js',
-      'app/site/components/recipes/recipes.js',
-      'app/site/components/news/news.js',
-      'app/site/components/dashboard/dashboard.js',
-      'app/site/components/contact/contact.js',
-      'app/site/components/login/login.js',
-      'app/site/components/user/user.js',
-      'app/site/components/register/register.js',
-      'app/site/components/static-pages/static-pages.js',
-      'app/site/components/meta/meta.js',
-
-      // SHARED
-      'app/site/shared/directives/mobile-menu/mobile-menu.js',
-
-      'app/app.js'
-
-    ])
+// Concatenate/Uglify JS Files
+gulp.task('scripts', ['css'], function() {
+  return gulp
+    .src(sourceJsFiles)
+    //.pipe(sourcemaps.write('.map'))
+    .pipe(addStream.obj(prepareTemplates()))
     .pipe(concat('build.js'))
-    .pipe(uglify())
-    .pipe(gulp.dest('./app/'));
+    //.pipe(rename({suffix: '.min'}))
+    //.pipe(uglify())
+    .pipe(gulp.dest(dest + '/js'));
 
+});
+
+// Linting
+gulp.task('lint', [], function() {
+  return gulp
+    .src(customJsFiles)
+    .pipe(jshint())
+    .pipe(jshint.reporter('default', {verbose: true}));
+});
+
+// Code styling
+gulp.task('style', ['scripts', 'css', 'docs', 'lint'], function() {
+  return gulp
+    .src(customJsFiles)
+    .pipe(jscs())
+    .pipe(jscs.reporter());
 });
 
 // HTML
 gulp.task('html', function() {
-
   var opts = {
     conditionals: true,
     spare: true
   };
-
-  return gulp.src('./app/index.html')
-    .pipe(minifyHTML(opts))
-    .pipe(rename('build.html'))
-    .pipe(gulp.dest('./app/'));
+  return gulp
+    .src('./src/client/app/index.html')
+    //.pipe(minifyHTML(opts))
+    .pipe(rename('index.html'))
+    .pipe(gulp.dest('./build/'));
 });
 
-// DOCS
-gulp.task('ngdocs', [], function() {
 
-  var options = {
-    /* pass both .min.js and .min.js.map files for angular and angular-animate */
-    scripts: [
-      './app/bower_components/angular/angular.min.js',
-      './app/bower_components/angular/angular.min.js.map',
-      './app/bower_components/angular-animate/angular-animate.min.js',
-      './app/bower_components/angular-animate/angular-animate.min.js.map'
-    ]
-  }
-
-  return gulp.src('./app/site/components/*/*.js')
-    .pipe(gulpDocs.process())
-    .pipe(gulp.dest('./docs'));
+/// Documentation (JSDoc)
+gulp.task('docs', ['scripts'], function(callback) {
+  gulp
+    .src(
+      ['README.md'].concat(customJsFiles)
+      , {read: false})
+    .pipe(jsdoc(callback));
 });
 
+
+// Angular Template Cache
+function prepareTemplates() {
+  return gulp
+    .src([
+      './src/client/app/**/*.tpl.html'
+    ])
+    .pipe(angularTemplateCache());
+}
+
+
+// WATCHERS
+gulp.task('watch', function() {
+
+  gulp.watch([
+      './src/client/app/sass/**/*.scss',
+      './src/client/app/shared/directives/**/*.scss'
+    ],
+    ['css']
+  );
+
+  gulp.watch([
+    './src/client/app/components/**/*.js',
+    './src/client/app/shared/**/*.js',
+    './src/client/app/app.js'
+  ], ['lint', 'style', 'docs', 'scripts']);
+
+  gulp.watch('./src/client/app/**/*.tpl.html', ['lint', 'style', 'docs', 'scripts']);
+
+  gulp.watch(['./src/client/app/index.html'], ['html']);
+
+});
 
 // Default
-gulp.task('default', ['sass', 'js', 'html', 'watch']);
+gulp.task('default', [
+  'scripts', 'css', 'lint', 'style', 'docs', 'html', 'watch'
+]);
 
-//
-//gulp.task('default', ['sass', 'js', 'html', 'watch', 'ngdocs'], function (cb) {
-//    var app = connect().use(serveStatic('./docs'));
-//    app.listen(8081);
-//    cb();
-//    console.log('Server started on http://localhost:8081');
-//});
+// @todo : deployment task
