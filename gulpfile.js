@@ -117,7 +117,7 @@ gulp.task('scripts', ['css'], function() {
     .pipe(addStream.obj(prepareTemplates()))
     .pipe(concat('build.js'))
     //.pipe(rename({suffix: '.min'}))
-    //.pipe(uglify())
+    .pipe(uglify())
     .pipe(gulp.dest(dest + '/js'));
 
 });
@@ -146,11 +146,10 @@ gulp.task('html', function() {
   };
   return gulp
     .src('./src/client/app/index.html')
-    //.pipe(minifyHTML(opts))
+    .pipe(minifyHTML(opts))
     .pipe(rename('index.html'))
     .pipe(gulp.dest('./build/'));
 });
-
 
 /// Documentation (JSDoc)
 gulp.task('docs', ['scripts'], function(callback) {
@@ -161,7 +160,6 @@ gulp.task('docs', ['scripts'], function(callback) {
     .pipe(jsdoc(callback));
 });
 
-
 // Angular Template Cache
 function prepareTemplates() {
   return gulp
@@ -170,7 +168,6 @@ function prepareTemplates() {
     ])
     .pipe(angularTemplateCache());
 }
-
 
 // WATCHERS
 gulp.task('watch', function() {

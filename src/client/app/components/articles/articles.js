@@ -152,7 +152,7 @@
     function activate() {
 
       return getListingsData().then(function() {
-        console.log(' -- Activated Data View');
+        //console.log(' -- Activated Data View');
       });
 
     }

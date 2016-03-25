@@ -171,7 +171,7 @@
     function activate() {
 
       return getListingsData().then(function() {
-        console.log(' -- Activated Data View');
+        //console.log(' -- Activated Data View');
       });
 
     }
@@ -229,7 +229,7 @@
     function activate() {
 
       return getRecipesData(vm.id).then(function() {
-        console.log('Activated Event View ' + vm.id);
+        //console.log('Activated Event View ' + vm.id);
       });
 
     }
