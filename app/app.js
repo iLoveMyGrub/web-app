@@ -80,7 +80,7 @@ angular.module('project', [
     .run(appRun);
 
 //
-appRun.$inject = ['$rootScope', 'auth'];
+appRun.$inject = ['$rootScope', 'auth', 'store', 'jwtHelper', '$location'];
 
 /**
  *
@@ -88,12 +88,31 @@ appRun.$inject = ['$rootScope', 'auth'];
  *
  * @param $rootScope
  * @param auth The Auth0 Object
+ * @param store
+ * @param jwtHelper
+ * @param $location
  */
 
-function appRun($rootScope, auth) {
+function appRun($rootScope, auth, store, jwtHelper, $location) {
 
     // This hooks all auth events to check everything as soon as the app starts
     auth.hookEvents();
+
+    // To keep the user logged in, retrieve the token from localStorage on each page refresh and let
+    // auth0-angular know the user is already authenticated:
+    $rootScope.$on('$locationChangeStart', function() {
+      var token = store.get('token');
+      if (token) { // if there's a token
+        if (!jwtHelper.isTokenExpired(token)) { // and it's not expired
+          if (!auth.isAuthenticated) {
+            auth.authenticate(store.get('profile'), token);
+          }
+        } else {
+          // Either show the login page or use the refresh token to get a new idToken
+          $location.path('/login');
+        }
+      }
+    });
 
     $rootScope.page = {
         setTitle: function (title) {
