@@ -1,8 +1,8 @@
-@import "top-nav-bar";
-@import "header";
-@import "footer";
-@import "body";
-@import "buttons";
+@import "src/client/app/sass/layout/_top-nav-bar.scss";
+@import "src/client/app/sass/layout/_header.scss";
+@import "src/client/app/sass/layout/_footer.scss";
+@import "src/client/app/sass/layout/_body.scss";
+@import "src/client/app/sass/layout/_buttons.scss";
 //@import "loading-items";
-@import "loader-info";
-@import "maps";
+@import "src/client/app/sass/layout/_loader-info.scss";
+@import "src/client/app/sass/layout/_maps.scss";

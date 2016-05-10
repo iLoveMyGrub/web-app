@@ -93,29 +93,18 @@ var sourceJsFiles = vendorJsFiles.concat(customJsFiles);
 
 // Source SCSS files
 var sassFiles = [
-  './src/client/app/sass/app.scss',
+  './src/client/app/sass/*.scss',
+  './src/client/app/sass/**/*.scss',
   './src/client/app/components/**/*.scss'
-
-//   '!src/app/**/_*.scss',
-//   'src/sass/**/*.scss',
-//   'src/app/**/*.scss'
 ];
 
 // Compile CSS from SCSS files
 gulp.task('css', function() {
   return gulp
     .src(sassFiles)
-//     .pipe(sass().on('error', sass.logError))
-//     .pipe(minifyCSS())
-//     .pipe(sourcemaps.write('source-maps'))
-//     .pipe(rename('build.css'))
-//     .pipe(gulp.dest(dest + '/css'));
-
-
-
     .pipe(concat('build.css'))
-//     .pipe(minifyCSS())
-    .pipe(sass({outputStyle: 'compressed'}).on('error', sass.logError))
+//     .pipe(rename({suffix: '.min'}))
+    .pipe(sass().on('error', sass.logError))
     .pipe(gulp.dest(dest + '/css'));
 
 });
@@ -191,14 +180,14 @@ gulp.task('watch', function() {
   );
 
   gulp.watch([
-    './src/client/app/components/**/*.js',
-    './src/client/app/shared/**/*.js',
-    './src/client/app/app.js'
+    'src/client/app/components/**/*.js',
+    'src/client/app/shared/**/*.js',
+    'src/client/app/app.js'
   ], ['lint', 'style', 'docs', 'scripts']);
 
-  gulp.watch('./src/client/app/**/*.tpl.html', ['lint', 'style', 'docs', 'scripts']);
+  gulp.watch('src/client/app/**/*.tpl.html', ['lint', 'style', 'docs', 'scripts']);
 
-  gulp.watch(['./src/client/app/index.html'], ['html']);
+  gulp.watch(['src/client/app/index.html'], ['html']);
 
 });
 

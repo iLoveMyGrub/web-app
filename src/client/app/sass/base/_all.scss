@@ -1,8 +1,8 @@
-@import "variables";
-@import "global";
-@import "fontface";
-@import "colours";
+@import "src/client/app/sass/base/_variables.scss";
+@import "src/client/app/sass/base/_global.scss";
+@import "src/client/app/sass/base/_fontface.scss";
+@import "src/client/app/sass/base/_colours.scss";
 
-@import "typography";
-@import "grid";
-@import "backgrounds";
+@import "src/client/app/sass/base/_typography.scss";
+@import "src/client/app/sass/base/_grid.scss";
+@import "src/client/app/sass/base/_backgrounds.scss";
