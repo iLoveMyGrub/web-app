@@ -1,28 +1,26 @@
 .frontpage {
 
-
-
   .hero {
+    margin-top: 60px;
+    position: relative;
+    background: url(https://s3-eu-west-1.amazonaws.com/www.ilovemygrub.com/media/hero-bibimbap-yamyam-berlin.jpg) no-repeat center center scroll;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
 
-    //position: relative;
-    //background: url(https://s3-eu-west-1.amazonaws.com/www.ilovemygrub.com/media/hero-bibimbap-yamyam-berlin.jpg) no-repeat center center scroll;
-    //-webkit-background-size: cover;
-    //-moz-background-size: cover;
-    //-o-background-size: cover;
-    //background-size: cover;
-    //
-    //width: 100%;
-    //height: 550px;
-
-    background: red;
+    width: 100%;
+    height: 400px;
 
   }
 
-  #head-content {
+  .head-content {
 
+    width: 100%;
     display: table;
-    height: 550px;
+    height: 400px;
     color: white;
+    text-align: center;
 
     h1 {
       text-transform: uppercase;
@@ -33,8 +31,6 @@
       color: white !important;
     }
 
-
-
   }
 
   .head-content-cell {
@@ -42,6 +38,15 @@
     display: table-cell;
     vertical-align: middle;
 
+  }
+
+
+  .promo_sections {
+    @extend .row;
+  }
+
+  .promo_sections__item {
+    @extend .col-md-4;
   }
 
   @media (min-width: $breakpoint-desktop) {
