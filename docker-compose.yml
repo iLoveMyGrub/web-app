@@ -1,0 +1,17 @@
+ilmg_volumes:
+    env_file: ./.env
+    build: ./docker/volumes
+    volumes:
+        - ./build:/var/www/
+
+ilmg_nginx:
+    env_file: ./.env
+    build: docker/nginx
+    ports:
+        - 8000:80
+
+    volumes:
+        - ./logs/nginx:/var/log/nginx
+        - ./docker/nginx/config:/mnt/config
+    volumes_from:
+        - ilmgvolumes

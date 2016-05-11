@@ -103,8 +103,10 @@ gulp.task('css', function() {
   return gulp
     .src(sassFiles)
     .pipe(concat('build.css'))
-//     .pipe(rename({suffix: '.min'}))
-    .pipe(sass().on('error', sass.logError))
+    //     .pipe(rename({suffix: '.min'}))
+    .pipe(sass({
+      outputStyle: 'compressed'
+    }).on('error', sass.logError))
     .pipe(gulp.dest(dest + '/css'));
 
 });
