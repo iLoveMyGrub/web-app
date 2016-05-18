@@ -1,13 +1,20 @@
-// Vendor
-@import "vendor";
-// Base
-@import "base/all";
-// Layout
-@import "layout/all";
-// Modules
-@import "components/all";
-// Shared Components
-@import "shared-components";
 
+
+@import '../bower_components/bootstrap-sass/assets/stylesheets/bootstrap';
+
+$breakpoint-tablet: $screen-xs-min;
+$breakpoint-desktop: $screen-md-min;
+
+
+//@import '../components/frontpage/frontpage';
+
+
+// Base
+@import "src/client/app/sass/base/all";
+// Layout
+@import "src/client/app/sass/layout/all";
+// Shared Components
+@import "src/client/app/sass/shared-components";
+//
 
 
