@@ -96,7 +96,8 @@ var sourceJsFiles = vendorJsFiles.concat(customJsFiles);
 var sassFiles = [
   './src/client/app/sass/*.scss',
   './src/client/app/sass/**/*.scss',
-  './src/client/app/components/**/*.scss'
+  './src/client/app/components/**/*.scss',
+  './src/client/app/shared/**/*.scss'
 ];
 
 // Compile CSS from SCSS files
