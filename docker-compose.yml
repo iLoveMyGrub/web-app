@@ -1,7 +1,7 @@
 #
 # Nginx webserver for the web apps (js)
 #
-custom_nginx:
+ilmg_web:
     env_file: ./.env
     build: ./
     restart: always
