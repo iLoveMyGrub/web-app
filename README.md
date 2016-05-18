@@ -1,6 +1,8 @@
 WEB APP
 ===============
 
+[![Build Status](https://travis-ci.org/iLoveMyGrub/web-app.svg?branch=master)](https://travis-ci.org/iLoveMyGrub/web-app)
+
 This is the source code for the standalone javascript wep application
 
 Tools used : 
