@@ -28,6 +28,7 @@ var minifyCSS = require('gulp-minify-css');
 var minifyHTML = require('gulp-minify-html');
 var sourcemaps = require('gulp-sourcemaps');
 var gzip = require('gulp-gzip');
+var protractor = require('gulp-protractor');
 
 // Build Destination
 var dest = 'build';
@@ -93,20 +94,22 @@ var sourceJsFiles = vendorJsFiles.concat(customJsFiles);
 
 // Source SCSS files
 var sassFiles = [
-  './src/client/app/sass/app.scss'
+  './src/client/app/sass/*.scss',
+  './src/client/app/sass/**/*.scss',
+  './src/client/app/components/**/*.scss'
 ];
 
 // Compile CSS from SCSS files
 gulp.task('css', function() {
   return gulp
-    .src([
-      './src/client/app/sass/app.scss'
-    ])
-    .pipe(sass().on('error', sass.logError))
-    .pipe(minifyCSS())
-    .pipe(sourcemaps.write('source-maps'))
-    .pipe(rename('build.css'))
+    .src(sassFiles)
+    .pipe(concat('build.css'))
+    //     .pipe(rename({suffix: '.min'}))
+    .pipe(sass({
+      outputStyle: 'compressed'
+    }).on('error', sass.logError))
     .pipe(gulp.dest(dest + '/css'));
+
 });
 
 // Concatenate/Uglify JS Files
@@ -173,6 +176,7 @@ function prepareTemplates() {
 gulp.task('watch', function() {
 
   gulp.watch([
+      './src/client/app/components/**/*.scss',
       './src/client/app/sass/**/*.scss',
       './src/client/app/shared/directives/**/*.scss'
     ],
@@ -180,15 +184,36 @@ gulp.task('watch', function() {
   );
 
   gulp.watch([
-    './src/client/app/components/**/*.js',
-    './src/client/app/shared/**/*.js',
-    './src/client/app/app.js'
+    'src/client/app/components/**/*.js',
+    'src/client/app/shared/**/*.js',
+    'src/client/app/app.js'
   ], ['lint', 'style', 'docs', 'scripts']);
 
-  gulp.watch('./src/client/app/**/*.tpl.html', ['lint', 'style', 'docs', 'scripts']);
+  gulp.watch('src/client/app/**/*.tpl.html', ['lint', 'style', 'docs', 'scripts']);
 
-  gulp.watch(['./src/client/app/index.html'], ['html']);
+  gulp.watch(['src/client/app/index.html'], ['html']);
 
+});
+
+// Unit Testing
+gulp.task('test', function(done) {
+  new Server({
+    configFile: __dirname + '/karma.conf.js',
+    singleRun: true
+  }, done).start();
+});
+
+//e2e testing
+gulp.task('webdriver_update', protractor.webdriver_update);
+
+// this run following task will keep running indefinitely.
+gulp.task('webdriver_standalone', ['webdriver_update'], protractor.webdriver_standalone);
+
+gulp.task('e2e', ['webdriver_update'], function(done) {
+  gulp.src(['src/client/app/tests/**/*.spec.js'])
+    .pipe(protractor.protractor({
+      configFile: 'src/client/app/tests/protractor.conf.js'
+    }),done());
 });
 
 // Default
@@ -196,4 +221,3 @@ gulp.task('default', [
   'scripts', 'css', 'lint', 'style', 'docs', 'html', 'watch'
 ]);
 
-// @todo : deployment task
