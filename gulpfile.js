@@ -87,7 +87,8 @@ var customJsFiles = [
   'src/client/app/shared/directives/mobile-menu/mobile-menu.js',
 
   // Main
-  'src/client/app/app.js'
+  'src/client/app/app.js',
+  'src/client/app/app.config.js'
 ];
 
 var sourceJsFiles = vendorJsFiles.concat(customJsFiles);
