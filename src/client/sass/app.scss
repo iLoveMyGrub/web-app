@@ -1,0 +1,22 @@
+
+
+@import '../src/client/bower_components/bootstrap-sass/assets/stylesheets/_bootstrap.scss';
+
+$breakpoint-tablet: $screen-xs-min;
+$breakpoint-desktop: $screen-md-min;
+
+//$breakpoint-desktop: 992px;
+
+
+
+
+
+// Base
+@import "../src/client/app/sass/base/_all.scss";
+// Layout
+@import "../src/client/app/sass/layout/_all.scss";
+// Shared Components
+@import "../src/client/app/sass/_shared-components.scss";
+//
+
+

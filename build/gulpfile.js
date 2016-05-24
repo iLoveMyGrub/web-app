@@ -29,7 +29,6 @@ var sassFiles = [
   '../src/app/**/*.scss'
 ];
 
-
 // Include Gulp
 var gulp = require('gulp');
 
@@ -64,16 +63,14 @@ var jsFiles = vendorFiles.concat(srcFiles);
 
 // Source SCSS files
 var sassFiles = [
-  './src/client/app/sass/*.scss',
-  './src/client/app/sass/**/*.scss',
-  './src/client/app/components/**/*.scss',
-  './src/client/app/shared/**/*.scss'
+  '../src/client/app/sass/app.scss',
+  '../src/client/app/components/**/*.scss',
 ];
 
 // Compile CSS from SCSS files
 gulp.task('css', function() {
   return gulp
-    .src(sassFiles)
+    .src(sassFiles, {cwd: base})
     .pipe(concat('build.css'))
     //     .pipe(rename({suffix: '.min'}))
     .pipe(sass({
@@ -86,7 +83,7 @@ gulp.task('css', function() {
 // Concatenate/Uglify JS Files
 gulp.task('scripts', ['css'], function() {
   return gulp
-    .src(sourceJsFiles)
+    .src(jsFiles, {cwd: base})
     //.pipe(sourcemaps.write('.map'))
     .pipe(addStream.obj(prepareTemplates()))
     .pipe(concat('build.js'))
@@ -96,10 +93,12 @@ gulp.task('scripts', ['css'], function() {
 
 });
 
+
+
 // Linting
 gulp.task('lint', [], function() {
   return gulp
-    .src(customJsFiles)
+    .src(srcFiles, {cwd: base})
     .pipe(jshint())
     .pipe(jshint.reporter('default', {verbose: true}));
 });
@@ -107,7 +106,7 @@ gulp.task('lint', [], function() {
 // Code styling
 gulp.task('style', ['scripts', 'css', 'docs', 'lint'], function() {
   return gulp
-    .src(customJsFiles)
+    .src(srcFiles, {cwd: base})
     .pipe(jscs())
     .pipe(jscs.reporter());
 });
@@ -125,55 +124,69 @@ gulp.task('html', function() {
     .pipe(gulp.dest('./build/'));
 });
 
-/// Documentation (JSDoc)
-gulp.task('docs', ['scripts'], function(callback) {
-  gulp
-    .src(
-      ['README.md'].concat(customJsFiles)
-      , {read: false})
-    .pipe(jsdoc(callback));
+// Clean template
+gulp.task('clean-template', function() {
+  return gulp.src('build/tmp', {cwd: base, read: false})
+    .pipe(clean());
 });
 
-// Angular Template Cache
-function prepareTemplates() {
+// Documentation (JSDoc)
+gulp.task('docs', ['scripts'], function() {
   return gulp
-    .src([
-      './src/client/app/**/*.tpl.html'
-    ])
-    .pipe(angularTemplateCache());
-}
+    .src(srcFiles, {cwd: base, read: false})
+    .pipe(jsdoc(require('./jsdoc.json')));
+});
+
 
 // WATCHERS
 gulp.task('watch', function() {
 
   gulp.watch([
-      './src/client/app/components/**/*.scss',
-      './src/client/app/sass/**/*.scss',
-      './src/client/app/shared/directives/**/*.scss'
+      '../src/client/app/components/**/*.scss',
+      '../src/client/app/sass/**/*.scss',
+      '../src/client/app/shared/directives/**/*.scss'
     ],
     ['css']
   );
 
   gulp.watch([
-    'src/client/app/components/**/*.js',
-    'src/client/app/shared/**/*.js',
-    'src/client/app/app.js'
+    '../src/client/app/components/**/*.js',
+    '../src/client/app/shared/**/*.js',
+    '../src/client/app/app.js'
   ], ['lint', 'style', 'docs', 'scripts']);
 
-  gulp.watch('src/client/app/**/*.tpl.html', ['lint', 'style', 'docs', 'scripts']);
+  gulp.watch('../src/client/app/**/*.tpl.html', ['lint', 'style', 'docs', 'scripts']);
 
-  gulp.watch(['src/client/app/index.html'], ['html']);
+  gulp.watch(['../src/client/app/index.html'], ['html']);
 
 });
 
+
 // Unit Testing
-gulp.task('test', function(done) {
+gulp.task('test', ['karma'], function(done) {
+  gulp.start('clean-template');
+});
+
+gulp.task('karma', ['templates'], function(done) {
   new Server({
     configFile: __dirname + '/karma.conf.js',
     singleRun: true
   }, done).start();
 });
 
+gulp.task('templates', function() {
+  return gulp
+    .src('templates.js')
+    .pipe(addStream.obj(prepareTemplates()))
+    .pipe(concat('templates.js'))
+    .pipe(gulp.dest('tmp/js'));
+});
+
+// Angular Template Cache
+function prepareTemplates() {
+  return gulp.src('src/client/app/**/*.tpl.html', {cwd: base})
+    .pipe(angularTemplateCache());
+}
 //e2e testing
 gulp.task('webdriver_update', protractor.webdriver_update);
 

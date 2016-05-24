@@ -10,8 +10,8 @@ module.exports = function(config) {
   }
   files.push(
     "build/tmp/js/templates.js",
-    "src/bower_components/angular-mocks/angular-mocks.js",
-    "src/app/**/*spec.js"
+    "src/client/bower_components/angular-mocks/angular-mocks.js",
+    "src/client/app/**/*spec.js"
   );
 
   config.set({
@@ -33,7 +33,7 @@ module.exports = function(config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-      'src/app/**/!(*spec).js': 'coverage'
+      'src/client/app/**/!(*spec).js': 'coverage'
     },
 
     // test results reporter to use

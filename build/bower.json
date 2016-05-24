@@ -36,5 +36,9 @@
     "angular-formly": "^8.1.0",
     "angular-formly-templates-bootstrap": "~6.1.4",
     "api-check": "^7.5.5"
+  },
+  "resolutions": {
+    "angular": "~1.4.7",
+    "slick-carousel": "~1.5.8"
   }
 }
