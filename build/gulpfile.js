@@ -63,20 +63,20 @@ var jsFiles = vendorFiles.concat(srcFiles);
 
 // Source SCSS files
 var sassFiles = [
-  '../src/client/app/sass/app.scss',
+  '../src/client/sass/app.scss',
   '../src/client/app/components/**/*.scss',
 ];
 
 // Compile CSS from SCSS files
 gulp.task('css', function() {
   return gulp
-    .src(sassFiles, {cwd: base})
+    .src(sassFiles)
     .pipe(concat('build.css'))
     //     .pipe(rename({suffix: '.min'}))
     .pipe(sass({
       outputStyle: 'compressed'
     }).on('error', sass.logError))
-    .pipe(gulp.dest(dest + '/css'));
+    .pipe(gulp.dest(dest + 'css'));
 
 });
 
@@ -118,10 +118,10 @@ gulp.task('html', function() {
     spare: true
   };
   return gulp
-    .src('./src/client/app/index.html')
+    .src('../src/client/app/index.html')
     .pipe(minifyHTML(opts))
     .pipe(rename('index.html'))
-    .pipe(gulp.dest('./build/'));
+    .pipe(gulp.dest(dest));
 });
 
 // Clean template
