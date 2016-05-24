@@ -11,6 +11,23 @@
 'use strict';
 
 
+// Base folder
+var base = './../';
+
+// Destination
+var dest = '../deploy/assets/';
+
+// Source JS files
+var vendorFiles = require("./includes/vendor.js");
+var srcFiles = require("./includes/source.js");
+var jsFiles = vendorFiles.concat(srcFiles);
+
+// Source SCSS files
+var sassFiles = [
+  '../src/sass/seat.scss',
+  //'!../src/app/**/_*.scss',
+  '../src/app/**/*.scss'
+];
 
 
 // Include Gulp
@@ -31,70 +48,19 @@ var minifyCSS = require('gulp-minify-css');
 var minifyHTML = require('gulp-minify-html');
 var sourcemaps = require('gulp-sourcemaps');
 var gzip = require('gulp-gzip');
+var clean = require('gulp-clean');
 var protractor = require('gulp-protractor');
 
-// Build Destination
-var dest = 'build';
+// Base folder
+var base = './../';
 
-// Vendor JS files
-var vendorJsFiles = [
-  'src/client/app/bower_components/angular/angular.js',
-  'src/client/app/bower_components/angular-route/angular-route.js',
-  'src/client/app/bower_components/angular-animate/angular-animate.js',
-  'src/client/app/bower_components/angular-sanitize/angular-sanitize.js',
-  'src/client/app/bower_components/angular-jwt/dist/angular-jwt.js',
-  'src/client/app/bower_components/a0-angular-storage/dist/angular-storage.js',
-  'src/client/app/bower_components/angularUtils-pagination/dirPagination.js',
-  'src/client/app/bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
-
-  // Angular Formly
-  'src/client/app/bower_components/api-check/dist/api-check.js',
-  'src/client/app/bower_components/angular-formly/dist/formly.js',
-  'src/client/app/bower_components/angular-formly-templates-bootstrap/dist/angular-formly-templates-bootstrap.js',
-
-  // Google Maps (@see - angular-google-maps)1
-  'src/client/app/bower_components/lodash/lodash.js',
-  'src/client/app/bower_components/angular-simple-logger/dist/angular-simple-logger.js',
-  'src/client/app/bower_components/angular-google-maps/dist/angular-google-maps.js',
-
-  //'app/bower_components/slick-carousel/slick/slick.js',
-  //'app/bower_components/angular-slick/dist/slick.js',
-  //'app/bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
-  //'app/bower_components/slick-carousel/slick/slick.js',
-  //'app/bower_components/angular-slick/dist/slick.js',
-
-];
+// Destination
+var dest = '../deploy/assets/';
 
 // Source JS files
-var customJsFiles = [
-
-  // CUSTOM
-  'src/client/app/components/auth/auth.js',
-
-  'src/client/app/components/frontpage/frontpage.js',
-  'src/client/app/components/events/events.js',
-  'src/client/app/components/articles/articles.js',
-  'src/client/app/components/recipes/recipes.js',
-  'src/client/app/components/dashboard/dashboard.js',
-  'src/client/app/components/contact/contact.js',
-  'src/client/app/components/login/login.js',
-  'src/client/app/components/user/user.js',
-  'src/client/app/components/register/register.js',
-  'src/client/app/components/static-pages/static-pages.js',
-  'src/client/app/components/meta/meta.js',
-
-  //'src/client/app/components/news/news.js',
-  //'src/client/app/components/reviews/reviews.js',
-
-  // SHARED
-  'src/client/app/shared/directives/mobile-menu/mobile-menu.js',
-
-  // Main
-  'src/client/app/app.js',
-  'src/client/app/app.config.js'
-];
-
-var sourceJsFiles = vendorJsFiles.concat(customJsFiles);
+var vendorFiles = require("./includes/vendor.js");
+var srcFiles = require("./includes/source.js");
+var jsFiles = vendorFiles.concat(srcFiles);
 
 // Source SCSS files
 var sassFiles = [

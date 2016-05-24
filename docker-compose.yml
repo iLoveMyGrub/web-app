@@ -8,5 +8,5 @@ ilmg_web:
     ports:
         - 8000:80
     volumes:
-        - ./build:/var/www/nginx-default
+        - ./deploy:/var/www/nginx-default
 
