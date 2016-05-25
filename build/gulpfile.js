@@ -94,7 +94,6 @@ gulp.task('scripts', ['css'], function() {
 });
 
 
-
 // Linting
 gulp.task('lint', [], function() {
   return gulp
@@ -121,7 +120,7 @@ gulp.task('html', function() {
     .src('../src/client/app/index.html')
     .pipe(minifyHTML(opts))
     .pipe(rename('index.html'))
-    .pipe(gulp.dest(dest));
+    .pipe(gulp.dest('../deploy'));
 });
 
 // Clean template
