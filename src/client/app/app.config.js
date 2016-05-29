@@ -116,7 +116,4 @@
 
   }
 
-  // Precompile .tpls
-  angular.module('templates', []);
-
 }());

@@ -2,8 +2,14 @@
  *
  * FRONTPAGE COMPONENT
  *
- * @file
- * Provides functionality for the section
+ * @author Mark Rushton <mark@modernfidelity.co.uk>
+ *
+ * @description This module handles all the functionality for the section.
+ *
+ * @class app.Frontpage
+ *
+ * @memberof app
+ *
  *
  */
 
