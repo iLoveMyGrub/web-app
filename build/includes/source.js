@@ -7,6 +7,7 @@ module.exports = [
 
   'src/client/app/components/frontpage/frontpage.js',
   'src/client/app/components/frontpage/frontpage.config.js',
+  'src/client/app/components/frontpage/frontpage.controller.js',
 
   'src/client/app/components/articles/articles.js',
   'src/client/app/components/articles/articles.config.js',
