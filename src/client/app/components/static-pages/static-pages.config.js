@@ -20,19 +20,19 @@
       function($routeProvider, $locationProvider) {
 
         $routeProvider.when('/terms', {
-          title: 'Terms and Conditions',
+          pageTitle: 'Terms and Conditions',
           templateUrl: 'components/static-pages/terms.tpl.html'
 
         });
 
         $routeProvider.when('/privacy-policy', {
-          title: 'Privacy Policy',
+          pageTitle: 'Privacy Policy',
           templateUrl: 'components/static-pages/privacy-policy.tpl.html'
 
         });
 
         $routeProvider.when('/about', {
-          title: 'About',
+          pageTitle: 'About',
           templateUrl: 'components/static-pages/about.tpl.html'
 
         });
