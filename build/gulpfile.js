@@ -154,7 +154,7 @@ gulp.task('watch', function() {
     '../src/client/app/app.js'
   ], ['lint', 'style', 'docs', 'scripts']);
 
-  gulp.watch('../src/client/app/**/*.tpl.html', ['lint', 'style', 'docs', 'scripts']);
+  gulp.watch('../src/client/app/components/**/*.tpl.html', ['lint', 'style', 'docs', 'scripts']);
 
   gulp.watch(['../src/client/app/index.html'], ['html']);
 
