@@ -5,14 +5,14 @@ p {
   line-height: 1.5;
   color: rgba(29, 29, 29, 0.92);
   padding-bottom: 20px;
-  font-family: Arial, Helvetica, sans-serif;
+
 }
 
 h1 {
-  font-size: 60px;
+  margin: 20px 0;
+  font-size: 35px;
   font-weight: lighter;
-  //font-style: italic;
-  font-family: Arial, Helvetica, sans-serif;
+
 }
 
 h2 {
@@ -20,19 +20,17 @@ h2 {
   font-weight: lighter;
   //font-style: italic;
 
-  font-family: Arial, Helvetica, sans-serif;
 }
 
 h3 {
   font-size: 24px;
   margin-bottom: 20px;
 
-  font-family: Arial, Helvetica, sans-serif;
 }
 
 h4 {
   font-size: 18px;
-  font-family: Arial, Helvetica, sans-serif;
+
 }
 
 h5 {
@@ -40,7 +38,7 @@ h5 {
 
   text-transform: uppercase;
   font-weight: 500;
-  font-family: Arial, Helvetica, sans-serif;
+
 }
 
 .section-title {
@@ -53,7 +51,6 @@ h1.title {
 
   font-size: 45px;
   font-weight: lighter;
-  font-family: Arial, Helvetica, sans-serif;
 
 }
 
@@ -68,6 +65,14 @@ h1.title {
 
   p {
 
+  }
+
+}
+
+@media (min-width: $breakpoint-desktop) {
+
+  h1 {
+    font-size: 55px;
   }
 
 }

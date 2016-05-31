@@ -31,7 +31,7 @@
     @extend .col-xs-12;
     @extend .col-sm-6;
 
-    text-align:center;
+    text-align: center;
   }
 
   .footer__links {
@@ -49,17 +49,15 @@
   .footer__logo--content {
 
     display: table-cell;
-    padding-top: 35px;
+    padding: 35px 0 0 25px;
     vertical-align: middle;
-    text-align:left;
+    text-align: left;
     p {
       color: $grey-light;
       font-size: 13px;
     }
 
   }
-
-
 
   .footer__links--content {
     @extend .row;
@@ -74,7 +72,7 @@
     @extend .col-xs-12;
     @extend .col-sm-6;
 
-    p{
+    p {
       color: $grey-light;
       font-size: 13px;
     }
@@ -83,30 +81,48 @@
 }
 
 .footer-terms {
+  display: block;
+  height: 70px;
 
   width: 100%;
+  padding: 15px 25px 15px 25px;
   background-color: $grey-darker;
-  text-align: center;
-  padding: 20px;
+  color: white;
+  a {
+    color: white;
+  }
+
+  .footer-terms__copyright {
+    float: none;
+  }
 
   .footer-terms__links {
-
-    list-style-type: none;
-
-    li {
-      padding:20px;
-      display: inline;
-    }
-
-    a {
-      color: white;
-    }
-
+    float: none;
   }
 
 }
 
 @media (min-width: $breakpoint-desktop) {
 
+  .footer-terms {
+    display: block;
+    height: 50px;
+    width: 100%;
+    padding: 15px 25px 15px 25px;
+    background-color: $grey-darker;
+    color: white;
+    a {
+      color: white;
+    }
+
+    .footer-terms__copyright {
+      float: left;
+    }
+
+    .footer-terms__links {
+      float: right;
+    }
+
+  }
 
 }

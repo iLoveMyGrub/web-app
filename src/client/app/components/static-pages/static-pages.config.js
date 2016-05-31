@@ -21,16 +21,20 @@
 
         $routeProvider.when('/terms', {
           title: 'Terms and Conditions',
-          templateUrl: './site/components/static-pages/terms.tpl.html',
-          //controller: 'StaticPagesController',
-          //controllerAs: 'vm'
+          templateUrl: 'components/static-pages/terms.tpl.html'
+
         });
 
         $routeProvider.when('/privacy-policy', {
           title: 'Privacy Policy',
-          templateUrl: './site/components/static-pages/privacy-policy.tpl.html',
-          //controller: 'StaticPagesController',
-          //controllerAs: 'vm'
+          templateUrl: 'components/static-pages/privacy-policy.tpl.html'
+
+        });
+
+        $routeProvider.when('/about', {
+          title: 'About',
+          templateUrl: 'components/static-pages/about.tpl.html'
+
         });
 
       }]);

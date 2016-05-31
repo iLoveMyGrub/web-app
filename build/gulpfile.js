@@ -142,7 +142,7 @@ gulp.task('watch', function() {
 
   gulp.watch([
       '../src/client/app/components/**/*.scss',
-      '../src/client/app/sass/**/*.scss',
+      '../src/client/sass/**/*.scss',
       '../src/client/app/shared/directives/**/*.scss'
     ],
     ['css']
