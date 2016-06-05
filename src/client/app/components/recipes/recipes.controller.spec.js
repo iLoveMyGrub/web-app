@@ -1,15 +1,15 @@
 'use strict';
 
-describe('project.about module', function() {
+describe('project.recipes module', function() {
 
-  beforeEach(module('project.about'));
+  beforeEach(module('project'));
 
-  describe('About us controller', function() {
+  describe('Recipes controller', function() {
 
-    it('should ....', inject(function($controller) {
+    it('should be defined', inject(function($controller) {
 
       // Spec body
-      var AboutController = $controller('AboutController');
+      var AboutController = $controller('RecipesController');
 
       expect(AboutController).toBeDefined();
 

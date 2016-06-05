@@ -1,17 +1,21 @@
-'use strict';
+describe('project.recipes service', function() {
 
-describe('project.about module', function() {
+  var RecipesDataService;
+  var httpBackend;
 
-  beforeEach(module('project.about'));
+  beforeEach(module('project'));
 
-  describe('About us controller', function() {
+  beforeEach(inject(function(_RecipesDataService_, $httpBackend) {
+    RecipesDataService = _RecipesDataService_;
+    httpBackend = $httpBackend;
+  }));
 
-    it('should ....', inject(function($controller) {
+  describe('Recipes Service', function() {
+
+    it('should be defined', inject(function($controller) {
 
       // Spec body
-      var AboutController = $controller('AboutController');
-
-      expect(AboutController).toBeDefined();
+      expect(RecipesDataService).toBeDefined();
 
     }));
 
