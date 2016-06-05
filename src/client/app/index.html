@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="project">
+<html lang="en" data-ng-app="project">
 <head>
 
     <meta charset="utf-8">
 
-    <title ng-bind="pageTitle"></title>
+    <title data-ng-bind="pageTitle"></title>
 
     <meta name="description" content="Latest food events, features, reviews and recipes">
     <!--<meta name="description" content="{{metaDescription}}">-->
@@ -77,20 +77,20 @@
         your browser</a> to improve your experience.</p>
 <![endif]-->
 
-<a name="top"></a>
+<a id="top"></a>
 
 <!--HEADER-->
-<div ng-include="'components/header/header.tpl.html'"></div>
+<div data-ng-include="'components/header/header.tpl.html'"></div>
 <!--/HEADER-->
 
 
 <!-- main content render -->
 <div id="page-wrapper">
-    <div ng-view autoscroll="true"></div>
+    <div data-ng-view data-autoscroll="true"></div>
 </div>
 
 <!-- FOOTER -->
-<div ng-include="'components/footer/footer.tpl.html'"></div>
+<div data-ng-include="'components/footer/footer.tpl.html'"></div>
 <!-- /FOOTER -->
 
 <!-- JAVASCRIPT  -->
