@@ -52,7 +52,7 @@
       }])
 
     // App constants (ref env vars)
-    .constant('API_URL', 'http://api.ilovemygrub.com/api/')
+    .constant('API_URL', 'https://api.ilovemygrub.com/api/')
     // s3
     .constant('MEDIA_URL', 'https://s3-eu-west-1.amazonaws.com/www.ilovemygrub.com/files/s3fs-public')
     // sessionStorage ID
