@@ -35,10 +35,12 @@
     "angular-google-maps": "~2.2.1",
     "angular-formly": "^8.1.0",
     "angular-formly-templates-bootstrap": "~6.1.4",
-    "api-check": "^7.5.5"
+    "api-check": "^7.5.5",
+    "angularFacebookUtils": "angular-facebook-utils#^1.1.0"
   },
   "resolutions": {
     "angular": "~1.4.7",
-    "slick-carousel": "~1.5.8"
+    "slick-carousel": "~1.5.8",
+    "angular-route": "~1.4.1"
   }
 }
