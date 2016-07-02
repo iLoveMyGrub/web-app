@@ -3,6 +3,10 @@
   background: #eae7dc;
   padding:0 0 60px 0;
 
+
+
+
+
   @at-root .kombucha__header {
     width:100%;
     padding: 100px 0;
@@ -20,5 +24,22 @@
   @at-root .kombucha__content {
     text-align: center;
   }
+
+  @at-root .kombucha__section {
+    width:100%;
+    padding: 40px 0;
+
+
+    & h2 {
+      //text-transform: uppercase;
+      padding: 20px 0;
+    }
+
+    & ul {
+      font-size: 25px;
+    }
+
+  }
+
 
 }
