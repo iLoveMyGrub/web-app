@@ -1,14 +1,10 @@
-.kombucha{
+.kombucha {
 
   background: #eae7dc;
-  padding:0 0 60px 0;
-
-
-
-
+  padding: 0 0 60px 0;
 
   @at-root .kombucha__header {
-    width:100%;
+    width: 100%;
     padding: 100px 0;
     text-align: center;
   }
@@ -16,30 +12,43 @@
   @at-root .kombucha-logo {
     width: 100%;
     max-width: 607px;
-    margin:0 auto;
+    margin: 0 auto;
 
   }
-
 
   @at-root .kombucha__content {
     text-align: center;
   }
 
   @at-root .kombucha__section {
-    width:100%;
+    width: 100%;
     padding: 40px 0;
 
 
     & h2 {
       //text-transform: uppercase;
-      padding: 20px 0;
+      font-size:35px;
+      padding-bottom: 20px;
+      font-family: serif;
+      font-style: italic;
     }
 
     & ul {
       font-size: 25px;
     }
 
+    &--benefits {
+      background: #E1BB81;
+    }
+
+    &--about {
+      background: #B6B0AA;
+    }
   }
 
+  @at-root .kombucha__section-content {
+    margin:0 auto;
+    width:70%;
+  }
 
 }
