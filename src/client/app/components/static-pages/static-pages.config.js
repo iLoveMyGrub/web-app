@@ -19,6 +19,7 @@
     .config(['$routeProvider', '$locationProvider',
       function($routeProvider, $locationProvider) {
 
+        // General
         $routeProvider.when('/terms', {
           pageTitle: 'Terms and Conditions',
           templateUrl: 'components/static-pages/terms.tpl.html'
@@ -34,6 +35,13 @@
         $routeProvider.when('/about', {
           pageTitle: 'About',
           templateUrl: 'components/static-pages/about.tpl.html'
+
+        });
+
+        // Product
+        $routeProvider.when('/kombucha', {
+          pageTitle: 'Kombucha',
+          templateUrl: 'components/static-pages/products/kombucha.tpl.html'
 
         });
 
