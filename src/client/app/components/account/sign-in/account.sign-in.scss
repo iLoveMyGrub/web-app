@@ -1,0 +1,14 @@
+.account-sign-in {
+
+  position: relative;
+  padding:20px;
+
+  @at-root .account-sign-in__form {
+    position: relative;
+
+    margin:0 auto;
+    width:320px;
+
+  }
+
+}
