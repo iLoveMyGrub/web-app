@@ -1,13 +1,10 @@
 /**
  *
- * ILMG WEB-APP JS CONFIG
+ * WEB APP CONFIG
  *
  * @author Mark Rushton <mark@modernfidelity.co.uk>
  *
- * @description
- * This is the main application component and is responsible for the bootstrapping and loading.
- *
- * @namespace app
+ * @namespace project
  *
  */
 
