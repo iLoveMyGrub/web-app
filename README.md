@@ -3,19 +3,21 @@ WEB APP
 
 [![Build Status](https://travis-ci.org/iLoveMyGrub/web-app.svg?branch=master)](https://travis-ci.org/iLoveMyGrub/web-app)
 
-This is the source code for the standalone javascript wep application
+This is the source code for the standalone javascript wep app.
 
-Tools used : 
+Data is sourced via requests to the Content (REST) APIs and the Data (REST) APIs. 
 
-    - AngularJS 
+*Tools used :* 
+
+    - AngularJS 1.x (latest)
     - Bower
     - Gulp
-    - Bootstrap 
+    - Bootstrap  
     - SASS
-    - jQuery 
+    - BEM
     
     
-Testing : 
+*Testing :*
 
     - Jasmine
     - Karma 
@@ -25,6 +27,8 @@ Testing :
 Setup
 ---------------
 
+From within the ./build folder run the following :
+
 ```
 npm install
 ```
@@ -32,62 +36,33 @@ npm install
 Builds
 -------------
 
-The current tooling is built around Gulp JS
+The current tooling is built around Gulp (http://gulpjs.com/)
 
-Then once installed, you can run from the 'gulp' command from the project root, this will now watch js & css 
-files and run compiles/builds when they change.   
+Once this has been installed you can run from the 'gulp' command from the *./build* folder.
 
 
 ```
+cd ./build
 gulp
 ```
 
+This creates assets (html,js,css) within the 'deploy' folder. 
 
-Docker
+Server
 -------------
 
-Make sure you have installed Docker, and an environment is available / started.
+This site uses docker for dev and production.
 
-Windows / Mac - Docker-machine (or docker-toolbox) : 
+Please run the following commands to get up and running from the project root :
 
-     
-    docker-machine start default
-    
-   
-    eval $(docker-machine env default)
-    
-Then cd into the the project root and run the following : 
+```
+docker-compose build
+docker-compose up -d
+```
 
-
-    docker build -t ilmg/web-app .
-
-
-The will now build the image "ilmg/web-app", which will be seen in your images list if you run the command "docker images"
-
-To now start this as a container, please run the following : 
-
-
-    docker run -itd -p 8001:80 -v /YOUR_FULL_PATH/web-app/app:/var/www/nginx-default ilmg/web-app
-   
-
-So my example : 
-
-    docker run -itd -p 8001:80 -v /Users/markrushton/Sites/ilmg/web-app/build:/var/www/nginx-default ilmg/web-app
-
-
-Check your docker machine IP : (dev is the name of the docker-machine env, your may be different i.e. default) 
-
-    docker-machine ip dev 
-
-Now in a new browser tab, visit the website at the returned YOUR_DOCKER_IP:8001 
-
-So my example : 
-
-    192.168.99.100:8001
-
+Then visit : http://localhost:8000 
 
 **Success, you are now up and running.** 
-
 
 *Some other useful Docker commands to stop / remove all of Docker containers:*
 
@@ -96,44 +71,33 @@ So my example :
 
 
 
-
-Core Files
--------------
-
-The core CSS is located from within the SASS folder, and includes the vendor libs Bootstrap. 
- 
-The core JS files and components are located within "./app/sites/", the main JS is "app/app.js"
-
-Please adjust these to meet your specific requirements. 
-
-
 Components & Microservices
 --------------------------
 
-The application architecture is based around the component model along with supporting "micro services" to the API.
+The application architecture is based around the component model along with supporting "microservices" from the API.
 
 @see : 
  
-  - [https://en.wikipedia.org/wiki/Component-based_software_engineering](https://en.wikipedia.org/wiki/Component-based_software_engineering)
-  - [https://en.wikipedia.org/wiki/Microservices](https://en.wikipedia.org/wiki/Microservices)
+  - https://en.wikipedia.org/wiki/Component-based_software_engineering
+  - https://en.wikipedia.org/wiki/Microservices
   
 
 
-CSS
+CSS/SASS/BEM
 -------------
 
-All CSS work should be worked on within the SASS folder and via grunt compiled to a single minified CSS file. 
+All CSS/SASS should be worked on within either the SASS folder or the specific component folder.
 
-This is all setup currently and only the sass files need to updated / created.
+Please see [http://getbem.com](http://getbem.com) for the style guides and approach.
 
+Gulp will then compile these to a single minified CSS file. 
 
 JS
 -------------
 
-All JS work should be worked on within the SITE folder + root level 'app.js' and via grunt compiled to a single uglified JS file. 
+All JS work should be worked on within the 'src' folder and via gulp compiled to a single uglified JS file. 
 
-This is setup and working.
-
+This is Angular 1.x codebase and uses the [https://github.com/johnpapa/angular-styleguide/tree/master/a1](https://github.com/johnpapa/angular-styleguide/tree/master/a1) as a style guide.
 
 Libraries
 -------------
