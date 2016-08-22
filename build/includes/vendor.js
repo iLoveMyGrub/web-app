@@ -23,4 +23,12 @@ module.exports = [
   //'app/bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
   //'app/bower_components/slick-carousel/slick/slick.js',
   //'app/bower_components/angular-slick/dist/slick.js',
+
+
+  // AWS Cognito
+  'src/client/vendor/jsbn.js',
+  'src/client/vendor/jsbn2.js',
+  'src/client/vendor/sjcl.js',
+  'src/client/vendor/aws-cognito-sdk.min.js',
+  'src/client/vendor/amazon-cognito-identity.min.js'
 ];

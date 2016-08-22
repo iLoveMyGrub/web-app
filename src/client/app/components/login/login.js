@@ -48,9 +48,9 @@
   // Inject Deps
   loginDirectiveTopLinks.$inject = ['$window', '$location'];
 
-  LoginDataService.$inject = ['$http', '$rootScope', 'API_URL', 'jwtHelper', '$window', 'AuthTokenService'];
+  LoginDataService.$inject = ['$http', '$rootScope', 'API_URL', 'jwtHelper', '$window', 'AuthService'];
 
-  LoginController.$inject = ['LoginDataService', 'jwtHelper', '$location', '$window', 'AuthTokenService'];
+  LoginController.$inject = ['LoginDataService', 'jwtHelper', '$location', '$window', 'AuthService'];
 
   /**
    *
@@ -96,7 +96,7 @@
    * @constructor
    *
    */
-  function LoginController(LoginDataService, jwtHelper, $location, $window, AuthTokenService) {
+  function LoginController(LoginDataService, jwtHelper, $location, $window, AuthService) {
 
     var vm = this;
 
@@ -185,7 +185,7 @@
    *
    * @constructor
    */
-  function LoginDataService($http, $rootScope, API_URL, jwtHelper, $window, AuthTokenService) {
+  function LoginDataService($http, $rootScope, API_URL, jwtHelper, $window, AuthService) {
 
     return {
       login: login,
@@ -208,9 +208,9 @@
 
       }).then(function success(response) {
 
-        console.log(AuthTokenService);
+        console.log(AuthService);
 
-        AuthTokenService.setToken(response.data);
+        AuthService.setToken(response.data);
 
         return response;
 
@@ -230,7 +230,7 @@
      */
     function getUser() {
 
-      if (AuthTokenService.getToken()) {
+      if (AuthService.getToken()) {
 
         return $http.get(API_URL + '/me');
 

@@ -39,8 +39,8 @@
     .constant('AWS_CONFIG', Object.freeze({
       'AWSCognito': {
         'region': 'eu-west-1',
-        'userPoolId': 'eu-west-1_3dsEdxxvB20',
-        'clientId': 'ej0o055bv4mebsogu4vqpuxxar0'
+        'userPoolId': 'eu-west-1_EjhwcamGs',
+        'clientId': '5po0fhgn0j3qn4ob2sluq7unnj'
       }
     }))
 

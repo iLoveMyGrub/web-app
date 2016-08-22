@@ -43,9 +43,9 @@
     .controller('registerController', registerController);
 
   // Injectables
-  registerDataService.$inject = ['$http', '$rootScope', 'API_URL', 'jwtHelper', '$window', 'AuthTokenService'];
+  registerDataService.$inject = ['$http', '$rootScope', 'API_URL', 'jwtHelper', '$window', 'AuthService'];
 
-  registerController.$inject = ['registerDataService', 'jwtHelper', '$location', '$window', 'AuthTokenService'];
+  registerController.$inject = ['registerDataService', 'jwtHelper', '$location', '$window', 'AuthService'];
 
   /**
    *
@@ -55,9 +55,9 @@
    * @param {object} jwtHelper
    * @param {object} $location
    * @param {object} $window
-   * @param {object} AuthTokenService
+   * @param {object} AuthService
    */
-  function registerController(registerDataService, jwtHelper, $location, $window, AuthTokenService) {
+  function registerController(registerDataService, jwtHelper, $location, $window, AuthService) {
 
     vm.onSubmit = onSubmit;
 
@@ -143,7 +143,7 @@
 
       var formSubmitted = true;
 
-      console.log('ctrl : ', AuthTokenService);
+      console.log('ctrl : ', AuthService);
 
       registerDataService.register(vm.model.email, vm.model.password)
         .then(function success(response) {
@@ -161,7 +161,7 @@
    *
    * @constructor
    */
-  function registerDataService($http, $rootScope, API_URL, jwtHelper, $window, AuthTokenService) {
+  function registerDataService($http, $rootScope, API_URL, jwtHelper, $window, AuthService) {
 
     return {
       register: register,
@@ -184,7 +184,7 @@
 
       }).then(function success(response) {
 
-        AuthTokenService.setToken(response.data);
+        AuthService.setToken(response.data);
 
         return response;
 
@@ -205,7 +205,7 @@
      */
     function getUser() {
 
-      if (AuthTokenService.getToken()) {
+      if (AuthService.getToken()) {
 
         return $http.get(API_URL + '/me');
 

@@ -1,17 +1,33 @@
 // Typography
 
+body {
+  font-family: 'Open Sans', sans-serif;
+  //font-family: 'Alegreya', serif;
+}
+
 p {
-  font-size: 18px;
-  line-height: 1.5;
-  color: rgba(29, 29, 29, 0.92);
+  font-size: 16px;
+  line-height: 28px;
+  //color: rgba(29, 29, 29, 0.92);
+  color: $grey;
   padding-bottom: 20px;
 
 }
 
+.lead {
+  font-family: 'Alegreya', serif;
+  font-style: italic;
+
+  @include breakpoint(fromMedium){
+    font-size: 26px;
+  }
+}
+
 h1 {
   margin: 20px 0;
-  font-size: 35px;
+  font-size: 45px;
   font-weight: lighter;
+
 
 }
 

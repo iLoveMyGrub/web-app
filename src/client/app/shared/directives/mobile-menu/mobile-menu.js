@@ -57,7 +57,7 @@
    * @constructor
    *
    */
-  function MobileMenuController(MobileMenuDataService, jwtHelper, $location, $window, AuthTokenService) {
+  function MobileMenuController(MobileMenuDataService, jwtHelper, $location, $window, AuthService) {
 
     //var vm = this;
     //
@@ -71,14 +71,14 @@
     //
     //    var formSubmitted = true;
     //
-    //    //console.log("ctrl : ", AuthTokenService);
+    //    //console.log("ctrl : ", AuthService);
     //
     //    MobileMenuDataService.login(vm.model.email, vm.model.password)
     //        .then(function success(response) {
     //
-    //            AuthTokenService.authStatus = true;
+    //            AuthService.authStatus = true;
     //
-    //            //console.log(AuthTokenService.authStatus);
+    //            //console.log(AuthService.authStatus);
     //
     //            // Redirect if succesful login
     //            $window.location.href = '#/dashboard';
@@ -95,7 +95,7 @@
    *
    * @constructor
    */
-  function MobileMenuDataService($http, $rootScope, API_URL, jwtHelper, $window, AuthTokenService) {
+  function MobileMenuDataService($http, $rootScope, API_URL, jwtHelper, $window, AuthService) {
 
     var endpointAPI = API_URL + '/mobile-menu';
 

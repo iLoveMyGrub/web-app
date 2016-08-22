@@ -59,7 +59,7 @@
 
   // Dep Inject
   appRun.$inject = [
-    '$rootScope', '$location', '$http', 'store', 'jwtHelper', '$window', 'AuthTokenService', 'UserService'
+    '$rootScope', '$location', '$http', 'store', 'jwtHelper', '$window', 'AuthService', 'UserService'
   ];
 
   /**
@@ -72,7 +72,6 @@
    * @param {object} store
    * @param {object} jwtHelper
    * @param {object} $window
-   * @param {object} AuthTokenService
    * @param {object} UserService
    */
   function appRun($rootScope, $location) {

@@ -4,6 +4,7 @@ module.exports = [
 
   'src/client/app/app.js',
   'src/client/app/app.config.js',
+  'src/client/app/app.constants.js',
 
   'src/client/app/components/frontpage/frontpage.js',
   'src/client/app/components/frontpage/frontpage.config.js',
@@ -27,7 +28,11 @@ module.exports = [
   'src/client/app/components/static-pages/static-pages.js',
   'src/client/app/components/static-pages/static-pages.config.js',
 
+  // Auth Service
   'src/client/app/components/auth/auth.js',
+  'src/client/app/components/auth/auth.service.js',
+
+
   'src/client/app/components/dashboard/dashboard.js',
   'src/client/app/components/contact/contact.js',
   'src/client/app/components/login/login.js',

@@ -1,0 +1,53 @@
+//BEM mixing for naming
+
+/// Block Element
+/// @access public
+/// @param {String} $element - Element's name
+@mixin element($element) {
+  &__#{$element} {
+    @content;
+  }
+}
+
+/// Block Modifier
+/// @access public
+/// @param {String} $modifier - Modifier's name
+@mixin modifier($modifier) {
+  &--#{$modifier} {
+    @content;
+  }
+}
+
+// example
+// @include breakpoint(fromMedium) {}
+@mixin breakpoint($point) {
+  @if $point == fromSmall {
+    @media (min-width: $small-width) { @content; }
+  } @else if $point == fromMedium {
+    @media (min-width: $medium-width) { @content; }
+  }@else if $point == fromLarge {
+    @media (min-width: $large-width) { @content; }
+  }
+}
+
+// example
+// font-face(name, folderDir)
+// @include font-face(default-icons, '../fonts/default-icons/default-icons');
+
+@mixin font-face($font-family, $file-path) {
+  @font-face {
+    font-family: $font-family;
+    src: url('#{$file-path}.eot');
+    src: url('#{$file-path}.eot?#iefix') format('embedded-opentype'),
+    url('#{$file-path}.woff') format('woff'),
+    url('#{$file-path}.ttf') format('truetype'),
+    url('#{$file-path}.svg##{$font-family}') format('svg');
+  }
+  // Chrome for Windows rendering fix : http://www.adtrak.co.uk/blog/font-face-chrome-rendering/
+  @media screen and (-webkit-min-device-pixel-ratio: 0) {
+    @font-face {
+      font-family: $font-family;
+      src: url('#{$file-path}.svg##{$font-family}') format('svg');
+    }
+  }
+}
